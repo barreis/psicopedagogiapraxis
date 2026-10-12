@@ -1,1695 +1,1565 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#4936a8">
-<title>Práxis | Plataforma Psicopedagógica & Guia Prático 2026</title>
-
-<!-- Tailwind CSS para Estilização Rápida -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Font Awesome para Ícones -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-:root {
-  --primary:#5141b5;
-  --primary-dark:#362878;
-  --purple-light:#eeeaff;
-  --pink:#f5dfff;
-  --blue:#dff2ff;
-  --green:#dff7eb;
-  --yellow:#fff1c9;
-  --bg:#f6f7fc;
-  --white:#fff;
-  --text:#24233a;
-  --muted:#777990;
-  --border:#e9e8f2;
-  --danger:#c8445a;
-  --shadow:0 8px 28px rgba(42,35,95,.07);
-}
-*{box-sizing:border-box}
-body{
-  margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);background:var(--bg);font-size:14px;
-  overflow-x: hidden;
-}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-
-/* Custom Scrollbar */
-.custom-scrollbar::-webkit-scrollbar { width: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-/* Tela de Bloqueio / Autenticação com Senha */
-#auth-screen {
-  position: fixed; inset: 0; background: linear-gradient(135deg, #362878, #5141b5);
-  z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-.auth-card {
-  background: white; padding: 30px 24px; border-radius: 20px; width: min(460px, 100%);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
-}
-.auth-card h2 { margin-top: 0; color: var(--primary); font-size: 22px; font-weight: 800; }
-.auth-card p { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
-.auth-card input { margin-bottom: 12px; text-align: left; font-size: 14px; }
-
-.app{min-height:100vh; display: flex;}
-.sidebar{
-  width:260px;position:fixed;inset:0 auto 0 0;z-index:30;
-  background:#fff;border-right:1px solid var(--border);
-  display:flex;flex-direction:column;overflow-y:auto;
-  transition:transform .25s ease-in-out;
-}
-.brand{padding:24px 20px 18px;display:flex;gap:12px;align-items:center}
-.brand-icon{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
-  color:#fff;font-size:22px;font-weight:800;
-  background:linear-gradient(135deg,#7461df,#3c2b92);
-  box-shadow:0 7px 15px #5141b533;
-}
-.brand h1{font-size:20px;letter-spacing:-1px;margin:0}
-.brand small{display:block;font-size:9px;letter-spacing:1.2px;color:var(--muted);margin-top:3px}
-.nav-label{font-size:10px;color:#a09fb4;font-weight:800;letter-spacing:1.5px;padding:16px 20px 6px}
-.nav{padding:0 10px}
-.nav button{
-  width:100%;display:flex;align-items:center;gap:12px;text-align:left;
-  border:0;background:transparent;color:#666780;border-radius:10px;
-  padding:11px 12px;margin:2px 0;font-size:13px;font-weight:600;
-  transition:.2s;
-}
-.nav button:hover{background:#f6f4ff;color:var(--primary)}
-.nav button.active{background:var(--purple-light);color:var(--primary);font-weight:750}
-.nav .ico{width:20px;font-size:16px;text-align:center}
-.nav .nav-count{margin-left:auto;font-size:10px;background:#eeeaff;padding:2px 6px;border-radius:20px}
-.side-bottom{margin-top:auto;padding:14px;border-top:1px solid var(--border)}
-.profile{display:flex;gap:10px;align-items:center;padding:6px}
-.avatar{width:36px;height:36px;border-radius:10px;background:var(--pink);display:grid;place-items:center;font-weight:800;color:#7040a5}
-.profile strong{display:block;font-size:12px}
-.profile small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
-
-.main{margin-left:260px;flex:1;min-height:100vh;display:flex;flex-direction:column;min-width:0;}
-.topbar{
-  height:70px;background:#ffffffeb;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:0 24px;position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);
-}
-.top-left{display:flex;align-items:center;gap:12px;min-width:0}
-.breadcrumb{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.breadcrumb strong{color:var(--text)}
-.top-actions{display:flex;align-items:center;gap:10px}
-.search{width:180px;border:1px solid var(--border);border-radius:10px;padding:9px 12px;background:#fafaff}
-.menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:16px}
-
-.content{padding:24px;max-width:1400px;margin:auto;width:100%;flex:1;}
-.page{display:none;animation:appear .2s ease}
-.page.active{display:block}
-@keyframes appear{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
-
-h2{font-size:22px;letter-spacing:-.7px;margin:0 0 6px}
-h3{font-size:14px;margin:0 0 12px}
-p{line-height:1.6}
-.subtitle{color:var(--muted);margin:0 0 20px;line-height:1.6;font-size:13px}
-
-.hero{
-  position:relative;overflow:hidden;border-radius:20px;padding:24px;
-  color:#fff;background:linear-gradient(115deg,#3e2e93,#6956d2 64%,#927fe9);
-  display:flex;justify-content:space-between;align-items:center;gap:16px;
-  box-shadow:0 12px 35px #5141b51c;
-}
-.hero:after{content:"✦";position:absolute;font-size:160px;right:10%;top:-50px;color:#ffffff0c}
-.hero h2{font-size:24px;max-width:520px;line-height:1.3;color:#fff}
-.hero p{color:#eeeaff;max-width:520px;margin-bottom:16px;font-size:13px}
-.hero-art{font-size:72px;min-width:80px;text-align:center;position:relative;z-index:1}
-
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  border:1px solid var(--border);background:white;color:var(--text);
-  border-radius:10px;padding:9px 14px;font-size:12px;font-weight:700;
-  transition:.18s;text-decoration:none;white-space:nowrap;
-}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
-.btn.light{background:#fff;color:var(--primary);border-color:#fff}
-.btn.ai{background:linear-gradient(135deg,#7461df,#3c2b92); color:#fff; border-color:transparent;}
-.btn.danger{color:var(--danger)}
-.btn.small{padding:6px 10px;font-size:11px}
-
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:24px 0 14px;flex-wrap:wrap;}
-.section-head h3{margin:0}
-
-.grid{display:grid;gap:16px}
-.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:20px}
-.stat,.card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px}
-.stat-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.stat-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px}
-.purple{background:var(--purple-light)}
-.pink{background:var(--pink)}
-.blue{background:var(--blue)}
-.green{background:var(--green)}
-.stat-number{font-size:26px;font-weight:800;letter-spacing:-1px;margin-top:10px}
-.stat-label{font-size:11px;color:var(--muted);margin-top:3px}
-
-.two-col{grid-template-columns:1.3fr 1fr;margin-top:20px}
-.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.quick{
-  text-align:left;border:1px solid var(--border);border-radius:14px;
-  padding:15px;background:#fff;color:var(--text);min-height:115px;
-}
-.quick:hover{border-color:#c8c0f4;transform:translateY(-2px)}
-.quick .qico{font-size:22px;margin-bottom:10px;display:block}
-.quick strong{display:block;font-size:12px;margin-bottom:4px}
-.quick small{font-size:11px;line-height:1.4;color:var(--muted)}
-
-.muted{color:var(--muted)}
-.small-text{font-size:11px}
-.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#f0edff;color:#5946b0;font-size:10px;font-weight:800}
-.notice{padding:12px 14px;border-radius:10px;background:#f4f1ff;color:#5141a1;line-height:1.5;font-size:12px;margin:12px 0}
-.notice.warn{background:#fff5dc;color:#795914}
-.notice.green-note{background:#e8f8ef;color:#236747}
-
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.field{display:flex;flex-direction:column;gap:6px;min-width:0}
-.field.full{grid-column:1/-1}
-.field label{font-size:12px;font-weight:750;color:#484761}
-input,select,textarea{
-  width:100%;border:1px solid #e2e1ed;border-radius:10px;background:#fff;
-  padding:10px 12px;color:var(--text);outline:none;min-width:0;font-size:13px;
-}
-input:focus,select:focus,textarea:focus{border-color:#8978e1;box-shadow:0 0 0 3px #7867d51b}
-textarea{min-height:90px;resize:vertical;line-height:1.5}
-textarea.large{min-height:140px}
-.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-
-.result{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#38364f;overflow-wrap:anywhere}
-.result-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:16px}
-.result-box:empty{display:none}
-.output-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
-.output-actions{display:flex;gap:6px;flex-wrap:wrap}
-
-.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:white;width:100%;}
-table{border-collapse:collapse;width:100%;min-width:550px}
-th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:12px;vertical-align:top}
-th{font-size:10px;letter-spacing:.7px;text-transform:uppercase;background:#faf9fe;color:#7c7b94}
-tr:last-child td{border-bottom:0}
-.empty{text-align:center;padding:30px 15px;color:var(--muted);line-height:1.6;font-size:12px}
-
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--border);border-radius:20px;padding:6px 10px;background:#fff;font-size:11px}
-.chip:hover,.chip.selected{background:var(--purple-light);border-color:#c9c0fa;color:var(--primary)}
-
-.footer{margin-top:30px;padding:24px 0;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.8;text-align:center;background:#fff;}
-
-.mobile-overlay{display:none}
-#toast{position:fixed;bottom:20px;right:20px;z-index:100;background:#282442;color:white;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;max-width:90vw;font-size:13px;}
-
-/* Modal de Recuperação */
-.modal {
-  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000;
-  align-items:center; justify-content:center; padding:20px;
-}
-.modal-content {
-  background:white; border-radius:16px; padding:24px; width:min(420px, 100%);
-}
-
-@media(max-width:1100px){
- .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
- .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-
-@media(max-width:768px){
- .sidebar{transform:translateX(-100%);box-shadow:none}
- .sidebar.open{transform:translateX(0);box-shadow:20px 0 50px rgba(0,0,0,0.15)}
- .mobile-overlay.show{display:block;position:fixed;inset:0;background:rgba(31,28,53,0.4);z-index:25}
- .main{margin-left:0}
- .topbar{height:60px;padding:0 16px}
- .menu-toggle{display:inline-flex}
- .search{display:none}
- .content{padding:16px}
- .hero{flex-direction:column;align-items:flex-start;padding:20px}
- .hero-art{display:none}
- .two-col{grid-template-columns:1fr}
- .stats{grid-template-columns:1fr;gap:10px}
- .quick-grid{grid-template-columns:1fr}
- .form-grid{grid-template-columns:1fr}
- h2{font-size:20px}
-}
-
-@media print{
- body{background:#fff}
- .sidebar,.topbar,.no-print,.footer,.form-actions,.output-actions{display:none!important}
- .main{margin:0}
- .content{padding:0;max-width:none}
- .page{display:none!important}
- .page.active{display:block!important}
- .result-box{border:0;padding:0}
- .result{font-size:11pt;color:#000}
- h2,h3{color:#000}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma Práxis - Gestão Psicopedagógica</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- html2pdf.js for exporting PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      .print-only { display: block !important; }
+      body { background: white; color: black; }
+    }
+  </style>
 </head>
-<body>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
-<!-- TELA DE BLOQUEIO / AUTENTICAÇÃO COM SENHA -->
-<div id="auth-screen">
-  <div class="auth-card">
-    <h2>Práxis · Acesso Seguro</h2>
-    <p>Entre com seu Código de Acesso e Senha Pessoal para acessar seus registros protegidos.</p>
-    
-    <form id="authForm">
-      <div style="text-align:left; margin-bottom:6px;"><label style="font-size:11px; font-weight:700; color:#555;">Código de Acesso</label></div>
-      <input type="text" id="accessCodeInput" placeholder="Ex: psi-praxis-2026 ou seu código" required>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- AUTHENTICATION SCREEN -->
+  <div id="authScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 p-4">
+    <div class="max-w-md w-full glass-panel rounded-2xl shadow-2xl p-8 border border-white/20">
       
-      <div style="text-align:left; margin-bottom:6px; margin-top:10px;"><label style="font-size:11px; font-weight:700; color:#555;">Sua Senha Pessoal</label></div>
-      <input type="password" id="accessPasswordInput" placeholder="Digite sua senha" required>
-
-      <button type="submit" class="btn primary" style="width:100%; justify-content:center; padding: 12px; margin-top:10px;">Entrar na Plataforma</button>
-    </form>
-
-    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 10px; display:none;">Código ou senha incorretos. Tente novamente.</div>
-    
-    <div style="margin-top: 18px; font-size: 11px; color: var(--muted); display:flex; justify-content:space-between;">
-      <a href="#" onclick="abrirModalRecuperacao()" style="color:var(--primary); font-weight:600; text-decoration:none;">Esqueceu a senha?</a>
-      <span>Primeiro acesso? Use senha: <strong>123456</strong></span>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL DE RECUPERAÇÃO DE SENHA -->
-<div class="modal" id="modalRecuperacao">
-  <div class="modal-content">
-    <h3 style="font-size:16px; margin-top:0;">Recuperar Acesso</h3>
-    <p style="font-size:12px; color:var(--muted);">Informe seu e-mail de recuperação para enviarmos o código e instruções de redefinição.</p>
-    <div class="field" style="margin-bottom:14px;">
-      <label>E-mail de Recuperação Cadastrado</label>
-      <input type="email" id="recoveryEmailInput" placeholder="seu-email@exemplo.com">
-    </div>
-    <div style="display:flex; gap:8px; justify-content:flex-end;">
-      <button class="btn" onclick="fecharModalRecuperacao()">Cancelar</button>
-      <button class="btn primary" onclick="solicitarRecuperacao()">Enviar Instruções</button>
-    </div>
-  </div>
-</div>
-
-<div class="app">
-<div class="mobile-overlay" id="overlay" onclick="toggleMenu(false)"></div>
-
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <div class="brand-icon">P</div>
-    <div><h1>práxis<span style="color:#8171d9">.</span></h1>
-    <small>ESPAÇO DE APRENDIZAGEM</small></div>
-  </div>
-
-  <div class="nav-label">ESPAÇO DE TRABALHO</div>
-  <nav class="nav">
-    <button class="active" data-page="home"><span class="ico">▦</span> Painel inicial</button>
-    <button data-page="guide-2026"><span class="ico">📖</span> Guia Prático 2026</button>
-    <button data-page="people"><span class="ico">♧</span> Aprendentes <span class="nav-count" id="peopleCount">0</span></button>
-    <button data-page="evaluation"><span class="ico">◎</span> Avaliação psicopedagógica</button>
-    <button data-page="intervention"><span class="ico">✳</span> Plano de intervenção</button>
-    <button data-page="adaptation"><span class="ico">▤</span> Adaptação pedagógica</button>
-    <button data-page="lesson-plan"><span class="ico">🚀</span> Metodologias & Aulas</button>
-    <button data-page="student-manual"><span class="ico">📘</span> Manual do Aprendente</button>
-    <button data-page="report"><span class="ico">▧</span> Relatórios e documentos</button>
-  </nav>
-
-  <div class="nav-label">RECURSOS PROFISSIONAIS</div>
-  <nav class="nav">
-    <button data-page="author"><span class="ico">👩‍🏫</span> Sobre a autora</button>
-    <button data-page="neuro"><span class="ico">✿</span> Neurodiversidade em Foco</button>
-    <button data-page="records"><span class="ico">◷</span> Registros e acompanhamento</button>
-    <button data-page="privacy"><span class="ico">⚙️</span> Configurações & Perfil</button>
-  </nav>
-
-  <div class="side-bottom">
-    <div class="profile"><div class="avatar" id="avatarBox">BV</div><div>
-      <strong id="activeUserLabel">Profª Bárbara</strong>
-      <small id="activeCodeLabel">Usuário Ativo</small>
-    </div></div>
-    <button class="btn small danger" style="width:100%; margin-top:10px;" onclick="logout()">Sair da Conta</button>
-  </div>
-</aside>
-
-<main class="main">
-<header class="topbar">
-  <div class="top-left">
-    <button class="btn menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu">☰</button>
-    <div class="breadcrumb">Práxis <span style="padding:0 5px">/</span> <strong id="currentTitle">Painel inicial</strong></div>
-  </div>
-  <div class="top-actions">
-    <input class="search" id="globalSearch" placeholder="Buscar aprendente..." aria-label="Buscar aprendente">
-    <button class="btn primary" onclick="go('evaluation')">＋ Novo</button>
-  </div>
-</header>
-
-<div class="content">
-
-<!-- PAINEL INICIAL -->
-<section class="page active" id="page-home">
-  <div class="hero">
-    <div>
-      <div class="tag" style="background:#ffffff24;color:#fff;margin-bottom:12px">SUA ROTINA, MAIS ORGANIZADA</div>
-      <h2>Aprender é um processo.<br>Compreender faz parte dele.</h2>
-      <p>Organize observações, consulte o Guia Prático 2026, planeje intervenções com metodologias ativas e manuais psicopedagógicos individualizados.</p>
-      <button class="btn light" onclick="go('guide-2026')">Acessar Guia Prático 2026 →</button>
-    </div>
-    <div class="hero-art" aria-hidden="true">✦</div>
-  </div>
-
-  <div class="grid stats">
-    <div class="stat"><div class="stat-top"><span class="stat-label">Aprendentes cadastrados</span><span class="stat-icon purple">♧</span></div><div class="stat-number" id="statPeople">0</div><div class="stat-label">Registros no seu perfil</div></div>
-    <div class="stat"><div class="stat-top"><span class="stat-label">Avaliações registradas</span><span class="stat-icon pink">◎</span></div><div class="stat-number" id="statEval">0</div><div class="stat-label">Documentos gerados</div></div>
-    <div class="stat"><div class="stat-top"><span class="stat-label">Planos de intervenção</span><span class="stat-icon blue">✳</span></div><div class="stat-number" id="statPlans">0</div><div class="stat-label">Planos salvos</div></div>
-    <div class="stat"><div class="stat-top"><span class="stat-label">Registros totais</span><span class="stat-icon green">▧</span></div><div class="stat-number" id="statRecords">0</div><div class="stat-label">Documentos e acompanhamentos</div></div>
-  </div>
-
-  <div class="section-head"><h3>Acesso rápido</h3><span class="muted small-text">Ferramentas de trabalho</span></div>
-  <div class="grid quick-grid">
-    <button class="quick" onclick="go('guide-2026')"><span class="qico">📖</span><strong>Guia Prático 2026</strong><small>30 tópicos da avaliação psicopedagógica.</small></button>
-    <button class="quick" onclick="go('evaluation')"><span class="qico">📝</span><strong>Nova avaliação</strong><small>Organize informações e observações iniciais.</small></button>
-    <button class="quick" onclick="go('lesson-plan')"><span class="qico">🚀</span><strong>Metodologias Ativas</strong><small>Crie planos de aula, atividades e programas.</small></button>
-    <button class="quick" onclick="go('student-manual')"><span class="qico">📘</span><strong>Manual do Aprendente</strong><small>Gere um guia personalizado para o estudante.</small></button>
-    <button class="quick" onclick="go('adaptation')"><span class="qico">🎨</span><strong>Adaptar uma atividade</strong><small>Planeje acessibilidade por IA.</small></button>
-    <button class="quick" onclick="go('records')"><span class="qico">📚</span><strong>Ver registros</strong><small>Consulte, baixe ou exclua documentos.</small></button>
-  </div>
-
-  <div class="grid two-col">
-    <div class="card">
-      <div class="section-head" style="margin-top:0"><h3>Últimos registros</h3><button class="btn small" onclick="go('records')">Ver todos →</button></div>
-      <div id="recentRecords" class="empty">Seus registros aparecerão aqui quando salvar o primeiro documento.</div>
-    </div>
-    <div class="card">
-      <h3>Princípios de uma prática responsável</h3>
-      <p class="muted small-text">✓ Observar antes de concluir.</p>
-      <p class="muted small-text">✓ Valorizar habilidades, interesses e potencialidades.</p>
-      <p class="muted small-text">✓ Planejar estratégias e acompanhar resultados.</p>
-      <p class="muted small-text">✓ Trabalhar com família, escola e profissionais, respeitando os limites de atuação.</p>
-      <div class="notice">O Práxis auxilia a organização do trabalho. Não substitui avaliação individualizada nem diagnóstico especializado.</div>
-    </div>
-  </div>
-</section>
-
-<!-- GUIA PRÁTICO DA AVALIAÇÃO PSICOPEDAGÓGICA 2026 -->
-<section class="page" id="page-guide-2026">
-  <div class="flex flex-col min-h-[calc(100vh-120px)] bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
-    
-    <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3 flex items-center justify-between shrink-0 shadow-sm z-10 flex-wrap gap-2">
-        <div class="flex items-center gap-3">
-            <div class="bg-blue-600 text-white font-black text-lg px-3 py-1 rounded-lg tracking-wider">PRÁXIS</div>
-            <div class="h-6 w-px bg-slate-300 hidden sm:block"></div>
-            <div>
-                <h1 class="font-bold text-slate-800 text-xs md:text-base leading-tight">Guia Prático da Avaliação Psicopedagógica 2026</h1>
-                <p class="text-[11px] text-slate-500 hidden sm:block">Apostila Digital Interativa & Central de Ferramentas</p>
-            </div>
+      <!-- Brand Logo Header -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-indigo-500/30 text-white">
+          <i class="fa-solid fa-brain text-3xl"></i>
         </div>
-
-        <div class="flex items-center gap-3 text-xs">
-            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-                <span class="text-slate-600 font-medium hidden md:inline">Progresso:</span>
-                <div class="w-16 md:w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
-                    <div id="progressBar" class="bg-blue-600 h-2 rounded-full w-0 transition-all duration-300"></div>
-                </div>
-                <span id="progressText" class="font-bold text-blue-600">0%</span>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
-        
-        <aside class="w-full md:w-80 lg:w-96 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex flex-col shrink-0 max-h-60 md:max-h-none">
-            <div class="p-3 border-b border-slate-100 bg-slate-50/50">
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                    <input type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Buscar nos 30 tópicos da apostila..." 
-                        class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-            </div>
-
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1" id="topicList">
-            </div>
-        </aside>
-
-        <main class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar p-4 md:p-8 flex flex-col justify-between" id="mainContent">
-            <div class="max-w-4xl mx-auto w-full">
-                
-                <div class="bg-white rounded-2xl p-5 md:p-8 border border-slate-200 shadow-sm mb-6">
-                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                        <span id="chapBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Tópico 01</span>
-                        <button onclick="toggleCompleted()" id="btnComplete" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1.5 transition">
-                            <i class="fa-regular fa-circle-check"></i>
-                            <span>Marcar como Lido</span>
-                        </button>
-                    </div>
-
-                    <h2 id="chapTitle" class="text-xl md:text-3xl font-extrabold text-slate-800 mb-3">Carregando...</h2>
-                    <p id="chapSubtitle" class="text-slate-600 text-xs md:text-base leading-relaxed mb-6"></p>
-
-                    <div id="actionBox" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
-                                <i class="fa-solid fa-bolt text-lg"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-blue-900 text-sm">Ferramenta Interativa Práxis</h4>
-                                <p class="text-xs text-blue-700" id="actionDesc">Acesse a função correspondente diretamente no sistema.</p>
-                            </div>
-                        </div>
-                        <button id="actionBtn" onclick="executeSystemAction()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition shadow-sm whitespace-nowrap">
-                            Abrir no Sistema
-                        </button>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-5 md:p-8 border border-slate-200 shadow-sm space-y-6 text-slate-700 leading-relaxed text-xs md:text-base" id="chapBody">
-                </div>
-
-                <div class="flex items-center justify-between mt-6 gap-4">
-                    <button id="btnPrevTopic" onclick="navigateTopic(-1)" class="btn small" style="padding: 8px 14px;">
-                        ← Tópico Anterior
-                    </button>
-                    <button id="btnNextTopic" onclick="navigateTopic(1)" class="btn small primary" style="padding: 8px 14px;">
-                        Próximo Tópico →
-                    </button>
-                </div>
-            </div>
-
-            <footer class="mt-8 border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
-                <p>Plataforma Práxis &copy; 2026 — Guia Prático da Avaliação Psicopedagógica</p>
-            </footer>
-        </main>
-    </div>
-  </div>
-</section>
-
-<!-- PLANEJADOR DE AULAS & METODOLOGIAS ATIVAS -->
-<section class="page" id="page-lesson-plan">
-  <h2>Planejador de Aulas & Metodologias Ativas</h2>
-  <p class="subtitle">Combine metodologias ativas com criação de planos de aula, atividades práticas, exercícios de fixação e programas de aprendizado.</p>
-  <div class="card">
-    <form id="lessonPlanForm">
-      <div class="form-grid">
-        <div class="field"><label for="lpSubject">Disciplina ou Tema *</label><input id="lpSubject" required placeholder="Ex.: Ética Profissional, História, Redação..."></div>
-        <div class="field"><label for="lpLevel">Etapa de Ensino</label><select id="lpLevel"><option>Ensino Fundamental</option><option>Ensino Médio / Técnico</option><option>Ensino Superior</option><option>Educação de Jovens e Adultos (EJA)</option><option>Atendimento Psicopedagógico</option></select></div>
-        <div class="field"><label for="lpMethodology">Metodologia Ativa Principal</label><select id="lpMethodology">
-          <option>Aprendizagem Baseada em Projetos (PBL)</option>
-          <option>Aprendizagem Baseada em Problemas (ABPb)</option>
-          <option>Sala de Aula Invertida (Flipped Classroom)</option>
-          <option>Estudo de Caso / Mini-casos Práticos</option>
-          <option>Gamificação e Desafios</option>
-          <option>Rotação por Estações</option>
-          <option>Instrução pelos Pares (Peer Instruction)</option>
-        </select></div>
-        <div class="field"><label for="lpDuration">Duração ou Carga Horária</label><input id="lpDuration" placeholder="Ex.: 2 aulas de 50 min, ou 4 encontros"></div>
-        <div class="field full"><label for="lpGoal">Objetivos de Aprendizagem (BNCC / Bloom)</label><textarea id="lpGoal" placeholder="O que os alunos devem compreender, aplicar ou criar?"></textarea></div>
-        <div class="field full"><label for="lpContext">Contexto e Interesses do Grupo/Aprendente</label><textarea id="lpContext" placeholder="Descreva os interesses, perfil ou demandas da turma/aprendente..."></textarea></div>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Plataforma Práxis</h1>
+        <p class="text-xs text-slate-500 mt-1">Desenvolvimento e Inclusão Psicopedagógica</p>
       </div>
-      <div class="form-actions">
-        <button class="btn ai" type="button" onclick="gerarPlanoMetodologiasAtivasIA()">✨ Gerar Plano de Aula + Atividades + Exercícios com IA</button>
-        <button class="btn primary" type="submit">Salvar Plano de Aula</button>
-        <button class="btn" type="reset">Limpar</button>
-      </div>
-    </form>
-  </div>
-  <div class="result-box" id="lessonPlanOutput"></div>
-</section>
 
-<!-- MANUAL DO APRENDENTE -->
-<section class="page" id="page-student-manual">
-  <h2>Manual Psicopedagógico do Aprendente</h2>
-  <p class="subtitle">Crie um guia e manual de estratégias personalizado para cada aprendente com rotinas, técnicas de estudo e autorregulação.</p>
-  <div class="card">
-    <form id="studentManualForm">
-      <div class="form-grid">
-        <div class="field">
-          <label for="smPersonSelect">Selecionar Aprendente Cadastrado *</label>
-          <select id="smPersonSelect" required onchange="preencherManualAprendente()">
-            <option value="">-- Escolher aprendente --</option>
-          </select>
-        </div>
-        <div class="field"><label for="smFocus">Foco Principal do Manual</label><select id="smFocus">
-          <option>Organização, Rotina e Gestão do Tempo</option>
-          <option>Estratégias de Leitura, Escrita e Memória</option>
-          <option>Raciocínio Lógico e Matemática Prática</option>
-          <option>Autorregulação Emocional e Foco</option>
-          <option>Guia Integrado Completo de Aprendizagem</option>
-        </select></div>
-        <div class="field full"><label for="smPreferences">Interesses e Pontos Fortes</label><textarea id="smPreferences" placeholder="Gostos, hobbys, canais de aprendizagem preferidos..."></textarea></div>
-        <div class="field full"><label for="smChallenges">Desafios e Barreiras a Superar</label><textarea id="smChallenges" placeholder="Dificuldades de atenção, organização, ansiedade em provas..."></textarea></div>
+      <!-- Auth Tabs -->
+      <div class="flex border-b border-slate-200 mb-6 text-sm font-medium text-center">
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 pb-3 border-b-2 border-indigo-600 text-indigo-600 font-semibold transition-all">
+          <i class="fa-solid fa-right-to-bracket mr-2"></i>Acessar Conta
+        </button>
+        <button id="tabMasterBtn" onclick="switchAuthTab('master')" class="w-1/2 pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-all">
+          <i class="fa-solid fa-key mr-2"></i>Chave Mestre
+        </button>
       </div>
-      <div class="form-actions">
-        <button class="btn ai" type="button" onclick="gerarManualAprendenteIA()">✨ Gerar Manual Personalizado com IA</button>
-        <button class="btn primary" type="submit">Salvar Manual</button>
-        <button class="btn" type="reset">Limpar</button>
-      </div>
-    </form>
-  </div>
-  <div class="result-box" id="studentManualOutput"></div>
-</section>
 
-<!-- SOBRE A AUTORA -->
-<section class="page" id="page-author">
-  <h2>Sobre a Autora</h2>
-  <p class="subtitle">Trajetória acadêmica, docente e científica da idealizadora da Plataforma Práxis.</p>
-  
-  <div class="card" style="margin-bottom: 16px;">
-    <h3>Profª Bárbara Vitória</h3>
-    <p>Educadora, pesquisadora e desenvolvedora de ferramentas pedagógicas voltadas à inclusão, à psicopedagogia e às metodologias ativas no ensino fundamental, técnico e superior.</p>
-
-    <div class="notice" style="background: var(--purple-light); color: var(--primary-dark); margin-top:14px;">
-      <strong>Mestranda em Psicobiologia pela UNIFESP (Universidade Federal de São Paulo)</strong>
-    </div>
-  </div>
-
-  <div class="grid two-col" style="margin-top: 0;">
-    <div class="card">
-      <h3>Licenciaturas</h3>
-      <ul style="padding-left: 18px; line-height: 1.8; color: var(--text); font-size: 13px;">
-        <li>Licenciatura em Letras-Português (UNIPAMPA)</li>
-        <li>História (Centro Universitário ETEP)</li>
-        <li>Geografia (Centro Universitário ETEP)</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Especializações Pós-Graduadas</h3>
-      <ul style="padding-left: 18px; line-height: 1.8; color: var(--text); font-size: 12px;">
-        <li>Ciências Humanas e Sociais Aplicadas ao Mundo do Trabalho (UFPI)</li>
-        <li>Currículo e Prática Docente no Ensino Fundamental (UFPI)</li>
-        <li>Docência para a Educação Profissional e Tecnológica (IFAM)</li>
-        <li>Língua Brasileira de Sinais - Libras (UNICENTRO)</li>
-        <li>Psicopedagogia Clínica e Institucional (IMES)</li>
-        <li>Programação Neurolinguística - PNL (IMES)</li>
-        <li>Linguística Aplicada e Estudo das Línguas (IMES)</li>
-        <li>Educação em Direitos Humanos (UFMS)</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- NEURODIVERSIDADE EM FOCO -->
-<section class="page" id="page-neuro">
-  <h2>Neurodiversidade em Foco</h2>
-  <p class="subtitle">Guia prático e teórico completo para acolhimento, rastreio e intervenção psicopedagógica.</p>
-  
-  <div class="grid" style="gap:16px;">
-    
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="margin:0; font-size:16px; color:var(--primary);"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i> TDAH (Transtorno do Deficit de Atenção e Hiperatividade)</h3>
-        <span class="tag">Funções Executivas</span>
-      </div>
-      <p><strong>Perfil Cognitivo:</strong> Desafios na manutenção da atenção sustentada, memória de trabalho e controle inibitório. Não se trata de ausência de atenção, mas de dificuldade na autorregulação e distribuição do foco.</p>
-      <div class="notice" style="background:#f0f7ff; color:#1e40af; margin-top:8px;">
-        <strong>Estratégia Psicopedagógica Prática:</strong><br>
-        • Utilizar a Técnica Pomodoro (20 min de estudo + 5 min de pausa ativa).<br>
-        • Fragmentar atividades longas em check-lists visuais e coloridos.<br>
-        • Permitir movimentação postural controlada e apoios para os pés.
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="margin:0; font-size:16px; color:var(--primary);"><i class="fa-solid fa-puzzle-piece text-emerald-500 mr-2"></i> TEA (Transtorno do Espectro Autista)</h3>
-        <span class="tag">Comunicação & Flexibilidade</span>
-      </div>
-      <p><strong>Perfil Cognitivo:</strong> Particularidades no processamento sensorial, na Teoria da Mente e na flexibilidade cognitiva. Presença de hiperfoco e preferência por rotinas previsíveis e estruturadas.</p>
-      <div class="notice" style="background:#e8f8ef; color:#166534; margin-top:8px;">
-        <strong>Estratégia Psicopedagógica Prática:</strong><br>
-        • Utilizar quadros de rotina visual com antecipação de trocas de atividades.<br>
-        • Usar o hiperfoco do aprendente como gancho pedagógico para disciplinas abstratas.<br>
-        • Reduzir a sobrecarga de estímulos visuais e auditivos no ambiente de avaliação.
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="margin:0; font-size:16px; color:var(--primary);"><i class="fa-solid fa-book-open text-rose-500 mr-2"></i> Dislexia & Transtornos da Leitura e Escrita</h3>
-        <span class="tag">Processamento Fonológico</span>
-      </div>
-      <p><strong>Perfil Cognitivo:</strong> Deficit neurobiológico na automação da conversão grafema-fonema (rota fonológica), afetando a precisão, fluência e velocidade leitora, sem relação com o nível intelectual.</p>
-      <div class="notice" style="background:#fef2f2; color:#991b1b; margin-top:8px;">
-        <strong>Estratégia Psicopedagógica Prática:</strong><br>
-        • Estimular a Consciência Fonológica através do método fônico-multissensorial.<br>
-        • Permitir leitor de tela digital e provas orais ou com tempo estendido.<br>
-        • Evitar leitura pública constrangedora na sala de aula.
-      </div>
-    </div>
-
-    <div class="card">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="margin:0; font-size:16px; color:var(--primary);"><i class="fa-solid fa-brain text-purple-500 mr-2"></i> Altas Habilidades / Superdotação & Dupla Excepcionalidade</h3>
-        <span class="tag">Enriquecimento Curricular</span>
-      </div>
-      <p><strong>Perfil Cognitivo:</strong> Potencial elevado em áreas intelectuais, acadêmicas, liderança ou artes, por vezes acompanhado de assincronia no desenvolvimento emocional ou associação com TDAH/TEA (Dupla Excepcionalidade).</p>
-      <div class="notice" style="background:#faf5ff; color:#6b21a8; margin-top:8px;">
-        <strong>Estratégia Psicopedagógica Prática:</strong><br>
-        • Implementar programas de enriquecimento curricular (Modelos de Renzulli).<br>
-        • Propor projetos abertos de investigação baseados em problemas reais (PBL).
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- APRENDENTES -->
-<section class="page" id="page-people">
-  <h2>Aprendentes</h2><p class="subtitle">Cadastre e acompanhe o percurso de aprendizagem.</p>
-  <div class="card">
-    <h3>Cadastrar aprendente</h3>
-    <form id="peopleForm">
-      <div class="form-grid">
-        <div class="field"><label for="pName">Nome ou código *</label><input id="pName" required placeholder="Prefira iniciais ou código"></div>
-        <div class="field"><label for="pAge">Faixa etária</label><select id="pAge"><option value="">Selecione</option><option>Educação infantil</option><option>6 a 10 anos</option><option>11 a 14 anos</option><option>15 a 17 anos</option><option>18 anos ou mais</option></select></div>
-        <div class="field"><label for="pContext">Contexto</label><select id="pContext"><option>Não informado</option><option>Clínico/atendimento particular</option><option>Escolar</option><option>Institucional</option><option>Familiar</option><option>Outro</option></select></div>
-        <div class="field"><label for="pGoal">Objetivo inicial</label><input id="pGoal" placeholder="Ex.: apoiar organização e leitura"></div>
-        <div class="field full"><label for="pNotes">Observações iniciais</label><textarea id="pNotes" placeholder="Interesses, potencialidades e demandas relatadas..."></textarea></div>
-      </div>
-      <div class="form-actions"><button class="btn primary" type="submit">Salvar aprendente</button><button class="btn" type="reset">Limpar</button></div>
-    </form>
-  </div>
-  <div class="section-head"><h3>Cadastros</h3><input id="peopleSearch" placeholder="Filtrar registros..." style="max-width:220px"></div>
-  <div class="table-wrap"><table><thead><tr><th>Identificação</th><th>Faixa etária</th><th>Contexto</th><th>Objetivo</th><th>Ações</th></tr></thead><tbody id="peopleTable"></tbody></table></div>
-</section>
-
-<!-- AVALIAÇÃO PSICOPEDAGÓGICA (VINCULADA A APRENDENTE CADASTRADO) -->
-<section class="page" id="page-evaluation">
-  <h2>Avaliação psicopedagógica</h2>
-  <p class="subtitle">Selecione o aprendente cadastrado e registre informações, dificuldades relatadas e hipóteses de trabalho.</p>
-  <div class="notice">Este formulário organiza informações obtidas por entrevista e observação. Não produz diagnóstico clínico nem pontuação diagnóstica.</div>
-  <div class="card">
-    <form id="evaluationForm">
-      <div class="form-grid">
-        <div class="field">
-          <label for="eName">Selecionar Aprendente Cadastrado *</label>
-          <select id="eName" required>
-            <option value="">-- Escolher aprendente --</option>
-          </select>
-        </div>
-        <div class="field"><label for="eDate">Data</label><input id="eDate" type="date"></div>
-        <div class="field"><label for="eSource">Fonte das informações</label><select id="eSource"><option>Entrevista inicial</option><option>Relato familiar</option><option>Relato escolar</option><option>Observação direta</option><option>Análise de produções</option><option>Equipe multiprofissional</option><option>Outra fonte</option></select></div>
-        <div class="field"><label for="eDemand">Demanda principal</label><input id="eDemand" placeholder="Motivo da procura ou encaminhamento"></div>
-        <div class="field full"><label for="eHistory">Histórico relevante</label><textarea id="eHistory" placeholder="Escolarização, apoios anteriores e informações pertinentes..."></textarea></div>
-        <div class="field"><label for="eStrengths">Potencialidades e interesses</label><textarea id="eStrengths" placeholder="Habilidades, interesses e motivadores"></textarea></div>
-        <div class="field"><label for="eDifficulties">Dificuldades observadas ou relatadas</label><textarea id="eDifficulties" placeholder="Descreva situações concretas, diferenciando relato e observação"></textarea></div>
-        <div class="field"><label for="eLearning">Leitura, escrita e linguagem</label><textarea id="eLearning"></textarea></div>
-        <div class="field"><label for="eMath">Raciocínio lógico e matemática</label><textarea id="eMath"></textarea></div>
-        <div class="field"><label for="eAttention">Atenção e organização</label><textarea id="eAttention"></textarea></div>
-        <div class="field"><label for="eEmotion">Aspectos socioemocionais e contexto</label><textarea id="eEmotion"></textarea></div>
-        <div class="field full"><label for="eSupports">Apoios já experimentados</label><textarea id="eSupports"></textarea></div>
-        <div class="field full"><label for="eNext">Próximos passos e questões a investigar</label><textarea id="eNext"></textarea></div>
-      </div>
-      <div class="form-actions"><button class="btn primary" type="submit">Gerar avaliação</button><button class="btn" type="reset">Limpar formulário</button></div>
-    </form>
-  </div>
-  <div class="result-box" id="evaluationOutput"></div>
-</section>
-
-<!-- PLANO DE INTERVENÇÃO (VINCULADO A APRENDENTE CADASTRADO) -->
-<section class="page" id="page-intervention">
-  <h2>Plano de intervenção</h2>
-  <p class="subtitle">Selecione o aprendente cadastrado e defina objetivos observáveis, estratégias e acompanhamento.</p>
-  <div class="card">
-    <form id="interventionForm">
-      <div class="form-grid">
-        <div class="field">
-          <label for="iName">Selecionar Aprendente Cadastrado *</label>
-          <select id="iName" required>
-            <option value="">-- Escolher aprendente --</option>
-          </select>
-        </div>
-        <div class="field"><label for="iPeriod">Período</label><input id="iPeriod" placeholder="Ex.: 4 semanas"></div>
-        <div class="field full"><label for="iBaseline">Ponto de partida</label><textarea id="iBaseline"></textarea></div>
-        <div class="field full"><label for="iGoal">Objetivo prioritário *</label><textarea id="iGoal" required placeholder="Ex.: organizar uma sequência de três etapas com apoio visual"></textarea></div>
-        <div class="field"><label for="iStrategy">Estratégias e recursos</label><textarea id="iStrategy"></textarea></div>
-        <div class="field"><label for="iFrequency">Frequência e duração</label><input id="iFrequency" placeholder="Ex.: 2 encontros semanais de 40 min"></div>
-        <div class="field"><label for="iIndicators">Indicadores de progresso</label><textarea id="iIndicators"></textarea></div>
-        <div class="field"><label for="iSupport">Apoios necessários</label><textarea id="iSupport"></textarea></div>
-        <div class="field full"><label for="iReview">Data e critérios de revisão</label><textarea id="iReview"></textarea></div>
-      </div>
-      <div class="form-actions"><button class="btn primary" type="submit">Montar plano</button><button class="btn" type="reset">Limpar</button></div>
-    </form>
-  </div>
-  <div class="result-box" id="interventionOutput"></div>
-</section>
-
-<!-- ADAPTAÇÃO PEDAGÓGICA POR IA -->
-<section class="page" id="page-adaptation">
-  <h2>Adaptação pedagógica por IA</h2>
-  <p class="subtitle">Selecione o aprendente cadastrado e a atividade para que o sistema gere a adaptação automática inteligente.</p>
-  <div class="card">
-    <form id="adaptationForm">
-      <div class="form-grid">
-        <div class="field">
-          <label for="aPersonSelect">Selecionar Aprendente Cadastrado *</label>
-          <select id="aPersonSelect" required onchange="preencherDadosAprendente()">
-            <option value="">-- Escolher aprendente --</option>
-          </select>
-        </div>
-        <div class="field"><label for="aSubject">Disciplina ou área</label><input id="aSubject" placeholder="Ex.: Língua Portuguesa"></div>
-        <div class="field full"><label for="aActivity">Atividade original *</label><textarea id="aActivity" class="large" required placeholder="Cole o enunciado ou a atividade original aqui..."></textarea></div>
-        
-        <div class="field full">
-          <label>Focos de acessibilidade</label>
-          <div class="chips" id="adaptChips">
-            <button type="button" class="chip" data-value="TEA">TEA</button>
-            <button type="button" class="chip" data-value="TDAH">TDAH</button>
-            <button type="button" class="chip" data-value="Dislexia">Dislexia</button>
-            <button type="button" class="chip" data-value="Discalculia">Discalculia</button>
-            <button type="button" class="chip" data-value="Disgrafia">Disgrafia</button>
-            <button type="button" class="chip" data-value="Deficiência intelectual">Deficiência intelectual</button>
-            <button type="button" class="chip" data-value="Deficiência visual">Deficiência visual</button>
-            <button type="button" class="chip" data-value="Deficiência auditiva">Deficiência auditiva</button>
-            <button type="button" class="chip" data-value="Linguagem simples">Linguagem simples</button>
+      <!-- Form 1: Standard User Login -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código de Acesso</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <i class="fa-solid fa-user"></i>
+            </span>
+            <input type="text" id="loginCode" required class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-sm" placeholder="Seu código de acesso">
           </div>
         </div>
-        
-        <div class="field"><label for="aObjective">Objetivo de aprendizagem</label><textarea id="aObjective" placeholder="Ex.: Compreender o texto principal"></textarea></div>
-        <div class="field"><label for="aBarriers">Barreiras identificadas</label><textarea id="aBarriers" placeholder="Ex.: Textos longos, excesso de estímulos"></textarea></div>
-      </div>
 
-      <div class="form-actions">
-        <button class="btn ai" type="button" onclick="gerarAdaptacaoAutomaticaIA()">✨ Gerar Adaptação Automática com IA</button>
-        <button class="btn primary" type="submit">Salvar Adaptação</button>
-        <button class="btn" type="reset">Limpar</button>
-      </div>
-    </form>
-  </div>
-  <div class="result-box" id="adaptationOutput"></div>
-</section>
-
-<!-- RELATÓRIOS E DOCUMENTOS (VINCULADO A APRENDENTE CADASTRADO) -->
-<section class="page" id="page-report">
-  <h2>Relatórios e documentos</h2>
-  <p class="subtitle">Selecione o aprendente cadastrado, crie documentos editáveis e revise o conteúdo antes de compartilhar.</p>
-  <div class="card">
-    <form id="reportForm">
-      <div class="form-grid">
-        <div class="field"><label for="rType">Tipo de documento</label><select id="rType">
-          <option>Registro de atendimento</option><option>Relatório psicopedagógico descritivo</option><option>Devolutiva à família</option><option>Orientação pedagógica à escola</option><option>Registro de reunião</option><option>Plano de acompanhamento</option><option>Encaminhamento para avaliação especializada</option>
-        </select></div>
-        <div class="field">
-          <label for="rName">Selecionar Aprendente Cadastrado *</label>
-          <select id="rName" required>
-            <option value="">-- Escolher aprendente --</option>
-          </select>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Senha</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <input type="password" id="loginPassword" required class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition text-sm" placeholder="••••••••">
+          </div>
         </div>
-        <div class="field"><label for="rDate">Data</label><input id="rDate" type="date"></div>
-        <div class="field"><label for="rAudience">Destinatário</label><input id="rAudience" placeholder="Ex.: família, escola, equipe"></div>
-        <div class="field full"><label for="rPurpose">Finalidade</label><textarea id="rPurpose"></textarea></div>
-        <div class="field full"><label for="rBody">Conteúdo e observações *</label><textarea id="rBody" class="large" required></textarea></div>
-        <div class="field full"><label for="rRecommendations">Recomendações e próximos passos</label><textarea id="rRecommendations"></textarea></div>
-      </div>
-      <div class="form-actions"><button class="btn primary" type="submit">Gerar documento</button><button class="btn" type="reset">Limpar</button></div>
-    </form>
-  </div>
-  <div class="result-box" id="reportOutput"></div>
-</section>
 
-<!-- REGISTROS E ACOMPANHAMENTO -->
-<section class="page" id="page-records">
-  <h2>Registros e Acompanhamento</h2>
-  <p class="subtitle">Histórico de documentos, avaliações, planos e relatórios gerados.</p>
-  <div class="card" style="margin-bottom: 20px;">
-    <div class="section-head" style="margin-top:0">
-      <h3>Todos os documentos salvos</h3>
-      <button class="btn small danger" onclick="clearAllData()">Limpar todos os dados do perfil</button>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Tipo de Documento</th><th>Identificação (Aprendente)</th><th>Data</th><th>Ações</th></tr></thead>
-        <tbody id="allRecordsTable"></tbody>
-      </table>
-    </div>
-  </div>
-  
-  <div class="result-box" id="recordViewerBox" style="display:none;">
-    <div class="output-head">
-      <strong id="viewerTitle">Visualizar Documento</strong>
-      <div class="output-actions">
-        <button class="btn small primary" onclick="window.print()">🖨️ Baixar / Imprimir PDF</button>
-        <button class="btn small" onclick="fecharVisualizador()">Fechar</button>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition duration-200">
+          Entrar na Plataforma
+        </button>
+      </form>
+
+      <!-- Form 2: Master Key Access (First Time) -->
+      <form id="masterForm" onsubmit="handleMasterKey(event)" class="space-y-4 hidden">
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base flex-shrink-0 mt-0.5"></i>
+          <div>
+            <strong>Acesso via Chave Mestre:</strong> Insira o código da chave mestre para criar ou vincular o seu perfil pessoal.
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código da Chave Mestre</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+              <i class="fa-solid fa-key text-amber-500"></i>
+            </span>
+            <input type="text" id="masterCodeInput" required class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition text-sm" placeholder="Insira psi-praxis-2026">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 transition duration-200">
+          Validar Chave Mestre
+        </button>
+      </form>
+
+      <div class="mt-6 text-center text-xs text-slate-400">
+        Plataforma Práxis 2026 &bull; Todos os direitos reservados
       </div>
     </div>
-    <div class="result" id="viewerContent"></div>
   </div>
-</section>
 
-<!-- CONFIGURAÇÕES & PERFIL -->
-<section class="page" id="page-privacy">
-  <h2>Configurações & Perfil</h2>
-  <p class="subtitle">Gerencie seu nome de usuário, código de acesso, senha pessoal e e-mail de recuperação.</p>
-  
-  <div class="card" style="margin-bottom: 20px;">
-    <h3>Editar Dados da Sua Conta</h3>
-    <p class="muted small-text">Mantenha seus dados de login atualizados para garantir a segurança e a recuperação do seu acesso.</p>
-    
-    <div class="form-grid" style="margin-top: 15px;">
-      <div class="field">
-        <label for="editUserName">Nome de Exibição / Usuário</label>
-        <input id="editUserName" placeholder="Ex: Profª Maria Silva">
+  <!-- REGISTRATION MODAL FOR MASTER KEY USERS -->
+  <div id="registerModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-indigo-600"></i> Criar Seu Acesso Individual
+        </h3>
+        <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-semibold">Via Chave Mestre</span>
       </div>
       
-      <div class="field">
-        <label for="editUserCode">Seu Código de Acesso Exclusivo</label>
-        <input id="editUserCode" placeholder="ex: meu-codigo-123">
-      </div>
+      <p class="text-xs text-slate-500 mb-4">
+        Você validou a Chave Mestre! Agora cadastre suas credenciais pessoais de acesso. A Chave Mestre permanecerá intacta no sistema.
+      </p>
 
-      <div class="field">
-        <label for="editUserPassword">Nova Senha Pessoal</label>
-        <input type="password" id="editUserPassword" placeholder="Digite sua nova senha">
-      </div>
+      <form onsubmit="handleRegisterUser(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nome Completo</label>
+          <input type="text" id="regName" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ex: Maria Silva">
+        </div>
 
-      <div class="field">
-        <label for="editUserEmail">E-mail para Recuperação de Senha</label>
-        <input type="email" id="editUserEmail" placeholder="seuemail@exemplo.com">
-      </div>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código de Acesso Pessoal</label>
+            <input type="text" id="regCode" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Ex: maria.psico">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mail de Recuperação</label>
+            <input type="email" id="regEmail" required class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="maria@exemplo.com">
+          </div>
+        </div>
 
-    <div class="form-actions">
-      <button class="btn primary" onclick="salvarAlteracoesPerfil()">Salvar Alterações do Perfil</button>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Criar Senha de Acesso</label>
+          <input type="password" id="regPassword" required minlength="4" class="w-full px-3 py-2 border rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Mínimo 4 caracteres">
+        </div>
+
+        <div class="pt-3 flex justify-end gap-3">
+          <button type="button" onclick="closeRegisterModal()" class="px-4 py-2 border rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
+          <button type="submit" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-md">Criar Meu Acesso</button>
+        </div>
+      </form>
     </div>
   </div>
-</section>
 
-</div>
-
-<footer class="footer">
-  <div>
-    <strong>Plataforma Práxis &copy; 2026 — Desenvolvida para apoio docente e psicopedagógico</strong><br>
-    📧 E-mail de Suporte e Contato: <a href="mailto:prof.barbaravitoria@gmail.com" class="text-blue-600 font-semibold hover:underline">prof.barbaravitoria@gmail.com</a> | 
-    📸 Instagram: <a href="https://instagram.com/prof.barbaravitoria" target="_blank" class="text-blue-600 font-semibold hover:underline">@prof.barbaravitoria</a>
-  </div>
-</footer>
-
-</main>
-</div>
-<div id="toast">Ação realizada com sucesso!</div>
-
-<script>
-const CODIGO_UNIVERSAL = "psi-praxis-2026";
-const SENHA_PADRAO_UNIVERSAL = "123456";
-
-let activeKey = "";
-let userProfile = { name: 'Profª Bárbara', password: SENHA_PADRAO_UNIVERSAL, email: 'prof.barbaravitoria@gmail.com' };
-let state = { people: [], records: [], evaluations: [], interventions: [] };
-
-// BASE DOS 30 TÓPICOS DA APOSTILA
-const topics = [
-    { id: 1, color: 'bg-blue-500', targetPage: 'home', title: '01. Capa e Apresentação do Guia Prático 2026', desc: 'Visão geral da avaliação psicopedagógica contemporânea.', action: 'Acessar Painel Inicial', body: `<h3>Bem-vindo ao Guia Prático da Avaliação Psicopedagógica 2026</h3><p>A avaliação psicopedagógica contemporânea transcende a simples aplicação de testes. Em 2026, ela se consolida como uma investigação dinâmica, integrando a neurociência cognitiva, as metodologias ativas e as tecnologias digitais inclusivas.</p>` },
-    { id: 2, color: 'bg-green-500', targetPage: 'records', title: '02. Sumário Executivo do Processo Avaliativo', desc: 'Estrutura completa e navegação pelos 30 módulos.', action: 'Ver Documentos Salvos', body: `<h3>Estrutura Didática dos 30 Tópicos</h3><p>O processo de avaliação organiza-se em 4 eixos principais: Fundamentação, Provas Operatórias, Neurodiversidade e Síntese Diagnóstica.</p>` },
-    { id: 3, color: 'bg-amber-500', targetPage: 'evaluation', title: '03. Mapa da Avaliação Psicopedagógica', desc: 'Fluxograma passo a passo do atendimento.', action: 'Iniciar Nova Avaliação', body: `<h3>Fluxograma de Atendimento</h3><ol style="padding-left:20px;"><li>Sessão 01: Anamnese.</li><li>Sessão 02: EOCA.</li><li>Sessões 03 a 06: Testes formais e informais.</li><li>Sessão 07: Escola.</li><li>Sessão 08: Devolutiva.</li></ol>` },
-    { id: 4, color: 'bg-pink-500', targetPage: 'evaluation', title: '04. O que é avaliar psicopedagogicamente em 2026?', desc: 'Paradigmas atuais e tecnologia aplicada.', action: 'Registrar Hipóteses', body: `<h3>Paradigmas Atuais</h3><p>Avaliar em 2026 foca na epistemologia do aprender: como o sujeito aprende e quais suas potencialidades cognitivas.</p>` },
-    { id: 5, color: 'bg-purple-500', targetPage: 'evaluation', title: '05. Da queixa à pergunta de investigação', desc: 'Transformando queixas em hipóteses.', action: 'Formular Demanda', body: `<h3>Transformando Queixas</h3><p>Traduza relatos vagos dos pais e escola em hipóteses operacionais e testáveis clinicamente.</p>` },
-    { id: 6, color: 'bg-sky-500', targetPage: 'people', title: '06. O Triângulo da Avaliação: Criança + Família + Escola', desc: 'Articulação entre os três pilares.', action: 'Cadastrar Aprendente', body: `<h3>A Triangulação Sistêmica</h3><p>Acompanhe a interação dinâmica entre o aprendente, o contexto familiar e o ambiente escolar.</p>` },
-    { id: 7, color: 'bg-emerald-500', targetPage: 'evaluation', title: '07. Anamnese Inteligente — O que observar', desc: 'Roteiro de anamnese do desenvolvimento.', action: 'Preencher Anamnese', body: `<h3>Roteiro de Anamnese</h3><p>Coleta de dados sobre marcos do desenvolvimento, sono, histórico escolar e vínculos emocionais.</p>` },
-    { id: 8, color: 'bg-amber-500', targetPage: 'evaluation', title: '08. EOCA na Prática', desc: 'Aplicação da caixa de trabalho.', action: 'Registrar Observação EOCA', body: `<h3>Aplicação da EOCA</h3><p>Observação do modelo de aprendizagem, postura frente ao desafio e nível de tolerância à frustração.</p>` },
-    { id: 9, color: 'bg-rose-500', targetPage: 'evaluation', title: '09. Matriz de Hipóteses Psicopedagógicas', desc: 'Cruzamento de evidências clínicas.', action: 'Mapear Hipóteses', body: `<h3>Matriz de Investigação</h3><p>Vincule sintomas relatados a provas aplicadas e confirmações observacionais.</p>` },
-    { id: 10, color: 'bg-indigo-500', targetPage: 'privacy', title: '10. Seleção de Instrumentos e Testes', desc: 'Escolha adequada por faixa etária.', action: 'Ir para Configurações', body: `<h3>Critérios de Escolha</h3><p>Combine testes normatizados com instrumentos qualitativos focados no perfil do aprendente.</p>` },
-    { id: 11, color: 'bg-blue-500', targetPage: 'evaluation', title: '11. Avaliação das Funções Cognitivas e Executivas', desc: 'Atenção, memória e controle inibitório.', action: 'Registrar Perfil Cognitivo', body: `<h3>Funções Executivas</h3><p>Investigação do controle inibitório, memória de trabalho e flexibilidade cognitiva.</p>` },
-    { id: 12, color: 'bg-green-500', targetPage: 'adaptation', title: '12. Mapa de Avaliação da Leitura', desc: 'Decodificação, fluência e compreensão.', action: 'Gerar Adaptação de Leitura', body: `<h3>Avaliação da Leitura</h3><p>Testagem das rotas fonológica e lexical e compreensão inferencial de textos.</p>` },
-    { id: 13, color: 'bg-amber-500', targetPage: 'adaptation', title: '13. Mapa de Avaliação da Escrita', desc: 'Grafomotricidade e ortografia.', action: 'Gerar Adaptação de Escrita', body: `<h3>Análise da Escrita</h3><p>Diferenciação entre erros naturais de conversão e erros ortográficos arbitrários.</p>` },
-    { id: 14, color: 'bg-pink-500', targetPage: 'adaptation', title: '14. Mapa do Raciocínio Lógico-Matemático', desc: 'Senso numérico e provas operatórias.', action: 'Gerar Adaptação de Matemática', body: `<h3>Habilidades Numéricas</h3><p>Avaliação do senso numérico, transcodificação e resolução de problemas práticos.</p>` },
-    { id: 15, color: 'bg-purple-500', targetPage: 'neuro', title: '15. Linguagem Oral e Comunicação', desc: 'Habilidades pragmáticas e vocabulário.', action: 'Ver Módulo Neurodiversidade', body: `<h3>Linguagem e Aprendizagem</h3><p>Análise da fluência verbal, vocabulário expressivo e estruturação sintática.</p>` },
-    { id: 16, color: 'bg-sky-500', targetPage: 'neuro', title: '16. Desenvolvimento Motor e Visoespacial', desc: 'Praxia fina, global e esquema corporal.', action: 'Ver Estratégias Motoras', body: `<h3>Praxia e Organização</h3><p>Investigação do tônus muscular, preensão manual e organização visoespacial na folha.</p>` },
-    { id: 17, color: 'bg-emerald-500', targetPage: 'adaptation', title: '17. TDAH e Funções Executivas', desc: 'Rastreio e suporte psicopedagógico.', action: 'Criar Adaptação para TDAH', body: `<h3>Rastreio do TDAH</h3><p>Estratégias de fracionamento de tempo e organização visual do ambiente de estudos.</p>` },
-    { id: 18, color: 'bg-amber-500', targetPage: 'adaptation', title: '18. Dislexia e Transtornos da Aprendizagem', desc: 'Marcadores neurobiológicos e intervenção.', action: 'Criar Adaptação para Dislexia', body: `<h3>Marcadores da Dislexia</h3><p>Intervenções focadas na consciência fonológica e métodos multissensoriais.</p>` },
-    { id: 19, color: 'bg-rose-500', targetPage: 'adaptation', title: '19. Discalculia × Disgrafia × Disortografia', desc: 'Diagnóstico diferencial prático.', action: 'Criar Adaptação Específica', body: `<h3>Diferenciação de Transtornos</h3><p>Identificação das características específicas das dificuldades em números, grafia e ortografia.</p>` },
-    { id: 20, color: 'bg-purple-500', targetPage: 'neuro', title: '20. TEA e Aprendizagem em 2026', desc: 'Flexibilidade cognitiva e acessibilidade.', action: 'Ver Estratégias TEA', body: `<h3>Acolhimento no TEA</h3><p>Utilização de rotinas visuais, antecipação e canalização pedagógica dos hiperfocos.</p>` },
-    { id: 21, color: 'bg-blue-500', targetPage: 'student-manual', title: '21. Altas Habilidades e Dupla Excepcionalidade', desc: 'Enriquecimento curricular e assincronias.', action: 'Criar Manual para AH/SD', body: `<h3>Dupla Excepcionalidade</h3><p>Mapeamento de altas habilidades associadas a quadros de TDAH ou TEA.</p>` },
-    { id: 22, color: 'bg-green-500', targetPage: 'lesson-plan', title: '22. Plano de Ensino Individualizado (PEI)', desc: 'Metas SMART e adequação inclusiva.', action: 'Gerar Plano com Metodologia Ativa', body: `<h3>Construção do PEI</h3><p>Definição de metas acessíveis e estratégias de avaliação adaptadas.</p>` },
-    { id: 23, color: 'bg-amber-500', targetPage: 'report', title: '23. Quando Encaminhar a Outras Especialidades', desc: 'Critérios técnicos para pareceres.', action: 'Gerar Encaminhamento', body: `<h3>Encaminhamentos Éticos</h3><p>Modelos de pareceres descritivos para Neurologistas, Psicólogos e Fonoaudiólogos.</p>` },
-    { id: 24, color: 'bg-pink-500', targetPage: 'privacy', title: '24. Ética e Segurança de Dados (LGPD)', desc: 'Boas práticas na gestão de prontuários.', action: 'Ir para Segurança', body: `<h3>Ética Profissional</h3><p>Orientações para guarda segura de documentos e respeito ao sigilo das informações.</p>` },
-    { id: 25, color: 'bg-purple-500', targetPage: 'evaluation', title: '25. Triangulação de Resultados', desc: 'Síntese diagnóstica integrada.', action: 'Ver Síntese Diagnóstica', body: `<h3>Sintetizando os Achados</h3><p>Integração de anamnese, testes e pareceres escolares em um laudo descritivo.</p>` },
-    { id: 26, color: 'bg-sky-500', targetPage: 'report', title: '26. Planejamento da Devolutiva', desc: 'Roteiro para entrega à família e escola.', action: 'Criar Devolutiva Família', body: `<h3>Sessão de Devolutiva</h3><p>Condução empática ressaltando pontos fortes e apresentando o plano de apoio.</p>` },
-    { id: 27, color: 'bg-emerald-500', targetPage: 'report', title: '27. Redação do Relatório Psicopedagógico', desc: 'Estrutura técnica e linguagem clara.', action: 'Gerar Relatório Descritivo', body: `<h3>Estrutura do Relatório</h3><p>Modelo completo de laudo/relatório psicopedagógico descritivo.</p>` },
-    { id: 28, color: 'bg-amber-500', targetPage: 'intervention', title: '28. Plano de Intervenção de 90 Dias', desc: 'Metas prioritárias e acompanhamento.', action: 'Montar Plano de Intervenção', body: `<h3>Plano Terapêutico</h3><p>Definição de objetivos de curto prazo e metas de desenvolvimento.</p>` },
-    { id: 29, color: 'bg-rose-500', targetPage: 'privacy', title: '29. Gestão Digital do Consultório', desc: 'Armazenamento seguro e backups.', action: 'Configurar Perfil e Senha', body: `<h3>Gestão Digital</h3><p>Prontuário eletrônico protegido localmente por senha pessoal.</p>` },
-    { id: 30, color: 'bg-purple-500', targetPage: 'records', title: '30. Checklist de Encerramento', desc: 'Validação final do processo avaliativo.', action: 'Abrir Registros e Documentos', body: `<h3>Encerramento do Caso</h3><p>Checklist completo de encerramento, devolução e arquivamento de prontuário.</p>` }
-];
-
-let currentTopic = 1;
-let completedTopics = new Set();
-
-window.addEventListener('DOMContentLoaded', () => {
-  const salvo = localStorage.getItem('praxis_token_ativo');
-  if (salvo) {
-    activeKey = salvo;
-    document.getElementById('auth-screen').style.display = 'none';
-    carregarPerfilUsuario();
-    carregarDadosUsuario();
-  }
-  renderTopicList();
-  loadTopic(1);
-});
-
-document.getElementById('authForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const codeDigitado = document.getElementById('accessCodeInput').value.trim().toLowerCase();
-  const passwordDigitada = document.getElementById('accessPasswordInput').value.trim();
-  const erroEl = document.getElementById('authError');
-
-  let profileSalvo = JSON.parse(localStorage.getItem('praxis_profile_' + codeDigitado));
-  let senhaEsperada = profileSalvo ? profileSalvo.password : SENHA_PADRAO_UNIVERSAL;
-
-  const codigosSalvosExtras = JSON.parse(localStorage.getItem('praxis_codigos_extras')) || [];
-
-  if ((codeDigitado === CODIGO_UNIVERSAL || codigosSalvosExtras.includes(codeDigitado)) && passwordDigitada === senhaEsperada) {
-    localStorage.setItem('praxis_token_ativo', codeDigitado);
-    activeKey = codeDigitado;
-    document.getElementById('auth-screen').style.display = 'none';
-    carregarPerfilUsuario();
-    carregarDadosUsuario();
-    showToast('Acesso realizado com sucesso!');
-  } else {
-    erroEl.style.display = 'block';
-  }
-});
-
-function abrirModalRecuperacao() {
-  document.getElementById('modalRecuperacao').style.display = 'flex';
-}
-
-function fecharModalRecuperacao() {
-  document.getElementById('modalRecuperacao').style.display = 'none';
-}
-
-function solicitarRecuperacao() {
-  const email = document.getElementById('recoveryEmailInput').value.trim();
-  if (!email || !email.includes('@')) {
-    alert('Por favor, informe um e-mail válido.');
-    return;
-  }
-  alert(`Se o e-mail "${email}" estiver cadastrado, um código de redefinição de senha foi enviado com sucesso!`);
-  fecharModalRecuperacao();
-}
-
-function carregarPerfilUsuario() {
-  let profileSalvo = JSON.parse(localStorage.getItem('praxis_profile_' + activeKey));
-  if (profileSalvo) {
-    userProfile = profileSalvo;
-  } else {
-    userProfile = { name: (activeKey === CODIGO_UNIVERSAL ? 'Profª Bárbara' : 'Profissional Práxis'), password: SENHA_PADRAO_UNIVERSAL, email: 'prof.barbaravitoria@gmail.com' };
-  }
-
-  document.getElementById('activeUserLabel').textContent = userProfile.name;
-  document.getElementById('activeCodeLabel').textContent = 'Código: ' + activeKey;
-  document.getElementById('avatarBox').textContent = userProfile.name.substring(0, 2).toUpperCase();
-
-  document.getElementById('editUserName').value = userProfile.name;
-  document.getElementById('editUserCode').value = activeKey;
-  document.getElementById('editUserPassword').value = userProfile.password;
-  document.getElementById('editUserEmail').value = userProfile.email || '';
-}
-
-function salvarAlteracoesPerfil() {
-  const novoNome = document.getElementById('editUserName').value.trim();
-  const novoCodigo = document.getElementById('editUserCode').value.trim().toLowerCase();
-  const novaSenha = document.getElementById('editUserPassword').value.trim();
-  const novoEmail = document.getElementById('editUserEmail').value.trim();
-
-  if (!novoNome || !novoCodigo || !novaSenha) {
-    alert('Preencha Nome, Código e Senha obrigatoriamente.');
-    return;
-  }
-
-  if (novoCodigo !== activeKey) {
-    let codigosSalvosExtras = JSON.parse(localStorage.getItem('praxis_codigos_extras')) || [];
-    if (codigosSalvosExtras.includes(novoCodigo) && novoCodigo !== CODIGO_UNIVERSAL) {
-      alert('Este código já está em uso por outra conta. Escolha outro.');
-      return;
-    }
-    codigosSalvosExtras.push(novoCodigo);
-    localStorage.setItem('praxis_codigos_extras', JSON.stringify(codigosSalvosExtras));
-
-    localStorage.setItem('praxis_people_' + novoCodigo, JSON.stringify(state.people));
-    localStorage.setItem('praxis_records_' + novoCodigo, JSON.stringify(state.records));
-    localStorage.setItem('praxis_evaluations_' + novoCodigo, JSON.stringify(state.evaluations));
-    localStorage.setItem('praxis_interventions_' + novoCodigo, JSON.stringify(state.interventions));
-
-    activeKey = novoCodigo;
-    localStorage.setItem('praxis_token_ativo', novoCodigo);
-  }
-
-  userProfile = { name: novoNome, password: novaSenha, email: novoEmail };
-  localStorage.setItem('praxis_profile_' + activeKey, JSON.stringify(userProfile));
-
-  carregarPerfilUsuario();
-  showToast('Dados do perfil e senha atualizados com sucesso!');
-}
-
-function logout() {
-  localStorage.removeItem('praxis_token_ativo');
-  location.reload();
-}
-
-function carregarDadosUsuario() {
-  state.people = JSON.parse(localStorage.getItem('praxis_people_' + activeKey)) || [];
-  state.records = JSON.parse(localStorage.getItem('praxis_records_' + activeKey)) || [];
-  state.evaluations = JSON.parse(localStorage.getItem('praxis_evaluations_' + activeKey)) || [];
-  state.interventions = JSON.parse(localStorage.getItem('praxis_interventions_' + activeKey)) || [];
-  updateStats();
-  atualizarSelectAprendentes();
-}
-
-function saveData() {
-  localStorage.setItem('praxis_people_' + activeKey, JSON.stringify(state.people));
-  localStorage.setItem('praxis_records_' + activeKey, JSON.stringify(state.records));
-  localStorage.setItem('praxis_evaluations_' + activeKey, JSON.stringify(state.evaluations));
-  localStorage.setItem('praxis_interventions_' + activeKey, JSON.stringify(state.interventions));
-  updateStats();
-  atualizarSelectAprendentes();
-}
-
-const pageTitles = {
-  home: 'Painel inicial',
-  'guide-2026': 'Guia Prático da Avaliação Psicopedagógica 2026',
-  author: 'Sobre a autora',
-  people: 'Aprendentes',
-  evaluation: 'Avaliação psicopedagógica',
-  intervention: 'Plano de intervenção',
-  adaptation: 'Adaptação pedagógica',
-  'lesson-plan': 'Metodologias Ativas & Aulas',
-  'student-manual': 'Manual do Aprendente',
-  report: 'Relatórios e documentos',
-  neuro: 'Neurodiversidade em Foco',
-  records: 'Registros e acompanhamento',
-  privacy: 'Configurações & Perfil'
-};
-
-function go(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  
-  const targetPage = document.getElementById('page-' + pageId);
-  if (targetPage) targetPage.classList.add('active');
-  
-  const targetBtn = document.querySelector(`.nav button[data-page="${pageId}"]`);
-  if (targetBtn) targetBtn.classList.add('active');
-  
-  const titleEl = document.getElementById('currentTitle');
-  if (titleEl && pageTitles[pageId]) titleEl.textContent = pageTitles[pageId];
-  
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  toggleMenu(false);
-}
-
-document.querySelectorAll('.nav button[data-page]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    go(btn.getAttribute('data-page'));
-  });
-});
-
-function toggleMenu(forceState) {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('overlay');
-  const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
-  if (isOpen) {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-  } else {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-  }
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.style.display = 'block';
-  setTimeout(() => { toast.style.display = 'none'; }, 3000);
-}
-
-function updateStats() {
-  document.getElementById('statPeople').textContent = state.people.length;
-  document.getElementById('statEval').textContent = state.evaluations.length;
-  document.getElementById('statPlans').textContent = state.interventions.length;
-  document.getElementById('statRecords').textContent = state.records.length;
-  const pCount = document.getElementById('peopleCount');
-  if(pCount) pCount.textContent = state.people.length;
-
-  renderPeopleTable();
-  renderRecordsTable();
-  renderRecentRecords();
-}
-
-function atualizarSelectAprendentes() {
-  const selectAdapt = document.getElementById('aPersonSelect');
-  const selectManual = document.getElementById('smPersonSelect');
-  const selectEval = document.getElementById('eName');
-  const selectInter = document.getElementById('iName');
-  const selectReport = document.getElementById('rName');
-  
-  const options = '<option value="">-- Escolher aprendente --</option>' + 
-    state.people.map(p => `<option value="${p.name}">${p.name}${p.goal ? ` (${p.goal})` : ''}</option>`).join('');
-
-  if (selectAdapt) selectAdapt.innerHTML = options;
-  if (selectManual) selectManual.innerHTML = options;
-  if (selectEval) selectEval.innerHTML = options;
-  if (selectInter) selectInter.innerHTML = options;
-  if (selectReport) selectReport.innerHTML = options;
-}
-
-function preencherDadosAprendente() {
-  const nome = document.getElementById('aPersonSelect').value;
-  if (!nome) return;
-  const pessoa = state.people.find(p => p.name === nome);
-  if (pessoa) {
-    if (pessoa.goal) document.getElementById('aObjective').value = pessoa.goal;
-    if (pessoa.notes) document.getElementById('aBarriers').value = pessoa.notes;
-  }
-}
-
-function preencherManualAprendente() {
-  const nome = document.getElementById('smPersonSelect').value;
-  if (!nome) return;
-  const pessoa = state.people.find(p => p.name === nome);
-  if (pessoa) {
-    if (pessoa.notes) document.getElementById('smPreferences').value = pessoa.notes;
-    if (pessoa.goal) document.getElementById('smChallenges').value = `Objetivo principal: ${pessoa.goal}`;
-  }
-}
-
-// LÓGICA DA APOSTILA DIGITAL
-function renderTopicList(filter = '') {
-    const listContainer = document.getElementById('topicList');
-    if (!listContainer) return;
-    listContainer.innerHTML = '';
-
-    topics.forEach(t => {
-        if (filter && !t.title.toLowerCase().includes(filter.toLowerCase()) && !t.desc.toLowerCase().includes(filter.toLowerCase())) {
-            return;
-        }
-
-        const isActive = t.id === currentTopic;
-        const isDone = completedTopics.has(t.id);
-
-        const item = document.createElement('div');
-        item.className = `p-2.5 rounded-xl cursor-pointer transition flex items-center justify-between border ${isActive ? 'bg-blue-50/90 border-blue-300 shadow-sm' : 'bg-white hover:bg-slate-50 border-slate-100'}`;
-        item.onclick = () => loadTopic(t.id);
-
-        item.innerHTML = `
-            <div class="flex items-center gap-2.5 overflow-hidden">
-                <span class="w-6 h-6 rounded-lg ${t.color} text-white font-bold text-[11px] flex items-center justify-center shrink-0">
-                    ${t.id < 10 ? '0' + t.id : t.id}
-                </span>
-                <div class="truncate">
-                    <h4 class="text-xs font-bold text-slate-800 truncate">${t.title}</h4>
-                    <p class="text-[10px] text-slate-500 truncate">${t.desc}</p>
-                </div>
-            </div>
-            ${isDone ? '<i class="fa-solid fa-circle-check text-green-500 text-xs ml-1.5 shrink-0"></i>' : ''}
-        `;
-        listContainer.appendChild(item);
-    });
-}
-
-function loadTopic(id) {
-    currentTopic = id;
-    const topic = topics.find(t => t.id === id);
-
-    document.getElementById('chapBadge').innerText = `Tópico ${topic.id < 10 ? '0' + topic.id : topic.id}`;
-    document.getElementById('chapBadge').className = `px-3 py-1 rounded-full text-xs font-bold ${topic.color.replace('bg-', 'bg-opacity-20 text-')}`;
-    document.getElementById('chapTitle').innerText = topic.title;
-    document.getElementById('chapSubtitle').innerText = topic.desc;
-    document.getElementById('actionBtn').innerText = topic.action;
-    document.getElementById('actionDesc').innerText = `Ação rápida: ${topic.desc}`;
+  <!-- MAIN APP CONTAINER -->
+  <div id="appContainer" class="hidden flex-1 flex flex-col">
     
-    document.getElementById('chapBody').innerHTML = `
-        <div>${topic.body}</div>
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600 space-y-2 mt-4">
-            <p class="font-bold text-slate-700"><i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i> Dica de Aplicação no Práxis:</p>
-            <p>Ao concluir a leitura, clique no botão <strong>"${topic.action}"</strong> acima para abrir diretamente a ferramenta de trabalho associada.</p>
+    <!-- Top Navigation Bar -->
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-30 no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+        
+        <!-- Brand -->
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-lg text-white shadow">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <span class="font-bold text-lg tracking-tight">Plataforma Práxis</span>
+            <span class="hidden sm:inline-block text-xs bg-indigo-800 text-indigo-200 px-2 py-0.5 rounded-full ml-2">2026</span>
+          </div>
         </div>
-    `;
 
-    updateCompleteButton();
-    renderTopicList(document.getElementById('searchInput').value);
-}
-
-function navigateTopic(direction) {
-  let newId = currentTopic + direction;
-  if (newId >= 1 && newId <= topics.length) {
-    loadTopic(newId);
-  }
-}
-
-function toggleCompleted() {
-    if (completedTopics.has(currentTopic)) {
-        completedTopics.delete(currentTopic);
-    } else {
-        completedTopics.add(currentTopic);
-    }
-    updateCompleteButton();
-    updateProgress();
-    renderTopicList(document.getElementById('searchInput').value);
-}
-
-function updateCompleteButton() {
-    const btn = document.getElementById('btnComplete');
-    if (!btn) return;
-    if (completedTopics.has(currentTopic)) {
-        btn.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-700 font-semibold">Concluído</span>`;
-        btn.className = "text-xs px-3 py-1.5 rounded-lg border border-green-200 bg-green-50 flex items-center gap-1.5 transition";
-    } else {
-        btn.innerHTML = `<i class="fa-regular fa-circle-check"></i> <span>Marcar como Lido</span>`;
-        btn.className = "text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1.5 transition";
-    }
-}
-
-function updateProgress() {
-    const pct = Math.round((completedTopics.size / topics.length) * 100);
-    document.getElementById('progressBar').style.width = `${pct}%`;
-    document.getElementById('progressText').innerText = `${pct}%`;
-}
-
-function filterTopics() {
-    const query = document.getElementById('searchInput').value;
-    renderTopicList(query);
-}
-
-function executeSystemAction() {
-    const topic = topics.find(t => t.id === currentTopic);
-    if (topic && topic.targetPage) {
-        go(topic.targetPage);
-        showToast(`Redirecionado para: ${pageTitles[topic.targetPage]}`);
-    } else {
-        alert(`[Ação do Sistema Práxis]\nExecutando: "${topic.action}"`);
-    }
-}
-
-document.getElementById('peopleForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const newPerson = {
-    id: Date.now(),
-    name: document.getElementById('pName').value,
-    age: document.getElementById('pAge').value,
-    context: document.getElementById('pContext').value,
-    goal: document.getElementById('pGoal').value,
-    notes: document.getElementById('pNotes').value
-  };
-  state.people.push(newPerson);
-  saveData();
-  document.getElementById('peopleForm').reset();
-  showToast('Aprendente cadastrado com sucesso!');
-});
-
-function renderPeopleTable(filter = '') {
-  const tbody = document.getElementById('peopleTable');
-  if(!tbody) return;
-  tbody.innerHTML = '';
-  const filtered = state.people.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.goal.toLowerCase().includes(filter.toLowerCase()));
-  
-  if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="empty">Nenhum aprendente cadastrado neste perfil.</td></tr>`;
-    return;
-  }
-
-  filtered.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${p.name}</strong><br><small class="muted">${p.notes || ''}</small></td>
-      <td>${p.age || '-'}</td>
-      <td>${p.context || '-'}</td>
-      <td>${p.goal || '-'}</td>
-      <td><button class="btn small danger" onclick="deletePerson(${p.id})">Excluir</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function deletePerson(id) {
-  state.people = state.people.filter(p => p.id !== id);
-  saveData();
-  showToast('Aprendente removido.');
-}
-
-const pSearch = document.getElementById('peopleSearch');
-if(pSearch) {
-  pSearch.addEventListener('input', (e) => { renderPeopleTable(e.target.value); });
-}
-
-let selectedChips = [];
-document.querySelectorAll('#adaptChips .chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    chip.classList.toggle('selected');
-    const val = chip.getAttribute('data-value');
-    if (selectedChips.includes(val)) {
-      selectedChips = selectedChips.filter(c => c !== val);
-    } else {
-      selectedChips.push(val);
-    }
-  });
-});
-
-function gerarPlanoMetodologiasAtivasIA() {
-  const tema = document.getElementById('lpSubject').value.trim();
-  const nivel = document.getElementById('lpLevel').value;
-  const metodo = document.getElementById('lpMethodology').value;
-  const duracao = document.getElementById('lpDuration').value || '2 horas/aulas';
-  const objetivos = document.getElementById('lpGoal').value || 'Desenvolver autonomia e fixação prática dos conceitos';
-  const contexto = document.getElementById('lpContext').value || 'Turma com diversidade de ritmos de aprendizagem';
-
-  if (!tema) {
-    alert('Por favor, informe a "Disciplina ou Tema" principal.');
-    document.getElementById('lpSubject').focus();
-    return;
-  }
-
-  const conteudoGerado = `PLANO DE AULA & PROGRAMA DE APRENDIZADO COM METODOLOGIAS ATIVAS
-----------------------------------------------------------------------
-Tema/Disciplina: ${tema}
-Etapa: ${nivel} | Metodologia: ${metodo} | Duração: ${duracao}
-Objetivos: ${objetivos}
-Contexto do Grupo: ${contexto}
-
-1. ACOLHIDA & SENSIBILIZAÇÃO (15 min):
-• Pergunta-Problema provocadora sobre o tema "${tema}".
-• Levantamento de conhecimentos prévios e conexão com a realidade dos alunos.
-
-2. ATIVIDADE PRÁTICA COM METODOLOGIA ATIVA (${metodo}):
-• Roteiro da Dinâmica: Organização dos alunos em grupos para investigar, resolver ou construir uma solução prática.
-• Papel do Professor: Mediador e facilitador, circulando entre as equipes e tirando dúvidas pontuais.
-
-3. EXERCÍCIOS DE FIXAÇÃO & CONSOLIDAÇÃO:
-• Questão 1 (Conceitual): Identificar os pilares centrais de ${tema}.
-• Questão 2 (Aplicação Prática): Resolver uma situação-problema real baseada no assunto.
-• Questão 3 (Desafio de Síntese): Escrever um resumo em 3 frases ou criar um mapa mental.
-
-4. GABARITO E CRITÉRIOS DE AVALIAÇÃO PROCESSUAL:
-• Respostas esperadas e indicadores de engajamento, trabalho em equipe e resolução de problemas.`;
-
-  document.getElementById('lessonPlanOutput').innerHTML = `
-    <div class="output-head"><strong>Plano de Aula & Atividades Gerado com Sucesso</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${conteudoGerado}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type: 'Plano de Aula (Metodologia Ativa)', name: tema, date: new Date().toISOString().split('T')[0], content: conteudoGerado });
-  saveData();
-  showToast('Plano de aula gerado e salvo!');
-}
-
-document.getElementById('lessonPlanForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  gerarPlanoMetodologiasAtivasIA();
-});
-
-function gerarManualAprendenteIA() {
-  const nome = document.getElementById('smPersonSelect').value;
-  const foco = document.getElementById('smFocus').value;
-  const preferencias = document.getElementById('smPreferences').value || 'Paciência, apoio visual e exemplos práticos';
-  const desafios = document.getElementById('smChallenges').value || 'Manter o foco em tarefas longas e rotina de estudos';
-
-  if (!nome) {
-    alert('Por favor, selecione um aprendente cadastrado.');
-    return;
-  }
-
-  const conteudoManual = `MANUAL PSICOPEDAGÓGICO INDIVIDUALIZADO DO APRENDENTE
-----------------------------------------------------------------------
-Aprendente: ${nome}
-Foco Estratégico: ${foco}
-Data de Elaboração: ${new Date().toLocaleDateString('pt-BR')}
-
-1. APRESENTAÇÃO DO MEU ESTILO DE APRENDER:
-• Como aprendo melhor: ${preferencias}
-• Meus pontos fortes: Criatividade, curiosidade e determinação ao receber suporte adequado.
-
-2. MINHA ROTINA & GUIA DE ORGANIZAÇÃO:
-• Técnica do Bloco de Tempo: Dividir sessões de estudo em blocos curtos (ex.: 20 a 25 minutos) com pausas de 5 minutos.
-• Quadro de Tarefas Visuais: Utilizar check-lists coloridos para marcar conquistas do dia.
-
-3. FERRAMENTAS & ESTRATÉGIAS DE AUTORREGULAÇÃO:
-• O que fazer quando sentir cansaço ou ansiedade: Realizar pausas ativas (mudar de ambiente, beber água e respiração guiada).
-• Apoio de memória: Uso de mapas mentais, flashcards e resumos esquemáticos.
-
-4. ORIENTAÇÕES PARA A FAMÍLIA E ESCOLA:
-• Manter ambiente silencioso e livre de distrações durante a realização das atividades.
-• Valorizar o esforço e a constância, oferecendo feedbacks positivos a cada pequena etapa concluída.`;
-
-  document.getElementById('studentManualOutput').innerHTML = `
-    <div class="output-head"><strong>Manual Psicopedagógico Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${conteudoManual}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type: 'Manual do Aprendente', name: nome, date: new Date().toISOString().split('T')[0], content: conteudoManual });
-  saveData();
-  showToast('Manual do aprendente gerado e salvo com sucesso!');
-}
-
-document.getElementById('studentManualForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  gerarManualAprendenteIA();
-});
-
-function gerarAdaptacaoAutomaticaIA() {
-  const atividade = document.getElementById('aActivity').value.trim();
-  const subject = document.getElementById('aSubject').value || 'Geral';
-  const objetivo = document.getElementById('aObjective').value || 'Desenvolver a habilidade proposta com autonomia';
-  const barreiras = document.getElementById('aBarriers').value || 'Complexidade excessiva de texto ou estímulos';
-  const aprendenteNome = document.getElementById('aPersonSelect').value;
-
-  if (!aprendenteNome) {
-    alert('Por favor, selecione um aprendente cadastrado.');
-    document.getElementById('aPersonSelect').focus();
-    return;
-  }
-
-  if (!atividade) {
-    alert('Por favor, preencha a "Atividade original" primeiro.');
-    document.getElementById('aActivity').focus();
-    return;
-  }
-
-  const focosStr = selectedChips.length > 0 ? selectedChips.join(', ') : 'Acessibilidade geral';
-
-  const adaptacaoGerada = `PLANO DE ADAPTAÇÃO PEDAGÓGICA (GERADO POR IA)
-----------------------------------------
-Aprendente: ${aprendenteNome}
-Área / Disciplina: ${subject}
-Focos de Acessibilidade: ${focosStr}
-
-1. ANÁLISE DE BARREIRAS E OBJETIVO:
-• Objetivo adaptado: ${objetivo}
-• Barreiras identificadas: ${barreiras}
-
-2. DIRETRIZES DE ACESSIBILIDADE E SUPORTES:
-• Fracionamento da Atividade: Tarefa dividida em etapas menores de execução.
-• Apoio Visual e Estruturado: Utilização de marcadores claros e negritos.
-• Simplificação de Comandos: Substituição de frases longas por comandos diretos.
-
-3. PROPOSTA DE ATIVIDADE REESCRITA E ADAPTADA:
-"${atividade.substring(0, 150)}..."
-↳ [Instrução adaptada]: Realizar com suporte visual e opções objetivas.
-
-4. CRITÉRIOS DE AVALIAÇÃO DIFERENCIADA:
-• Avaliação processual baseada na participação e compreensão dos conceitos centrais.`;
-
-  document.getElementById('adaptationOutput').innerHTML = `
-    <div class="output-head"><strong>Proposta Adaptada Gerada por IA</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${adaptacaoGerada}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica (IA)', name: aprendenteNome, date: new Date().toISOString().split('T')[0], content: adaptacaoGerada });
-  saveData();
-  showToast('Adaptação gerada com sucesso!');
-}
-
-document.getElementById('adaptationForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const aprendenteNome = document.getElementById('aPersonSelect').value;
-  if (!aprendenteNome) {
-    alert('Selecione um aprendente.');
-    return;
-  }
-  const subject = document.getElementById('aSubject').value || 'Geral';
-  const activity = document.getElementById('aActivity').value;
-  const date = new Date().toISOString().split('T')[0];
-
-  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
-
-  document.getElementById('adaptationOutput').innerHTML = `
-    <div class="output-head"><strong>Proposta Adaptada Salva</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${content}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: aprendenteNome, date, content });
-  saveData();
-  showToast('Adaptação pedagógica gerada e salva!');
-});
-
-document.getElementById('evaluationForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('eName').value;
-  if (!name) {
-    alert('Selecione um aprendente.');
-    return;
-  }
-  const date = document.getElementById('eDate').value || new Date().toISOString().split('T')[0];
-  const demand = document.getElementById('eDemand').value;
-  
-  const content = `AVALIAÇÃO PSICOPEDAGÓGICA\n----------------------------------------\nAprendente: ${name}\nData: ${date}\nFonte: ${document.getElementById('eSource').value}\nDemanda Principal: ${demand}\n\nHistórico Relevante:\n${document.getElementById('eHistory').value || 'Não informado'}\n\nPotencialidades e Interesses:\n${document.getElementById('eStrengths').value || 'Não informado'}\n\nDificuldades Observadas:\n${document.getElementById('eDifficulties').value || 'Não informado'}\n\nPróximos Passos:\n${document.getElementById('eNext').value || 'Não informado'}`;
-
-  document.getElementById('evaluationOutput').innerHTML = `
-    <div class="output-head"><strong>Resultado Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${content}</div>
-  `;
-
-  state.evaluations.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
-  state.records.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
-  saveData();
-  showToast('Avaliação gerada com sucesso!');
-});
-
-document.getElementById('interventionForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('iName').value;
-  if (!name) {
-    alert('Selecione um aprendente.');
-    return;
-  }
-  const date = document.getElementById('iPeriod').value || '4 semanas';
-  const goal = document.getElementById('iGoal').value;
-
-  const content = `PLANO DE INTERVENÇÃO\n----------------------------------------\nAprendente: ${name}\nPeríodo: ${date}\nObjetivo Prioritário: ${goal}\nEstratégias: ${document.getElementById('iStrategy').value || 'Não informado'}\nFrequência: ${document.getElementById('iFrequency').value || 'Não informado'}\nIndicadores de Progresso: ${document.getElementById('iIndicators').value || 'Não informado'}`;
-
-  document.getElementById('interventionOutput').innerHTML = `
-    <div class="output-head"><strong>Plano Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${content}</div>
-  `;
-
-  state.interventions.push({ id: Date.now(), type: 'Plano de Intervenção', name, date: new Date().toISOString().split('T')[0], content });
-  state.records.push({ id: Date.now(), type: 'Plano de Intervenção', name, date: new Date().toISOString().split('T')[0], content });
-  saveData();
-  showToast('Plano de intervenção criado com sucesso!');
-});
-
-document.getElementById('reportForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('rName').value;
-  if (!name) {
-    alert('Selecione um aprendente.');
-    return;
-  }
-  const type = document.getElementById('rType').value;
-  const date = document.getElementById('rDate').value || new Date().toISOString().split('T')[0];
-
-  const content = `${type.toUpperCase()}\n----------------------------------------\nAprendente: ${name}\nData: ${date}\nDestinatário: ${document.getElementById('rAudience').value || 'Não informado'}\nFinalidade: ${document.getElementById('rPurpose').value || 'Não informado'}\n\nConteúdo:\n${document.getElementById('rBody').value}\n\nRecomendações:\n${document.getElementById('rRecommendations').value || 'Nenhuma'}`;
-
-  document.getElementById('reportOutput').innerHTML = `
-    <div class="output-head"><strong>Documento Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${content}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type, name, date, content });
-  saveData();
-  showToast('Relatório gerado e salvo!');
-});
-
-function renderRecordsTable() {
-  const tbody = document.getElementById('allRecordsTable');
-  if (!tbody) return;
-  tbody.innerHTML = '';
-
-  if (state.records.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" class="empty">Nenhum registro encontrado neste perfil.</td></tr>`;
-    return;
-  }
-
-  state.records.slice().reverse().forEach(r => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><strong>${r.type}</strong></td>
-      <td>${r.name}</td>
-      <td>${r.date || '-'}</td>
-      <td>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button class="btn small primary" onclick="visualizarRegistro(${r.id})">👁️ Ver</button>
-          <button class="btn small" onclick="imprimirRegistro(${r.id})">🖨️ Baixar PDF</button>
-          <button class="btn small danger" onclick="deleteRecord(${r.id})">Excluir</button>
+        <!-- Student Context Banner Selector -->
+        <div class="hidden md:flex items-center gap-2 bg-indigo-950/60 px-3 py-1.5 rounded-xl border border-indigo-700/50">
+          <i class="fa-solid fa-user-graduate text-amber-400 text-sm"></i>
+          <span class="text-xs font-medium text-indigo-200">Aprendente Ativo:</span>
+          <select id="globalStudentSelect" onchange="syncStudentSelection(this.value)" class="bg-indigo-900 text-white text-xs font-semibold rounded-lg px-2 py-1 outline-none border border-indigo-600 focus:ring-2 focus:ring-amber-400">
+            <option value="">-- Selecione um Aprendente --</option>
+          </select>
         </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
 
-function visualizarRegistro(id) {
-  const reg = state.records.find(r => r.id === id);
-  if (!reg) return;
+        <!-- User Controls / Admin Panel Button -->
+        <div class="flex items-center space-x-3">
+          <div class="text-right hidden sm:block">
+            <div id="navUserName" class="text-xs font-bold text-indigo-100">---</div>
+            <div id="navUserRole" class="text-[10px] text-indigo-300">---</div>
+          </div>
 
-  const viewer = document.getElementById('recordViewerBox');
-  const title = document.getElementById('viewerTitle');
-  const content = document.getElementById('viewerContent');
+          <button id="adminPanelNavBtn" onclick="switchTab('adminPanel')" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-indigo-950 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-user-shield"></i>
+            <span class="hidden lg:inline">Painel Profª Bárbara</span>
+          </button>
 
-  title.textContent = `${reg.type} — ${reg.name} (${reg.date || ''})`;
-  content.textContent = reg.content || 'Conteúdo detalhado não disponível para este registro antigo.';
-  viewer.style.display = 'block';
-  viewer.scrollIntoView({ behavior: 'smooth' });
-}
+          <button onclick="openProfileModal()" title="Editar Meu Perfil" class="p-2 hover:bg-indigo-800 rounded-xl text-indigo-200 hover:text-white transition">
+            <i class="fa-solid fa-circle-user text-lg"></i>
+          </button>
 
-function fecharVisualizador() {
-  document.getElementById('recordViewerBox').style.display = 'none';
-}
+          <button onclick="logout()" title="Sair da Conta" class="p-2 hover:bg-red-600/80 bg-red-950/40 text-red-300 hover:text-white rounded-xl transition text-xs font-medium flex items-center gap-1">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span class="hidden sm:inline">Sair</span>
+          </button>
+        </div>
+      </div>
+    </header>
 
-function imprimirRegistro(id) {
-  const reg = state.records.find(r => r.id === id);
-  if (!reg) return;
+    <!-- Navigation Tabs Bar -->
+    <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-16 z-20 overflow-x-auto no-print">
+      <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 py-2 text-xs font-semibold whitespace-nowrap">
+        
+        <button onclick="switchTab('guia')" id="tab-guia" class="tab-btn active-tab px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-book-open text-indigo-600"></i> Guia Prático (30 Tópicos)
+        </button>
 
-  const viewer = document.getElementById('recordViewerBox');
-  const title = document.getElementById('viewerTitle');
-  const content = document.getElementById('viewerContent');
+        <button onclick="switchTab('aprendentes')" id="tab-aprendentes" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-users text-purple-600"></i> Aprendentes Cadastrados
+        </button>
 
-  title.textContent = `${reg.type} — ${reg.name} (${reg.date || ''})`;
-  content.textContent = reg.content || 'Conteúdo detalhado não disponível para este registro.';
-  viewer.style.display = 'block';
-  viewer.scrollIntoView({ behavior: 'smooth' });
+        <button onclick="switchTab('avaliacao')" id="tab-avaliacao" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-clipboard-check text-blue-600"></i> Avaliação Psicopedagógica
+        </button>
 
-  setTimeout(() => {
-    window.print();
-  }, 300);
-}
+        <button onclick="switchTab('plano')" id="tab-plano" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-bullseye text-emerald-600"></i> Plano de Intervenção
+        </button>
 
-function renderRecentRecords() {
-  const container = document.getElementById('recentRecords');
-  if (!container) return;
+        <button onclick="switchTab('adaptacao')" id="tab-adaptacao" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-robot text-teal-600"></i> Adaptação Pedagógica IA
+        </button>
 
-  if (state.records.length === 0) {
-    container.className = 'empty';
-    container.textContent = 'Seus registros aparecerão aqui quando salvar o primeiro documento.';
-    return;
-  }
+        <button onclick="switchTab('metodologias')" id="tab-metodologias" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-lightbulb text-amber-600"></i> Metodologias Ativas
+        </button>
 
-  container.className = '';
-  let html = '<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Identificação (Aprendente)</th><th>Data</th></tr></thead><tbody>';
-  state.records.slice(-3).reverse().forEach(r => {
-    html += `<tr><td><strong>${r.type}</strong></td><td>${r.name}</td><td>${r.date || '-'}</td></tr>`;
-  });
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
-}
+        <button onclick="switchTab('neurodiversidade')" id="tab-neurodiversidade" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-head-side-virus text-rose-600"></i> Neurodiversidade em Foco
+        </button>
 
-function deleteRecord(id) {
-  state.records = state.records.filter(r => r.id !== id);
-  saveData();
-  fecharVisualizador();
-  showToast('Registro excluído com sucesso.');
-}
+        <button onclick="switchTab('relatorios')" id="tab-relatorios" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-file-contract text-cyan-600"></i> Relatórios & Documentos
+        </button>
 
-function clearAllData() {
-  if (confirm('Deseja realmente apagar todos os dados salvos deste perfil?')) {
-    localStorage.removeItem('praxis_people_' + activeKey);
-    localStorage.removeItem('praxis_records_' + activeKey);
-    localStorage.removeItem('praxis_evaluations_' + activeKey);
-    localStorage.removeItem('praxis_interventions_' + activeKey);
-    state = { people: [], records: [], evaluations: [], interventions: [] };
-    updateStats();
-    fecharVisualizador();
-    showToast('Dados do perfil limpos com sucesso.');
-  }
-}
-</script>
+        <button onclick="switchTab('autora')" id="tab-autora" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-user-graduate text-slate-600"></i> Sobre a Autora
+        </button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+
+      <!-- MASTER ADMIN PANEL (EXCLUSIVE TO prof.barbaravitoria) -->
+      <section id="sec-adminPanel" class="tab-content hidden space-y-6">
+        <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-6 rounded-2xl text-white shadow-xl flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold flex items-center gap-2">
+              <i class="fa-solid fa-user-shield"></i> Painel de Gestão Suprema - Profª Bárbara Vitória
+            </h2>
+            <p class="text-xs text-amber-100 mt-1">Gerenciamento completo de todos os usuários cadastrados na plataforma e status de acesso.</p>
+          </div>
+          <span class="bg-white/20 px-3 py-1.5 rounded-xl font-mono text-xs backdrop-blur-md">Chave Mestre: psi-praxis-2026</span>
+        </div>
+
+        <!-- User Accounts Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+            <h3 class="font-bold text-slate-700 text-sm">Usuários Cadastrados (<span id="userCount">0</span>)</h3>
+            <div class="text-xs text-slate-500">
+              <i class="fa-solid fa-lock text-emerald-600"></i> A Chave Mestre não pode ser alterada nem excluída.
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs text-slate-600">
+              <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
+                <tr>
+                  <th class="p-3">Nome</th>
+                  <th class="p-3">Código de Acesso</th>
+                  <th class="p-3">E-mail</th>
+                  <th class="p-3">Perfil / Cargo</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3 text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="adminUserTableBody" class="divide-y divide-slate-100">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1. GUIA PRÁTICO 2026 (30 TOPICS) -->
+      <section id="sec-guia" class="tab-content space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-book-open text-indigo-600"></i> Guia Prático Psicopedagógico 2026
+              </h2>
+              <p class="text-xs text-slate-500 mt-1">30 diretrizes fundamentais com marcadores de leitura e orientações técnicas.</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-xs font-semibold text-slate-600">
+                Progresso: <span id="readingProgressText" class="text-indigo-600 font-bold">0/30</span>
+              </div>
+              <div class="w-32 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                <div id="readingProgressBar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Topics Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="guideTopicsGrid">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. APRENDENTES CADASTRADOS -->
+      <section id="sec-aprendentes" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-users text-purple-600"></i> Aprendentes Cadastrados
+              </h2>
+              <p class="text-xs text-slate-500">Gestão dos perfis de alunos para vincular às intervenções e relatórios.</p>
+            </div>
+            <button onclick="openStudentModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl shadow-md transition flex items-center gap-2">
+              <i class="fa-solid fa-user-plus"></i> Novo Aprendente
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="studentsListGrid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. AVALIAÇÃO PSICOPEDAGÓGICA (REQUIRES STUDENT) -->
+      <section id="sec-avaliacao" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-blue-600"></i> Avaliação Psicopedagógica
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">Preencha o diagnóstico técnico e de desenvolvimento do aprendente selecionado.</p>
+
+          <!-- REQUIRED STUDENT SELECTOR -->
+          <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+            <label class="text-xs font-bold text-blue-900 uppercase whitespace-nowrap">
+              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+            </label>
+            <select id="evalStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-blue-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+
+          <form onsubmit="saveEvaluation(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Anamnese / Queixa Principal</label>
+                <textarea id="evalAnamnese" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Descrição do histórico do aluno e demanda..."></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Funções Cognitivas / Atencionais</label>
+                <textarea id="evalCognitive" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Memória, foco, linguagem, raciocínio lógico..."></textarea>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Aspectos Psicomotores & Socioemocionais</label>
+                <textarea id="evalEmotional" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Comportamento, vínculo escolar, coordenação..."></textarea>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Hipótese Diagnóstica / Síntese</label>
+                <textarea id="evalHypothesis" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Conclusão preliminar ou diagnósticos já laudados..."></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-2">
+              <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Avaliação
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 4. PLANO DE INTERVENÇÃO (REQUIRES STUDENT) -->
+      <section id="sec-plano" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-bullseye text-emerald-600"></i> Plano de Intervenção Estruturado (PEI)
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">Trace metas SMART e ações psicopedagógicas individualizadas.</p>
+
+          <!-- REQUIRED STUDENT SELECTOR -->
+          <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+            <label class="text-xs font-bold text-emerald-900 uppercase whitespace-nowrap">
+              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+            </label>
+            <select id="planStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-emerald-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+
+          <form onsubmit="savePlan(event)" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Objetivo Geral</label>
+                <input type="text" id="planGoal" required class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Desenvolver fluência leitora">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Frequência das Sessões</label>
+                <input type="text" id="planFreq" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 2x por semana (45 min)">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Duração Prevista</label>
+                <input type="text" id="planDuration" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 3 Meses / 1º Semestre">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Metodologias e Recursos Didáticos</label>
+              <textarea id="planMethods" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Jogos pedagógicos, estímulos multissensoriais, mapas mentais..."></textarea>
+            </div>
+
+            <div class="flex justify-end pt-2">
+              <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Plano de Intervenção
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- 5. ADAPTAÇÃO PEDAGÓGICA IA (REQUIRES STUDENT) -->
+      <section id="sec-adaptacao" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-robot text-teal-600"></i> Adaptação Pedagógica com Inteligência Artificial
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">Gere estratégias adaptativas instantâneas com base nas particularidades do aluno.</p>
+
+          <!-- REQUIRED STUDENT SELECTOR -->
+          <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+            <label class="text-xs font-bold text-teal-900 uppercase whitespace-nowrap">
+              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+            </label>
+            <select id="aiStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-teal-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-teal-500 outline-none">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Conteúdo/Atividade Escolar sem Adaptação</label>
+              <textarea id="aiInputContent" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500" placeholder="Cole aqui o texto da prova, exercício ou tema da aula (Ex: Leitura do texto X e interpretação com 5 questões escritas)"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-600 mb-1">Foco de Adaptação Específico</label>
+              <select id="aiFocusArea" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500">
+                <option value="tdah">TDAH (Simplificação de enunciados, tópicos curtos, temporização)</option>
+                <option value="tea">TEA (Suporte visual, rotina previsível, linguagem literal)</option>
+                <option value="dislexia">Dislexia (Fonte legível, apoio em áudio/imagens, menos texto)</option>
+                <option value="ahsd">AH/SD (Enriquecimento curricular, desafios de maior profundidade)</option>
+              </select>
+            </div>
+
+            <button onclick="generateAiAdaptation()" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Sugestão de Adaptação IA
+            </button>
+
+            <!-- AI Output Box -->
+            <div id="aiResultBox" class="hidden mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-5">
+              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-lightbulb text-amber-500"></i> Proposta de Adaptação Gerada:
+              </h3>
+              <div id="aiOutputText" class="text-xs text-slate-700 space-y-2 leading-relaxed font-sans">
+                <!-- AI Generated Text -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. METODOLOGIAS ATIVAS (REQUIRES STUDENT) -->
+      <section id="sec-metodologias" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-amber-600"></i> Metodologias Ativas Aplicadas
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">Planeje intervenções baseadas em metodologias ativas para o aprendente.</p>
+
+          <!-- REQUIRED STUDENT SELECTOR -->
+          <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+            <label class="text-xs font-bold text-amber-900 uppercase whitespace-nowrap">
+              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+            </label>
+            <select id="methodStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-amber-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-amber-500 outline-none">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
+              <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
+                <i class="fa-solid fa-gamepad text-amber-600"></i> Gamificação Psicopedagógica
+              </h3>
+              <p class="text-xs text-slate-600 mb-3">Uso de mecânicas de jogos para engajamento atencional e regulação emotiva.</p>
+              <textarea id="methodGamification" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Estratégias de jogos para este aprendente..."></textarea>
+            </div>
+
+            <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
+              <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
+                <i class="fa-solid fa-puzzle-piece text-amber-600"></i> Aprendizagem Baseada em Problemas (PBL)
+              </h3>
+              <p class="text-xs text-slate-600 mb-3">Resolução de situações do cotidiano para promover autonomia raciocinada.</p>
+              <textarea id="methodPbl" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Desafios práticos direcionados..."></textarea>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-4">
+            <button onclick="saveMethodologies()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i> Salvar Estratégia de Metodologia Ativa
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. NEURODIVERSIDADE EM FOCO (COMPLETE) -->
+      <section id="sec-neurodiversidade" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-head-side-virus text-rose-600"></i> Neurodiversidade em Foco
+          </h2>
+          <p class="text-xs text-slate-500 mb-6">Guia completo de caracterização e condutas psicopedagógicas.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- TDAH -->
+            <div class="p-5 border border-rose-200 bg-rose-50/30 rounded-2xl">
+              <div class="flex items-center gap-2 font-bold text-rose-900 text-base mb-2">
+                <span class="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold">TDAH</span>
+                Transtorno do Deficit de Atenção e Hiperatividade
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>Sinais:</strong> Desatenção a detalhes, impulsividade verbal/motora, esquecimentos frequentes.</li>
+                <li><strong>Manejo:</strong> Instruções fracionadas em etapas curtas, temporizadores visuais, assento próximo ao professor.</li>
+                <li><strong>Avaliação:</strong> Provas menores ou divididas em blocos para reduzir fadiga cognitiva.</li>
+              </ul>
+            </div>
+
+            <!-- TEA -->
+            <div class="p-5 border border-blue-200 bg-blue-50/30 rounded-2xl">
+              <div class="flex items-center gap-2 font-bold text-blue-900 text-base mb-2">
+                <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold">TEA</span>
+                Transtorno do Espectro Autista
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>Sinais:</strong> Rigidez na rotina, hiperfoco, sensibilidade sensorial, comunicação atípica.</li>
+                <li><strong>Manejo:</strong> Antecipação de mudanças na rotina via quadros visuais, espaço de autorregulação.</li>
+                <li><strong>Avaliação:</strong> Interpretação literal dos enunciados, sem metáforas de ambiguidade.</li>
+              </ul>
+            </div>
+
+            <!-- DISLEXIA -->
+            <div class="p-5 border border-purple-200 bg-purple-50/30 rounded-2xl">
+              <div class="flex items-center gap-2 font-bold text-purple-900 text-base mb-2">
+                <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-bold">DIS</span>
+                Dislexia
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>Sinais:</strong> Dificuldade na decodificação fonológica, lentidão na leitura, troca de letras espelhadas.</li>
+                <li><strong>Manejo:</strong> Uso de fontes adaptadas (OpenDyslexic), leitor de tela, mapas conceituais.</li>
+                <li><strong>Avaliação:</strong> Avaliação oral complementar, tempo estendido para resolução.</li>
+              </ul>
+            </div>
+
+            <!-- AH/SD -->
+            <div class="p-5 border border-amber-200 bg-amber-50/30 rounded-2xl">
+              <div class="flex items-center gap-2 font-bold text-amber-900 text-base mb-2">
+                <span class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-bold">AH</span>
+                Altas Habilidades / Superdotação
+              </div>
+              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                <li><strong>Sinais:</strong> Aprendizagem rápida, vocabulário avançado, questionamento crítico, desmotivação com repetições.</li>
+                <li><strong>Manejo:</strong> Enriquecimento curricular Tipo I e II, projetos de pesquisa autodirigidos.</li>
+                <li><strong>Avaliação:</strong> Propostas de aprofundamento e complexidade analítica.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. RELATÓRIOS & DOCUMENTOS (REQUIRES STUDENT - PRINT/PDF) -->
+      <section id="sec-relatorios" class="tab-content hidden space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-file-contract text-cyan-600"></i> Relatórios & Documentos Psicopedagógicos
+              </h2>
+              <p class="text-xs text-slate-500">Visualização consolidada, impressão direta ou exportação em PDF.</p>
+            </div>
+
+            <div class="flex items-center gap-2 no-print">
+              <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-print"></i> Imprimir
+              </button>
+              <button onclick="exportPdfDocument()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- REQUIRED STUDENT SELECTOR -->
+          <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3 no-print">
+            <label class="text-xs font-bold text-cyan-900 uppercase whitespace-nowrap">
+              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+            </label>
+            <select id="reportStudentSelect" onchange="renderReportView(this.value)" class="w-full sm:w-auto flex-1 px-3 py-2 border border-cyan-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-cyan-500 outline-none">
+              <!-- Rendered via JS -->
+            </select>
+          </div>
+
+          <!-- Printable Report Container -->
+          <div id="printableReportContent" class="p-8 border border-slate-200 rounded-2xl bg-white space-y-6">
+            <div class="text-center border-b pb-4">
+              <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Relatório Psicopedagógico Síntese</h1>
+              <p class="text-xs text-slate-500">Plataforma Práxis &bull; Documento Gerado em <span id="reportDate">--/--/----</span></p>
+            </div>
+
+            <div id="reportStudentDetails" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div><span class="text-slate-500 block">Nome:</span> <strong id="repName" class="text-slate-800">--</strong></div>
+              <div><span class="text-slate-500 block">Idade / Série:</span> <strong id="repGrade" class="text-slate-800">--</strong></div>
+              <div><span class="text-slate-500 block">Responsável:</span> <strong id="repParent" class="text-slate-800">--</strong></div>
+              <div><span class="text-slate-500 block">Especialista:</span> <strong id="repSpecialist" class="text-slate-800">--</strong></div>
+            </div>
+
+            <div class="space-y-4 text-xs text-slate-700">
+              <div>
+                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">1. Avaliação e Diagnóstico</h3>
+                <p id="repEvalText" class="whitespace-pre-line text-slate-600">Nenhuma avaliação salva para este aprendente.</p>
+              </div>
+
+              <div>
+                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">2. Plano de Intervenção (PEI)</h3>
+                <p id="repPlanText" class="whitespace-pre-line text-slate-600">Nenhum plano cadastrado para este aprendente.</p>
+              </div>
+
+              <div>
+                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">3. Adaptações e Metodologias Ativas</h3>
+                <p id="repMethodsText" class="whitespace-pre-line text-slate-600">Nenhuma estratégia registrada para este aprendente.</p>
+              </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-slate-300 text-center flex justify-around">
+              <div>
+                <div class="w-48 border-b border-slate-400 mx-auto mb-1"></div>
+                <p class="text-[10px] text-slate-500 uppercase font-semibold">Assinatura do Profissional Responsável</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. SOBRE A AUTORA (NO INTERNAL CONTACTS) -->
+      <section id="sec-autora" class="tab-content hidden space-y-6">
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
+            <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-4xl font-bold shadow-lg flex-shrink-0">
+              BV
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800">Profª Bárbara Vitória</h2>
+              <p class="text-sm font-semibold text-indigo-600">Especialista em Psicopedagogia & Gestão Inclusiva</p>
+              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                Idealizadora da Plataforma Práxis. Dedicada à estruturação de métodos psicopedagógicos inovadores, focada na neurodiversidade e na inclusão efetiva de alunos neurodivergentes nas instituições de ensino.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-6 text-xs text-slate-600 space-y-3">
+            <h3 class="font-bold text-slate-800 text-sm">Diretrizes da Plataforma Práxis:</h3>
+            <p>&bull; Transformar avaliações psicopedagógicas em planos de ação práticos, individualizados e aplicáveis no cotidiano escolar.</p>
+            <p>&bull; Unificar ferramentas de apoio à neurodiversidade, capacitando profissionais da educação e psicopedagogos.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER WITH MANDATORY CONTACTS -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-auto border-t border-slate-800 no-print">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div>
+          <p class="font-bold text-slate-200">Plataforma Práxis 2026</p>
+          <p class="text-[11px] text-slate-500">Desenvolvimento Psicopedagógico e Inclusão</p>
+        </div>
+
+        <!-- Mandatory Contacts -->
+        <div class="flex flex-wrap items-center justify-center gap-6 text-slate-300">
+          <a href="mailto:prof.barbaravitoria@gmail.com" class="hover:text-amber-400 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-envelope text-indigo-400"></i> prof.barbaravitoria@gmail.com
+          </a>
+          <span class="hover:text-amber-400 transition flex items-center gap-1.5">
+            <i class="fa-brands fa-instagram text-rose-400"></i> @prof.barbaravitoria
+          </span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL: NEW / EDIT STUDENT -->
+  <div id="studentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h3 id="studentModalTitle" class="font-bold text-slate-800 text-base">Novo Aprendente</h3>
+        <button onclick="closeStudentModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form onsubmit="handleSaveStudent(event)" class="space-y-3">
+        <input type="hidden" id="studentEditId">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Aluno/Aprendente</label>
+          <input type="text" id="stdName" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ex: Lucas Mendes">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Idade</label>
+            <input type="number" id="stdAge" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ex: 8">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Série / Ano</label>
+            <input type="text" id="stdGrade" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ex: 3º Ano EF">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Responsável</label>
+          <input type="text" id="stdParent" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ex: Ana Mendes">
+        </div>
+
+        <div class="pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeStudentModal()" class="px-4 py-2 border rounded-xl text-xs text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold">Salvar Aprendente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: USER PROFILE / ADMIN EDIT USER -->
+  <div id="userModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-xl p-6 border border-slate-200">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h3 id="userModalTitle" class="font-bold text-slate-800 text-base">Perfil de Acesso</h3>
+        <button onclick="closeUserModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form onsubmit="handleSaveUserProfile(event)" class="space-y-3">
+        <input type="hidden" id="usrEditId">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nome</label>
+          <input type="text" id="usrName" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Código de Acesso</label>
+          <input type="text" id="usrCode" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">E-mail</label>
+          <input type="email" id="usrEmail" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Senha de Acesso</label>
+          <input type="password" id="usrPassword" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div id="adminStatusField" class="hidden">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Status da Conta</label>
+          <select id="usrStatus" class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="active">Ativa</option>
+            <option value="inactive">Inativa / Bloqueada</option>
+          </select>
+        </div>
+
+        <div class="pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeUserModal()" class="px-4 py-2 border rounded-xl text-xs text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. INITIAL DATA & STORAGE MANAGEMENT
+       ========================================================================== */
+    const MASTER_KEY = 'psi-praxis-2026';
+    const ADMIN_CODE = 'prof.barbaravitoria';
+
+    // Initial Users List
+    const defaultUsers = [
+      {
+        id: 'usr-admin',
+        name: 'Profª Bárbara Vitória',
+        code: 'prof.barbaravitoria',
+        email: 'prof.barbaravitoria@gmail.com',
+        password: 'admin',
+        role: 'admin',
+        status: 'active',
+        isMasterUser: true
+      },
+      {
+        id: 'usr-demo',
+        name: 'Psicopedagogo Demo',
+        code: 'psico.demo',
+        email: 'demo@praxis.com',
+        password: '123',
+        role: 'user',
+        status: 'active',
+        isMasterUser: false
+      }
+    ];
+
+    // Initial Students
+    const defaultStudents = [
+      { id: 'std-1', name: 'Gabriel Souza', age: 9, grade: '4º Ano EF', parent: 'Juliana Souza' },
+      { id: 'std-2', name: 'Sofia Oliveira', age: 7, grade: '2º Ano EF', parent: 'Carlos Oliveira' }
+    ];
+
+    // 30 Practical Guide Topics
+    const guideTopicsData = [
+      "Acolhimento e Escuta Escolar Sensível", "Anamnese Familiar e Histórico de Desenvolvimento",
+      "Triagem de Funções Atencionais e Executivas", "Avaliação do Raciocínio Lógico-Matemático",
+      "Sons e Fonemas: Análise da Dislexia", "Manejo Comportamental para Alunos TDAH",
+      "Adaptação de Rotinas e Quadro Visuais no TEA", "Desenvolvimento de Estratégias de Altas Habilidades",
+      "Organização do Espaço de Atendimento Psicopedagógico", "Elaboração de Plano de Intervenção Individualizado (PEI)",
+      "Comunicação Efetiva entre Escola e Família", "Instrumentos Padronizados de Avaliação",
+      "Uso de Jogos de Tabuleiro na Estimulação Cognitiva", "Técnicas de Autorregulação Emocional em Sala",
+      "Estratégias de Leitura Compartilhada e Fluência", "Mediação Pedagógica na Escrita Manual e Digital",
+      "Estímulos Multissensoriais para Retenção de Memória", "Construção de Relatórios Síntese com Rigor Técnico",
+      "Rotinas de Estudo e Organização do Aprendente", "Trabalho Psicopedagógico em Equipe Multidisciplinar",
+      "Aplicação de Tecnologias Assistivas no Ambiente Escolar", "Acompanhamento da Evolução das Metas SMART",
+      "Análise de Erros de Escrita e Produção Textual", "Intervenção Psicopedagógica na Educação Infantil",
+      "Desenvolvimento de Competências Socioemocionais", "Adaptando Avaliações sem Reduzir a Complexidade",
+      "Orientação a Professores de Regência", "Prevenção da Fadiga Cognitiva em Provas Longas",
+      "Transição de Etapas de Ensino (Fundamental ao Médio)", "Encerramento e Devolutiva Diagnóstica com Acolhimento"
+    ];
+
+    // Application State
+    let currentUser = null;
+    let users = JSON.parse(localStorage.getItem('praxis_users')) || defaultUsers;
+    let students = JSON.parse(localStorage.getItem('praxis_students')) || defaultStudents;
+    let readTopics = JSON.parse(localStorage.getItem('praxis_read_topics')) || [];
+    let studentEvaluations = JSON.parse(localStorage.getItem('praxis_evaluations')) || {};
+    let studentPlans = JSON.parse(localStorage.getItem('praxis_plans')) || {};
+    let studentMethods = JSON.parse(localStorage.getItem('praxis_methods')) || {};
+
+    // Save Data Helpers
+    function saveData() {
+      localStorage.setItem('praxis_users', JSON.stringify(users));
+      localStorage.setItem('praxis_students', JSON.stringify(students));
+      localStorage.setItem('praxis_read_topics', JSON.stringify(readTopics));
+      localStorage.setItem('praxis_evaluations', JSON.stringify(studentEvaluations));
+      localStorage.setItem('praxis_plans', JSON.stringify(studentPlans));
+      localStorage.setItem('praxis_methods', JSON.stringify(studentMethods));
+    }
+
+    // Toast Notification System
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const bgColors = {
+        success: 'bg-emerald-600 text-white',
+        error: 'bg-rose-600 text-white',
+        warning: 'bg-amber-500 text-white',
+        info: 'bg-indigo-600 text-white'
+      };
+
+      toast.className = `${bgColors[type]} px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2 transition duration-300 transform translate-y-2 pointer-events-auto`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${msg}</span>`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Auth Tab Switch
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('loginForm');
+      const masterForm = document.getElementById('masterForm');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabMasterBtn = document.getElementById('tabMasterBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        masterForm.classList.add('hidden');
+        tabLoginBtn.className = "w-1/2 pb-3 border-b-2 border-indigo-600 text-indigo-600 font-semibold transition-all";
+        tabMasterBtn.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-all";
+      } else {
+        loginForm.classList.add('hidden');
+        masterForm.classList.remove('hidden');
+        tabMasterBtn.className = "w-1/2 pb-3 border-b-2 border-amber-500 text-amber-600 font-semibold transition-all";
+        tabLoginBtn.className = "w-1/2 pb-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700 transition-all";
+      }
+    }
+
+    /* ==========================================================================
+       2. AUTHENTICATION & ACCESS CONTROL
+       ========================================================================== */
+    function handleLogin(e) {
+      e.preventDefault();
+      const code = document.getElementById('loginCode').value.trim();
+      const pass = document.getElementById('loginPassword').value.trim();
+
+      // Check Master Code directly in login
+      if (code === MASTER_KEY || code === ADMIN_CODE) {
+        const adminUser = users.find(u => u.code === ADMIN_CODE);
+        if (adminUser) {
+          if (pass === adminUser.password || pass === 'admin') {
+            loginUser(adminUser);
+            return;
+          }
+        }
+      }
+
+      // Check Standard Users
+      const user = users.find(u => u.code.toLowerCase() === code.toLowerCase() && u.password === pass);
+
+      if (!user) {
+        showToast('Código de acesso ou senha incorretos!', 'error');
+        return;
+      }
+
+      if (user.status === 'inactive') {
+        showToast('Sua conta está inativada. Entre em contato com prof.barbaravitoria@gmail.com', 'error');
+        return;
+      }
+
+      loginUser(user);
+    }
+
+    function handleMasterKey(e) {
+      e.preventDefault();
+      const codeInput = document.getElementById('masterCodeInput').value.trim();
+
+      if (codeInput === MASTER_KEY) {
+        // Open user registration modal
+        document.getElementById('registerModal').classList.remove('hidden');
+      } else {
+        showToast('Chave Mestre inválida!', 'error');
+      }
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('registerModal').classList.add('hidden');
+    }
+
+    function handleRegisterUser(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const code = document.getElementById('regCode').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (code === MASTER_KEY) {
+        showToast('O código de acesso não pode ser igual à Chave Mestre!', 'warning');
+        return;
+      }
+
+      if (users.some(u => u.code.toLowerCase() === code.toLowerCase())) {
+        showToast('Este código de acesso já está em uso por outro usuário!', 'error');
+        return;
+      }
+
+      const newUser = {
+        id: 'usr-' + Date.now(),
+        name,
+        code,
+        email,
+        password,
+        role: (code === ADMIN_CODE) ? 'admin' : 'user',
+        status: 'active',
+        isMasterUser: false
+      };
+
+      users.push(newUser);
+      saveData();
+      closeRegisterModal();
+      showToast('Perfil criado com sucesso! Faça login com seu novo código.', 'success');
+      
+      // Auto login user
+      loginUser(newUser);
+    }
+
+    function loginUser(user) {
+      currentUser = user;
+      document.getElementById('authScreen').classList.add('hidden');
+      document.getElementById('appContainer').classList.remove('hidden');
+
+      // Update Nav Details
+      document.getElementById('navUserName').innerText = user.name;
+      document.getElementById('navUserRole').innerText = user.role === 'admin' ? 'Administrador Supremo' : 'Psicopedagogo(a)';
+
+      // Show/Hide Admin Nav Button
+      const adminBtn = document.getElementById('adminPanelNavBtn');
+      if (user.code === ADMIN_CODE || user.role === 'admin') {
+        adminBtn.classList.remove('hidden');
+      } else {
+        adminBtn.classList.add('hidden');
+      }
+
+      initDashboard();
+      showToast(`Bem-vindo(a), ${user.name}!`, 'success');
+    }
+
+    function logout() {
+      currentUser = null;
+      document.getElementById('appContainer').classList.add('hidden');
+      document.getElementById('authScreen').classList.remove('hidden');
+      document.getElementById('loginForm').reset();
+      document.getElementById('masterForm').reset();
+      showToast('Sessão encerrada com sucesso.', 'info');
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION & DASHBOARD INITIALIZATION
+       ========================================================================== */
+    function initDashboard() {
+      renderAdminUsersTable();
+      renderGuideTopics();
+      renderStudentsList();
+      populateStudentSelectors();
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('border-indigo-600', 'text-indigo-600', 'bg-indigo-50', 'font-bold');
+      });
+
+      const targetSec = document.getElementById(`sec-${tabName}`);
+      if (targetSec) targetSec.classList.remove('hidden');
+
+      const targetTabBtn = document.getElementById(`tab-${tabName}`);
+      if (targetTabBtn) {
+        targetTabBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'font-bold');
+      }
+
+      // Sync views
+      if (tabName === 'relatorios') {
+        const sel = document.getElementById('reportStudentSelect');
+        if (sel.value) renderReportView(sel.value);
+      }
+    }
+
+    /* ==========================================================================
+       4. ADMIN PANEL MANAGEMENT (EXCLUSIVELY PROF.BARBARAVITORIA)
+       ========================================================================== */
+    function renderAdminUsersTable() {
+      const tbody = document.getElementById('adminUserTableBody');
+      document.getElementById('userCount').innerText = users.length;
+      tbody.innerHTML = '';
+
+      users.forEach(u => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+
+        const isBárbara = (u.code === ADMIN_CODE || u.isMasterUser);
+
+        tr.innerHTML = `
+          <td class="p-3 font-medium text-slate-800">${u.name}</td>
+          <td class="p-3 font-mono text-indigo-600">${u.code}</td>
+          <td class="p-3">${u.email}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.role === 'admin' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}">
+              ${u.role === 'admin' ? 'Administrador' : 'Psicopedagogo'}
+            </span>
+          </td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${u.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+              ${u.status === 'active' ? 'Ativo' : 'Inativo'}
+            </span>
+          </td>
+          <td class="p-3 text-center space-x-2">
+            <button onclick="openUserEditModal('${u.id}')" class="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded" title="Editar">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            ${!isBárbara ? `
+              <button onclick="toggleUserStatus('${u.id}')" class="p-1.5 ${u.status === 'active' ? 'text-amber-600' : 'text-emerald-600'} hover:bg-slate-100 rounded" title="${u.status === 'active' ? 'Inativar' : 'Reativar'}">
+                <i class="fa-solid ${u.status === 'active' ? 'fa-user-slash' : 'fa-user-check'}"></i>
+              </button>
+              <button onclick="deleteUserAccount('${u.id}')" class="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Excluir">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            ` : `<span class="text-[10px] text-slate-400 italic">Mestre Protegido</span>`}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleUserStatus(userId) {
+      if (currentUser.code !== ADMIN_CODE) {
+        showToast('Somente prof.barbaravitoria pode alterar o status de usuários!', 'error');
+        return;
+      }
+      const u = users.find(x => x.id === userId);
+      if (u) {
+        u.status = (u.status === 'active') ? 'inactive' : 'active';
+        saveData();
+        renderAdminUsersTable();
+        showToast(`Status do usuário ${u.name} atualizado!`, 'info');
+      }
+    }
+
+    function deleteUserAccount(userId) {
+      if (currentUser.code !== ADMIN_CODE) {
+        showToast('Somente prof.barbaravitoria pode excluir usuários!', 'error');
+        return;
+      }
+      const u = users.find(x => x.id === userId);
+      if (u && !u.isMasterUser) {
+        users = users.filter(x => x.id !== userId);
+        saveData();
+        renderAdminUsersTable();
+        showToast(`Conta de ${u.name} excluída com sucesso!`, 'success');
+      }
+    }
+
+    function openUserEditModal(userId) {
+      const u = users.find(x => x.id === userId);
+      if (!u) return;
+
+      document.getElementById('usrEditId').value = u.id;
+      document.getElementById('usrName').value = u.name;
+      document.getElementById('usrCode').value = u.code;
+      document.getElementById('usrEmail').value = u.email;
+      document.getElementById('usrPassword').value = u.password;
+      document.getElementById('usrStatus').value = u.status;
+
+      if (currentUser.code === ADMIN_CODE) {
+        document.getElementById('adminStatusField').classList.remove('hidden');
+      } else {
+        document.getElementById('adminStatusField').classList.add('hidden');
+      }
+
+      document.getElementById('userModal').classList.remove('hidden');
+    }
+
+    function openProfileModal() {
+      openUserEditModal(currentUser.id);
+    }
+
+    function closeUserModal() {
+      document.getElementById('userModal').classList.add('hidden');
+    }
+
+    function handleSaveUserProfile(e) {
+      e.preventDefault();
+      const id = document.getElementById('usrEditId').value;
+      const u = users.find(x => x.id === id);
+
+      if (!u) return;
+
+      const newCode = document.getElementById('usrCode').value.trim();
+
+      // Master code guardrail
+      if (u.code === ADMIN_CODE && newCode !== ADMIN_CODE) {
+        showToast('O código de prof.barbaravitoria não pode ser alterado!', 'error');
+        return;
+      }
+
+      u.name = document.getElementById('usrName').value.trim();
+      u.code = newCode;
+      u.email = document.getElementById('usrEmail').value.trim();
+      u.password = document.getElementById('usrPassword').value.trim();
+      
+      if (currentUser.code === ADMIN_CODE) {
+        u.status = document.getElementById('usrStatus').value;
+      }
+
+      saveData();
+      closeUserModal();
+      renderAdminUsersTable();
+      showToast('Dados do usuário salvos com sucesso!', 'success');
+    }
+
+    /* ==========================================================================
+       5. GUIA PRÁTICO (30 TOPICS)
+       ========================================================================== */
+    function renderGuideTopics() {
+      const grid = document.getElementById('guideTopicsGrid');
+      grid.innerHTML = '';
+
+      guideTopicsData.forEach((topic, index) => {
+        const isRead = readTopics.includes(index);
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border transition cursor-pointer flex flex-col justify-between ${isRead ? 'bg-indigo-50/50 border-indigo-200' : 'bg-slate-50 border-slate-200 hover:border-indigo-300'}`;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full">Tópico ${index + 1}</span>
+              <button onclick="toggleTopicRead(event, ${index})" class="text-lg">
+                <i class="fa-solid ${isRead ? 'fa-circle-check text-indigo-600' : 'fa-circle text-slate-300'}"></i>
+              </button>
+            </div>
+            <h4 class="font-bold text-xs text-slate-800 leading-snug">${topic}</h4>
+          </div>
+          <div class="mt-3 text-[11px] text-slate-500 flex items-center gap-1">
+            <i class="fa-solid fa-bookmark text-indigo-400"></i> ${isRead ? 'Concluído' : 'Clique no ícone para marcar lido'}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      updateReadingProgress();
+    }
+
+    function toggleTopicRead(e, index) {
+      e.stopPropagation();
+      if (readTopics.includes(index)) {
+        readTopics = readTopics.filter(i => i !== index);
+      } else {
+        readTopics.push(index);
+      }
+      saveData();
+      renderGuideTopics();
+    }
+
+    function updateReadingProgress() {
+      const total = guideTopicsData.length;
+      const readCount = readTopics.length;
+      const percentage = Math.round((readCount / total) * 100);
+
+      document.getElementById('readingProgressText').innerText = `${readCount}/${total} (${percentage}%)`;
+      document.getElementById('readingProgressBar').style.width = `${percentage}%`;
+    }
+
+    /* ==========================================================================
+       6. STUDENTS MANAGEMENT & MANDATORY SELECTION
+       ========================================================================== */
+    function renderStudentsList() {
+      const grid = document.getElementById('studentsListGrid');
+      grid.innerHTML = '';
+
+      if (students.length === 0) {
+        grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed">Nenhum aprendente cadastrado ainda.</div>`;
+        return;
+      }
+
+      students.forEach(std => {
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:shadow-md transition space-y-2';
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-bold text-sm text-slate-800">${std.name}</h4>
+              <p class="text-xs text-purple-600 font-semibold">${std.grade} &bull; ${std.age} anos</p>
+            </div>
+            <button onclick="openEditStudentModal('${std.id}')" class="text-slate-400 hover:text-purple-600">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </div>
+          <p class="text-xs text-slate-500"><i class="fa-solid fa-user-tie mr-1"></i>Responsável: ${std.parent}</p>
+          <div class="pt-2 border-t flex justify-end">
+            <button onclick="selectGlobalStudent('${std.id}')" class="px-3 py-1 bg-purple-100 text-purple-700 hover:bg-purple-200 rounded-lg text-xs font-semibold transition">
+              Selecionar Aprendente
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function populateStudentSelectors() {
+      const selectors = ['globalStudentSelect', 'evalStudentSelect', 'planStudentSelect', 'aiStudentSelect', 'methodStudentSelect', 'reportStudentSelect'];
+      
+      selectors.forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        const currentVal = sel.value;
+        sel.innerHTML = `<option value="">-- Selecione um Aprendente --</option>`;
+
+        students.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = `${s.name} (${s.grade})`;
+          sel.appendChild(opt);
+        });
+
+        if (currentVal && students.some(s => s.id === currentVal)) {
+          sel.value = currentVal;
+        }
+      });
+    }
+
+    function syncStudentSelection(studentId) {
+      const selectors = ['globalStudentSelect', 'evalStudentSelect', 'planStudentSelect', 'aiStudentSelect', 'methodStudentSelect', 'reportStudentSelect'];
+      selectors.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = studentId;
+      });
+
+      if (studentId) {
+        loadStudentData(studentId);
+      }
+    }
+
+    function selectGlobalStudent(studentId) {
+      syncStudentSelection(studentId);
+      showToast('Aprendente ativo selecionado com sucesso!', 'info');
+    }
+
+    function openStudentModal() {
+      document.getElementById('studentEditId').value = '';
+      document.getElementById('studentModalTitle').innerText = 'Novo Aprendente';
+      document.getElementById('stdName').value = '';
+      document.getElementById('stdAge').value = '';
+      document.getElementById('stdGrade').value = '';
+      document.getElementById('stdParent').value = '';
+      document.getElementById('studentModal').classList.remove('hidden');
+    }
+
+    function openEditStudentModal(id) {
+      const std = students.find(s => s.id === id);
+      if (!std) return;
+
+      document.getElementById('studentEditId').value = std.id;
+      document.getElementById('studentModalTitle').innerText = 'Editar Aprendente';
+      document.getElementById('stdName').value = std.name;
+      document.getElementById('stdAge').value = std.age;
+      document.getElementById('stdGrade').value = std.grade;
+      document.getElementById('stdParent').value = std.parent;
+      document.getElementById('studentModal').classList.remove('hidden');
+    }
+
+    function closeStudentModal() {
+      document.getElementById('studentModal').classList.add('hidden');
+    }
+
+    function handleSaveStudent(e) {
+      e.preventDefault();
+      const id = document.getElementById('studentEditId').value;
+      const name = document.getElementById('stdName').value.trim();
+      const age = document.getElementById('stdAge').value.trim();
+      const grade = document.getElementById('stdGrade').value.trim();
+      const parent = document.getElementById('stdParent').value.trim();
+
+      if (id) {
+        const std = students.find(s => s.id === id);
+        if (std) {
+          std.name = name; std.age = age; std.grade = grade; std.parent = parent;
+        }
+      } else {
+        const newStd = { id: 'std-' + Date.now(), name, age, grade, parent };
+        students.push(newStd);
+      }
+
+      saveData();
+      closeStudentModal();
+      renderStudentsList();
+      populateStudentSelectors();
+      showToast('Aprendente salvo com sucesso!', 'success');
+    }
+
+    /* ==========================================================================
+       7. PEDAGOGICAL MODULE OPERATIONS
+       ========================================================================== */
+    function loadStudentData(studentId) {
+      // Load Evaluation
+      const ev = studentEvaluations[studentId] || {};
+      document.getElementById('evalAnamnese').value = ev.anamnese || '';
+      document.getElementById('evalCognitive').value = ev.cognitive || '';
+      document.getElementById('evalEmotional').value = ev.emotional || '';
+      document.getElementById('evalHypothesis').value = ev.hypothesis || '';
+
+      // Load Plan
+      const pl = studentPlans[studentId] || {};
+      document.getElementById('planGoal').value = pl.goal || '';
+      document.getElementById('planFreq').value = pl.freq || '';
+      document.getElementById('planDuration').value = pl.duration || '';
+      document.getElementById('planMethods').value = pl.methods || '';
+
+      // Load Methods
+      const mt = studentMethods[studentId] || {};
+      document.getElementById('methodGamification').value = mt.gamification || '';
+      document.getElementById('methodPbl').value = mt.pbl || '';
+
+      // Update Report View
+      renderReportView(studentId);
+    }
+
+    function saveEvaluation(e) {
+      e.preventDefault();
+      const studentId = document.getElementById('evalStudentSelect').value;
+      if (!studentId) {
+        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        return;
+      }
+
+      studentEvaluations[studentId] = {
+        anamnese: document.getElementById('evalAnamnese').value,
+        cognitive: document.getElementById('evalCognitive').value,
+        emotional: document.getElementById('evalEmotional').value,
+        hypothesis: document.getElementById('evalHypothesis').value
+      };
+
+      saveData();
+      showToast('Avaliação Psicopedagógica salva com sucesso!', 'success');
+    }
+
+    function savePlan(e) {
+      e.preventDefault();
+      const studentId = document.getElementById('planStudentSelect').value;
+      if (!studentId) {
+        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        return;
+      }
+
+      studentPlans[studentId] = {
+        goal: document.getElementById('planGoal').value,
+        freq: document.getElementById('planFreq').value,
+        duration: document.getElementById('planDuration').value,
+        methods: document.getElementById('planMethods').value
+      };
+
+      saveData();
+      showToast('Plano de Intervenção salvo com sucesso!', 'success');
+    }
+
+    function saveMethodologies() {
+      const studentId = document.getElementById('methodStudentSelect').value;
+      if (!studentId) {
+        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        return;
+      }
+
+      studentMethods[studentId] = {
+        gamification: document.getElementById('methodGamification').value,
+        pbl: document.getElementById('methodPbl').value
+      };
+
+      saveData();
+      showToast('Estratégias de Metodologias Ativas salvas!', 'success');
+    }
+
+    // AI Adaptation Simulator
+    function generateAiAdaptation() {
+      const studentId = document.getElementById('aiStudentSelect').value;
+      if (!studentId) {
+        showToast('Selecione um aprendente para direcionar a adaptação IA!', 'warning');
+        return;
+      }
+
+      const inputContent = document.getElementById('aiInputContent').value.trim();
+      const focus = document.getElementById('aiFocusArea').value;
+
+      if (!inputContent) {
+        showToast('Insira o texto ou conteúdo escolar para adaptar.', 'warning');
+        return;
+      }
+
+      const student = students.find(s => s.id === studentId);
+
+      let text = `<strong>Ajustes Adaptativos para o Aprendente:</strong> ${student.name}<br>`;
+      
+      if (focus === 'tdah') {
+        text += `• <strong>Fracionamento:</strong> Dividir o conteúdo principal em 3 blocos curtos com pausas de 2 minutos.<br>
+                 • <strong>Destaque Visual:</strong> Sublinhar palavras-chave do texto e transformar enunciados longos em listas de marcadores.<br>
+                 • <strong>Temporização:</strong> Conceder lembretes visuais suaves de tempo.`;
+      } else if (focus === 'tea') {
+        text += `• <strong>Linguagem Direta:</strong> Eliminar metáforas, ironias ou figuras de linguagem dos enunciados.<br>
+                 • <strong>Apoio de Imagem:</strong> Inserir suporte pictográfico ao lado das palavras primárias.<br>
+                 • <strong>Previsibilidade:</strong> Explicar a estrutura da tarefa antes da execução.`;
+      } else if (focus === 'dislexia') {
+        text += `• <strong>Tipografia Legível:</strong> Aplicar fonte espaçada e tamanho 14pt.<br>
+                 • <strong>Leitura Assistida:</strong> Permitir o uso de leitor de voz digital ou leitura mediada pelo docente.<br>
+                 • <strong>Simplificação Sintática:</strong> Substituir estruturas frasais complexas por orações na ordem direta.`;
+      } else {
+        text += `• <strong>Enriquecimento de Desafio:</strong> Conectar o tema com um problema de investigação profunda.<br>
+                 • <strong>Autonomia:</strong> Oferecer escolha de formato de entrega (podcast, apresentação, artigo).`;
+      }
+
+      document.getElementById('aiOutputText').innerHTML = text;
+      document.getElementById('aiResultBox').classList.remove('hidden');
+      showToast('Adaptação IA gerada com sucesso!', 'success');
+    }
+
+    /* ==========================================================================
+       8. REPORTS & PRINT / PDF EXPORT
+       ========================================================================== */
+    function renderReportView(studentId) {
+      const today = new Date().toLocaleDateString('pt-BR');
+      document.getElementById('reportDate').innerText = today;
+
+      const std = students.find(s => s.id === studentId);
+
+      if (!std) {
+        document.getElementById('repName').innerText = '--';
+        document.getElementById('repGrade').innerText = '--';
+        document.getElementById('repParent').innerText = '--';
+        document.getElementById('repSpecialist').innerText = currentUser ? currentUser.name : '--';
+        document.getElementById('repEvalText').innerText = 'Nenhum aprendente selecionado.';
+        document.getElementById('repPlanText').innerText = 'Nenhum aprendente selecionado.';
+        document.getElementById('repMethodsText').innerText = 'Nenhum aprendente selecionado.';
+        return;
+      }
+
+      document.getElementById('repName').innerText = std.name;
+      document.getElementById('repGrade').innerText = `${std.grade} (${std.age} anos)`;
+      document.getElementById('repParent').innerText = std.parent;
+      document.getElementById('repSpecialist').innerText = currentUser ? currentUser.name : 'Especialista';
+
+      // Load data
+      const ev = studentEvaluations[studentId];
+      if (ev) {
+        document.getElementById('repEvalText').innerText = `• Anamnese: ${ev.anamnese || 'N/A'}\n• Cognitivo: ${ev.cognitive || 'N/A'}\n• Hipótese Diagnóstica: ${ev.hypothesis || 'N/A'}`;
+      } else {
+        document.getElementById('repEvalText').innerText = 'Sem avaliação registrada.';
+      }
+
+      const pl = studentPlans[studentId];
+      if (pl) {
+        document.getElementById('repPlanText').innerText = `• Objetivo: ${pl.goal || 'N/A'}\n• Frequência: ${pl.freq || 'N/A'}\n• Metodologias: ${pl.methods || 'N/A'}`;
+      } else {
+        document.getElementById('repPlanText').innerText = 'Sem plano registrado.';
+      }
+
+      const mt = studentMethods[studentId];
+      if (mt) {
+        document.getElementById('repMethodsText').innerText = `• Gamificação: ${mt.gamification || 'N/A'}\n• PBL / Problemas: ${mt.pbl || 'N/A'}`;
+      } else {
+        document.getElementById('repMethodsText').innerText = 'Sem estratégias registradas.';
+      }
+    }
+
+    function exportPdfDocument() {
+      const element = document.getElementById('printableReportContent');
+      const opt = {
+        margin:       0.5,
+        filename:     'Relatorio_Psicopedagogico_Praxis.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(element).save();
+      showToast('Exportando PDF...', 'info');
+    }
+
+    // Initialize Default Selectors on Load
+    window.onload = function() {
+      // Auto select first student if available
+      if (students.length > 0) {
+        syncStudentSelection(students[0].id);
+      }
+    };
+  </script>
 </body>
 </html>
