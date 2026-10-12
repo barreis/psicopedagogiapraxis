@@ -332,7 +332,7 @@ tr:last-child td{border-bottom:0}
     <button class="quick" onclick="go('student-manual')"><span class="qico">📘</span><strong>Manual do Aprendente</strong><small>Gere um manual personalizado para cada pessoa.</small></button>
     <button class="quick" onclick="go('intervention')"><span class="qico">🌱</span><strong>Plano de intervenção</strong><small>Defina objetivos, estratégias e acompanhamento.</small></button>
     <button class="quick" onclick="go('adaptation')"><span class="qico">🎨</span><strong>Adaptar uma atividade</strong><small>Planeje acessibilidade e participação.</small></button>
-    <button class="quick" onclick="go('author')"><span class="qico">📞</span><strong>Canais de Contato</strong><small>Acesse os contatos e redes da autora.</small></button>
+    <button class="quick" onclick="go('records')"><span class="qico">📚</span><strong>Ver registros</strong><small>Consulte, baixe ou exclua documentos salvos.</small></button>
   </div>
 
   <div class="grid two-col">
@@ -617,20 +617,32 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<!-- ABA: REGISTROS E ACOMPANHAMENTO -->
 <section class="page" id="page-records">
   <h2>Registros e Acompanhamento</h2>
-  <p class="subtitle">Histórico de documentos, avaliações e relatórios gerados.</p>
-  <div class="card">
+  <p class="subtitle">Histórico de documentos, avaliações, planos e relatórios gerados.</p>
+  <div class="card" style="margin-bottom: 20px;">
     <div class="section-head" style="margin-top:0">
       <h3>Todos os documentos salvos</h3>
-      <button class="btn small danger" onclick="clearAllData()">Limpar dados deste perfil</button>
+      <button class="btn small danger" onclick="clearAllData()">Limpar todos os dados do perfil</button>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Tipo</th><th>Identificação</th><th>Data</th><th>Ações</th></tr></thead>
+        <thead><tr><th>Tipo de Documento</th><th>Identificação</th><th>Data</th><th>Ações</th></tr></thead>
         <tbody id="allRecordsTable"></tbody>
       </table>
     </div>
+  </div>
+  
+  <div class="result-box" id="recordViewerBox" style="display:none;">
+    <div class="output-head">
+      <strong id="viewerTitle">Visualizar Documento</strong>
+      <div class="output-actions">
+        <button class="btn small primary" onclick="window.print()">🖨️ Baixar / Imprimir PDF</button>
+        <button class="btn small" onclick="fecharVisualizador()">Fechar</button>
+      </div>
+    </div>
+    <div class="result" id="viewerContent"></div>
   </div>
 </section>
 
@@ -934,7 +946,7 @@ document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   });
 });
 
-// --- GERADOR DE PLANO DE AULAS + METODOLOGIAS ATIVAS POR IA ---
+// --- GERADORES COM SALVAMENTO DE CONTEÚDO COMPLETO ---
 function gerarPlanoMetodologiasAtivasIA() {
   const tema = document.getElementById('lpSubject').value.trim();
   const nivel = document.getElementById('lpLevel').value;
@@ -954,7 +966,7 @@ function gerarPlanoMetodologiasAtivasIA() {
 Tema/Disciplina: ${tema}
 Etapa: ${nivel} | Metodologia: ${metodo} | Duração: ${duracao}
 Objetivos: ${objetivos}
-Contexto do Grupo: ${contextO}
+Contexto do Grupo: ${contexto}
 
 1. ACOLHIDA & SENSIBILIZAÇÃO (15 min):
 • Pergunta-Problema provocadora sobre o tema "${tema}".
@@ -977,7 +989,7 @@ Contexto do Grupo: ${contextO}
     <div class="result">${conteudoGerado}</div>
   `;
 
-  state.records.push({ id: Date.now(), type: 'Plano de Aula (Metodologia Ativa)', name: tema, date: new Date().toISOString().split('T')[0] });
+  state.records.push({ id: Date.now(), type: 'Plano de Aula (Metodologia Ativa)', name: tema, date: new Date().toISOString().split('T')[0], content: conteudoGerado });
   saveData();
   showToast('Plano de aula gerado e salvo!');
 }
@@ -987,7 +999,6 @@ document.getElementById('lessonPlanForm').addEventListener('submit', (e) => {
   gerarPlanoMetodologiasAtivasIA();
 });
 
-// --- GERADOR DE MANUAL PSICOPEDAGÓGICO DO APRENDENTE POR IA ---
 function gerarManualAprendenteIA() {
   const nome = document.getElementById('smPersonSelect').value;
   const foco = document.getElementById('smFocus').value;
@@ -1026,7 +1037,7 @@ Data de Elaboração: ${new Date().toLocaleDateString('pt-BR')}
     <div class="result">${conteudoManual}</div>
   `;
 
-  state.records.push({ id: Date.now(), type: 'Manual do Aprendente', name: nome, date: new Date().toISOString().split('T')[0] });
+  state.records.push({ id: Date.now(), type: 'Manual do Aprendente', name: nome, date: new Date().toISOString().split('T')[0], content: conteudoManual });
   saveData();
   showToast('Manual do aprendente gerado e salvo com sucesso!');
 }
@@ -1078,7 +1089,7 @@ Focos de Acessibilidade: ${focosStr}
     <div class="result">${adaptacaoGerada}</div>
   `;
 
-  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica (IA)', name: aprendenteNome, date: new Date().toISOString().split('T')[0] });
+  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica (IA)', name: aprendenteNome, date: new Date().toISOString().split('T')[0], content: adaptacaoGerada });
   saveData();
   showToast('Adaptação gerada com sucesso!');
 }
@@ -1090,14 +1101,14 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
   const date = new Date().toISOString().split('T')[0];
   const aprendenteNome = document.getElementById('aPersonSelect').value || 'Geral';
 
-  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
+  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Non informado'}`;
 
   document.getElementById('adaptationOutput').innerHTML = `
     <div class="output-head"><strong>Proposta Adaptada Salva</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
     <div class="result">${content}</div>
   `;
 
-  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: aprendenteNome, date });
+  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: aprendenteNome, date, content });
   saveData();
   showToast('Adaptação pedagógica gerada e salva!');
 });
@@ -1116,7 +1127,7 @@ document.getElementById('evaluationForm').addEventListener('submit', (e) => {
   `;
 
   state.evaluations.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
-  state.records.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date });
+  state.records.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
   saveData();
   showToast('Avaliação gerada com sucesso!');
 });
@@ -1135,7 +1146,7 @@ document.getElementById('interventionForm').addEventListener('submit', (e) => {
   `;
 
   state.interventions.push({ id: Date.now(), type: 'Plano de Intervenção', name, date, content });
-  state.records.push({ id: Date.now(), type: 'Plano de Intervenção', name, date });
+  state.records.push({ id: Date.now(), type: 'Plano de Intervenção', name, date, content });
   saveData();
   showToast('Plano de intervenção criado com sucesso!');
 });
@@ -1153,11 +1164,12 @@ document.getElementById('reportForm').addEventListener('submit', (e) => {
     <div class="result">${content}</div>
   `;
 
-  state.records.push({ id: Date.now(), type, name, date });
+  state.records.push({ id: Date.now(), type, name, date, content });
   saveData();
   showToast('Relatório gerado e salvo!');
 });
 
+// --- RENDERIZAÇÃO DA TABELA DE REGISTROS COM OPÇÕES DE ACESSO ---
 function renderRecordsTable() {
   const tbody = document.getElementById('allRecordsTable');
   if (!tbody) return;
@@ -1174,10 +1186,52 @@ function renderRecordsTable() {
       <td><strong>${r.type}</strong></td>
       <td>${r.name}</td>
       <td>${r.date || '-'}</td>
-      <td><button class="btn small danger" onclick="deleteRecord(${r.id})">Excluir</button></td>
+      <td>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn small primary" onclick="visualizarRegistro(${r.id})">👁️ Ver</button>
+          <button class="btn small" onclick="imprimirRegistro(${r.id})">🖨️ Baixar PDF</button>
+          <button class="btn small danger" onclick="deleteRecord(${r.id})">Excluir</button>
+        </div>
+      </td>
     `;
     tbody.appendChild(tr);
   });
+}
+
+function visualizarRegistro(id) {
+  const reg = state.records.find(r => r.id === id);
+  if (!reg) return;
+
+  const viewer = document.getElementById('recordViewerBox');
+  const title = document.getElementById('viewerTitle');
+  const content = document.getElementById('viewerContent');
+
+  title.textContent = `${reg.type} — ${reg.name} (${reg.date || ''})`;
+  content.textContent = reg.content || 'Conteúdo detalhado não disponível para este registro antigo.';
+  viewer.style.display = 'block';
+  viewer.scrollIntoView({ behavior: 'smooth' });
+}
+
+function fecharVisualizador() {
+  document.getElementById('recordViewerBox').style.display = 'none';
+}
+
+function imprimirRegistro(id) {
+  const reg = state.records.find(r => r.id === id);
+  if (!reg) return;
+
+  const viewer = document.getElementById('recordViewerBox');
+  const title = document.getElementById('viewerTitle');
+  const content = document.getElementById('viewerContent');
+
+  title.textContent = `${reg.type} — ${reg.name} (${reg.date || ''})`;
+  content.textContent = reg.content || 'Conteúdo detalhado não disponível para este registro.';
+  viewer.style.display = 'block';
+  viewer.scrollIntoView({ behavior: 'smooth' });
+
+  setTimeout(() => {
+    window.print();
+  }, 300);
 }
 
 function renderRecentRecords() {
@@ -1202,7 +1256,8 @@ function renderRecentRecords() {
 function deleteRecord(id) {
   state.records = state.records.filter(r => r.id !== id);
   saveData();
-  showToast('Registro excluído.');
+  fecharVisualizador();
+  showToast('Registro excluído com sucesso.');
 }
 
 function clearAllData() {
@@ -1213,6 +1268,7 @@ function clearAllData() {
     localStorage.removeItem('praxis_interventions_' + activeKey);
     state = { people: [], records: [], evaluations: [], interventions: [] };
     updateStats();
+    fecharVisualizador();
     showToast('Dados do perfil limpos com sucesso.');
   }
 }
