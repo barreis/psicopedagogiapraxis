@@ -27,6 +27,7 @@
 body{
   margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--text);background:var(--bg);font-size:14px;
+  overflow-x: hidden;
 }
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
@@ -37,183 +38,193 @@ button{cursor:pointer}
   z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .auth-card {
-  background: white; padding: 40px; border-radius: 20px; width: min(440px, 100%);
+  background: white; padding: 30px 20px; border-radius: 20px; width: min(440px, 100%);
   box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
 }
-.auth-card h2 { margin-top: 0; color: var(--primary); font-size: 24px; }
+.auth-card h2 { margin-top: 0; color: var(--primary); font-size: 22px; }
 .auth-card p { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
 .auth-card input { margin-bottom: 15px; text-align: center; font-size: 16px; letter-spacing: 1px; font-weight: bold; text-transform: lowercase; }
 
-.app{min-height:100vh}
+.app{min-height:100vh; display: flex;}
 .sidebar{
-  width:260px;position:fixed;inset:0 auto 0 0;z-index:20;
+  width:260px;position:fixed;inset:0 auto 0 0;z-index:30;
   background:#fff;border-right:1px solid var(--border);
   display:flex;flex-direction:column;overflow-y:auto;
-  transition:transform .25s;
+  transition:transform .25s ease-in-out;
 }
-.brand{padding:26px 23px 20px;display:flex;gap:12px;align-items:center}
+.brand{padding:24px 20px 18px;display:flex;gap:12px;align-items:center}
 .brand-icon{
-  width:45px;height:45px;border-radius:15px;display:grid;place-items:center;
-  color:#fff;font-size:24px;font-weight:800;
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  color:#fff;font-size:22px;font-weight:800;
   background:linear-gradient(135deg,#7461df,#3c2b92);
   box-shadow:0 7px 15px #5141b533;
 }
-.brand h1{font-size:23px;letter-spacing:-1px;margin:0}
-.brand small{display:block;font-size:10px;letter-spacing:1.2px;color:var(--muted);margin-top:3px}
-.nav-label{font-size:10px;color:#a09fb4;font-weight:800;letter-spacing:1.5px;padding:18px 24px 8px}
-.nav{padding:0 12px}
+.brand h1{font-size:20px;letter-spacing:-1px;margin:0}
+.brand small{display:block;font-size:9px;letter-spacing:1.2px;color:var(--muted);margin-top:3px}
+.nav-label{font-size:10px;color:#a09fb4;font-weight:800;letter-spacing:1.5px;padding:16px 20px 6px}
+.nav{padding:0 10px}
 .nav button{
   width:100%;display:flex;align-items:center;gap:12px;text-align:left;
-  border:0;background:transparent;color:#666780;border-radius:11px;
-  padding:12px 13px;margin:2px 0;font-size:13px;font-weight:600;
+  border:0;background:transparent;color:#666780;border-radius:10px;
+  padding:11px 12px;margin:2px 0;font-size:13px;font-weight:600;
   transition:.2s;
 }
 .nav button:hover{background:#f6f4ff;color:var(--primary)}
 .nav button.active{background:var(--purple-light);color:var(--primary);font-weight:750}
-.nav .ico{width:22px;font-size:18px;text-align:center}
-.nav .nav-count{margin-left:auto;font-size:10px;background:#eeeaff;padding:3px 7px;border-radius:20px}
-.side-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--border)}
-.profile{display:flex;gap:10px;align-items:center;padding:8px}
-.avatar{width:39px;height:39px;border-radius:13px;background:var(--pink);display:grid;place-items:center;font-weight:800;color:#7040a5}
+.nav .ico{width:20px;font-size:16px;text-align:center}
+.nav .nav-count{margin-left:auto;font-size:10px;background:#eeeaff;padding:2px 6px;border-radius:20px}
+.side-bottom{margin-top:auto;padding:14px;border-top:1px solid var(--border)}
+.profile{display:flex;gap:10px;align-items:center;padding:6px}
+.avatar{width:36px;height:36px;border-radius:10px;background:var(--pink);display:grid;place-items:center;font-weight:800;color:#7040a5}
 .profile strong{display:block;font-size:12px}
-.profile small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
-.main{margin-left:260px;min-height:100vh}
+.profile small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+
+.main{margin-left:260px;flex:1;min-height:100vh;display:flex;flex-direction:column;min-width:0;}
 .topbar{
-  height:76px;background:#ffffffeb;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;gap:14px;
-  padding:0 32px;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px);
+  height:70px;background:#ffffffeb;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 24px;position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);
 }
 .top-left{display:flex;align-items:center;gap:12px;min-width:0}
-.breadcrumb{font-size:12px;color:var(--muted)}
+.breadcrumb{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .breadcrumb strong{color:var(--text)}
 .top-actions{display:flex;align-items:center;gap:10px}
-.search{width:210px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:#fafaff}
-.menu-toggle{display:none}
-.content{padding:30px 32px 40px;max-width:1500px;margin:auto}
+.search{width:180px;border:1px solid var(--border);border-radius:10px;padding:9px 12px;background:#fafaff}
+.menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:16px}
+
+.content{padding:24px;max-width:1400px;margin:auto;width:100%;flex:1;}
 .page{display:none;animation:appear .2s ease}
 .page.active{display:block}
 @keyframes appear{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
-h2{font-size:25px;letter-spacing:-.7px;margin:0 0 8px}
-h3{font-size:15px;margin:0 0 14px}
+
+h2{font-size:22px;letter-spacing:-.7px;margin:0 0 6px}
+h3{font-size:14px;margin:0 0 12px}
 p{line-height:1.6}
-.subtitle{color:var(--muted);margin:0 0 24px;line-height:1.65}
+.subtitle{color:var(--muted);margin:0 0 20px;line-height:1.6;font-size:13px}
+
 .hero{
-  position:relative;overflow:hidden;border-radius:22px;padding:30px;
+  position:relative;overflow:hidden;border-radius:20px;padding:24px;
   color:#fff;background:linear-gradient(115deg,#3e2e93,#6956d2 64%,#927fe9);
-  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
   box-shadow:0 12px 35px #5141b51c;
 }
-.hero:after{content:"✦";position:absolute;font-size:190px;right:16%;top:-70px;color:#ffffff0c}
-.hero h2{font-size:27px;max-width:580px;line-height:1.3}
-.hero p{color:#eeeaff;max-width:580px;margin-bottom:20px}
-.hero-art{font-size:88px;min-width:100px;text-align:center;position:relative;z-index:1}
+.hero:after{content:"✦";position:absolute;font-size:160px;right:10%;top:-50px;color:#ffffff0c}
+.hero h2{font-size:24px;max-width:520px;line-height:1.3;color:#fff}
+.hero p{color:#eeeaff;max-width:520px;margin-bottom:16px;font-size:13px}
+.hero-art{font-size:72px;min-width:80px;text-align:center;position:relative;z-index:1}
+
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
   border:1px solid var(--border);background:white;color:var(--text);
-  border-radius:10px;padding:10px 14px;font-size:12px;font-weight:700;
-  transition:.18s;text-decoration:none;
+  border-radius:10px;padding:9px 14px;font-size:12px;font-weight:700;
+  transition:.18s;text-decoration:none;white-space:nowrap;
 }
 .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
 .btn.light{background:#fff;color:var(--primary);border-color:#fff}
 .btn.danger{color:var(--danger)}
-.btn.small{padding:7px 10px;font-size:11px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:27px 0 15px}
+.btn.small{padding:6px 10px;font-size:11px}
+
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:24px 0 14px;flex-wrap:wrap;}
 .section-head h3{margin:0}
+
 .grid{display:grid;gap:16px}
-.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:23px}
-.stat,.card{background:white;border:1px solid var(--border);border-radius:17px;padding:20px}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:20px}
+.stat,.card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px}
 .stat-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.stat-icon{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:20px}
+.stat-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px}
 .purple{background:var(--purple-light)}
 .pink{background:var(--pink)}
 .blue{background:var(--blue)}
 .green{background:var(--green)}
-.yellow{background:var(--yellow)}
-.stat-number{font-size:29px;font-weight:800;letter-spacing:-1px;margin-top:13px}
-.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
-.two-col{grid-template-columns:1.3fr 1fr;margin-top:24px}
+.stat-number{font-size:26px;font-weight:800;letter-spacing:-1px;margin-top:10px}
+.stat-label{font-size:11px;color:var(--muted);margin-top:3px}
+
+.two-col{grid-template-columns:1.3fr 1fr;margin-top:20px}
 .quick-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .quick{
-  text-align:left;border:1px solid var(--border);border-radius:15px;
-  padding:17px;background:#fff;color:var(--text);min-height:125px;
+  text-align:left;border:1px solid var(--border);border-radius:14px;
+  padding:15px;background:#fff;color:var(--text);min-height:115px;
 }
 .quick:hover{border-color:#c8c0f4;transform:translateY(-2px)}
-.quick .qico{font-size:24px;margin-bottom:12px;display:block}
-.quick strong{display:block;font-size:13px;margin-bottom:5px}
-.quick small{font-size:11px;line-height:1.5;color:var(--muted)}
+.quick .qico{font-size:22px;margin-bottom:10px;display:block}
+.quick strong{display:block;font-size:12px;margin-bottom:4px}
+.quick small{font-size:11px;line-height:1.4;color:var(--muted)}
+
 .muted{color:var(--muted)}
 .small-text{font-size:11px}
-.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:#f0edff;color:#5946b0;font-size:10px;font-weight:800}
-.notice{padding:14px 16px;border-radius:12px;background:#f4f1ff;color:#5141a1;line-height:1.6;font-size:12px;margin:14px 0}
+.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#f0edff;color:#5946b0;font-size:10px;font-weight:800}
+.notice{padding:12px 14px;border-radius:10px;background:#f4f1ff;color:#5141a1;line-height:1.5;font-size:12px;margin:12px 0}
 .notice.warn{background:#fff5dc;color:#795914}
 .notice.green-note{background:#e8f8ef;color:#236747}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field.full{grid-column:1/-1}
 .field label{font-size:12px;font-weight:750;color:#484761}
-.field label span{font-weight:400;color:var(--muted)}
 input,select,textarea{
   width:100%;border:1px solid #e2e1ed;border-radius:10px;background:#fff;
-  padding:11px 12px;color:var(--text);outline:none;min-width:0;
+  padding:10px 12px;color:var(--text);outline:none;min-width:0;font-size:13px;
 }
 input:focus,select:focus,textarea:focus{border-color:#8978e1;box-shadow:0 0 0 3px #7867d51b}
-textarea{min-height:100px;resize:vertical;line-height:1.6}
-textarea.large{min-height:155px}
-.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
-.result{white-space:pre-wrap;line-height:1.8;font-size:13px;color:#38364f;overflow-wrap:anywhere}
-.result-box{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px;margin-top:18px}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+textarea.large{min-height:140px}
+.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+.result{white-space:pre-wrap;line-height:1.7;font-size:13px;color:#38364f;overflow-wrap:anywhere}
+.result-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:16px}
 .result-box:empty{display:none}
-.output-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
-.output-actions{display:flex;gap:7px;flex-wrap:wrap}
-.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:13px;background:white}
-table{border-collapse:collapse;width:100%;min-width:600px}
-th,td{padding:13px 15px;text-align:left;border-bottom:1px solid var(--border);font-size:12px;vertical-align:top}
+.output-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.output-actions{display:flex;gap:6px;flex-wrap:wrap}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:white;width:100%;}
+table{border-collapse:collapse;width:100%;min-width:550px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:12px;vertical-align:top}
 th{font-size:10px;letter-spacing:.7px;text-transform:uppercase;background:#faf9fe;color:#7c7b94}
 tr:last-child td{border-bottom:0}
-.empty{text-align:center;padding:35px 15px;color:var(--muted);line-height:1.8}
+.empty{text-align:center;padding:30px 15px;color:var(--muted);line-height:1.6;font-size:12px}
+
 .library-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.resource{border:1px solid var(--border);background:#fff;border-radius:15px;padding:18px}
-.resource-icon{font-size:28px;margin-bottom:12px}
-.resource h3{margin-bottom:7px}
-.resource p{font-size:12px;color:var(--muted);line-height:1.6}
-.resource button{margin-top:8px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--border);border-radius:20px;padding:7px 11px;background:#fff;font-size:11px}
+.resource{border:1px solid var(--border);background:#fff;border-radius:14px;padding:16px}
+.resource-icon{font-size:26px;margin-bottom:10px}
+.resource h3{margin-bottom:6px}
+.resource p{font-size:12px;color:var(--muted);line-height:1.5}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--border);border-radius:20px;padding:6px 10px;background:#fff;font-size:11px}
 .chip:hover,.chip.selected{background:var(--purple-light);border-color:#c9c0fa;color:var(--primary)}
-.footer{margin-top:38px;padding:22px 0;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.8}
-.footer a{color:var(--primary);text-decoration:none}
+
+.footer{margin-top:30px;padding:18px 0;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.6;text-align:center;}
+
 .mobile-overlay{display:none}
+#toast{position:fixed;bottom:20px;right:20px;z-index:100;background:#282442;color:white;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;max-width:90vw;font-size:13px;}
+
+/* RESPONSIVIDADE PARA TABLETS E CELULARES */
 @media(max-width:1100px){
  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
  .library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- .content{padding:24px}
 }
-@media(max-width:760px){
+
+@media(max-width:768px){
  .sidebar{transform:translateX(-100%);box-shadow:none}
- .sidebar.open{transform:translateX(0);box-shadow:15px 0 45px #1d18352a}
- .mobile-overlay.show{display:block;position:fixed;inset:0;background:#1d18354d;z-index:15}
+ .sidebar.open{transform:translateX(0);box-shadow:20px 0 50px rgba(0,0,0,0.15)}
+ .mobile-overlay.show{display:block;position:fixed;inset:0;background:rgba(31,28,53,0.4);z-index:25}
  .main{margin-left:0}
- .topbar{height:65px;padding:0 15px}
+ .topbar{height:60px;padding:0 16px}
  .menu-toggle{display:inline-flex}
  .search{display:none}
- .content{padding:20px 15px 30px}
- .hero{padding:22px}
- .hero h2{font-size:22px}
- .hero-art{font-size:48px;min-width:50px}
+ .content{padding:16px}
+ .hero{flex-direction:column;align-items:flex-start;padding:20px}
+ .hero-art{display:none}
  .two-col{grid-template-columns:1fr}
- .stats{gap:10px}
- .stat{padding:14px}
- .stat-number{font-size:25px}
+ .stats{grid-template-columns:1fr;gap:10px}
+ .quick-grid{grid-template-columns:1fr}
  .form-grid{grid-template-columns:1fr}
- .field.full{grid-column:auto}
- .library-grid,.quick-grid{grid-template-columns:1fr}
- .section-head{align-items:flex-start}
- h2{font-size:22px}
- .top-actions .btn{padding:8px}
+ .library-grid{grid-template-columns:1fr}
+ h2{font-size:20px}
 }
+
 @media print{
  body{background:#fff}
  .sidebar,.topbar,.no-print,.footer,.form-actions,.output-actions{display:none!important}
@@ -238,8 +249,8 @@ tr:last-child td{border-bottom:0}
       <input type="text" id="accessCodeInput" placeholder="digite seu código aqui" required>
       <button type="submit" class="btn primary" style="width:100%; justify-content:center; padding: 12px;">Entrar na Plataforma</button>
     </form>
-    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 12px; display:none;">Código inválido. Verifique se digitou corretamente.</div>
-    <div style="margin-top: 20px; font-size: 11px; color: var(--muted);">Primeiro acesso? Use o código universal ou crie o seu após entrar.</div>
+    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 10px; display:none;">Código inválido. Verifique se digitou corretamente.</div>
+    <div style="margin-top: 16px; font-size: 11px; color: var(--muted);">Primeiro acesso? Use o código universal ou crie o seu após entrar.</div>
   </div>
 </div>
 
@@ -285,11 +296,11 @@ tr:last-child td{border-bottom:0}
 <header class="topbar">
   <div class="top-left">
     <button class="btn menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu">☰</button>
-    <div class="breadcrumb">Práxis <span style="padding:0 7px">/</span> <strong id="currentTitle">Painel inicial</strong></div>
+    <div class="breadcrumb">Práxis <span style="padding:0 5px">/</span> <strong id="currentTitle">Painel inicial</strong></div>
   </div>
   <div class="top-actions">
     <input class="search" id="globalSearch" placeholder="Buscar aprendente..." aria-label="Buscar aprendente">
-    <button class="btn primary" onclick="go('evaluation')">＋ Novo registro</button>
+    <button class="btn primary" onclick="go('evaluation')">＋ Novo</button>
   </div>
 </header>
 
@@ -297,7 +308,7 @@ tr:last-child td{border-bottom:0}
 <section class="page active" id="page-home">
   <div class="hero">
     <div>
-      <div class="tag" style="background:#ffffff24;color:#fff;margin-bottom:15px">SUA ROTINA, MAIS ORGANIZADA</div>
+      <div class="tag" style="background:#ffffff24;color:#fff;margin-bottom:12px">SUA ROTINA, MAIS ORGANIZADA</div>
       <h2>Aprender é um processo.<br>Compreender faz parte dele.</h2>
       <p>Organize observações, planeje intervenções e construa caminhos de aprendizagem respeitando a singularidade de cada pessoa.</p>
       <button class="btn light" onclick="go('evaluation')">Começar avaliação →</button>
@@ -306,7 +317,7 @@ tr:last-child td{border-bottom:0}
   </div>
 
   <div class="grid stats">
-    <div class="stat"><div class="stat-top"><span class="stat-label">Aprendentes cadastrados</span><span class="stat-icon purple">♧</span></div><div class="stat-number" id="statPeople">0</div><div class="stat-label">Registros salvos no seu perfil</div></div>
+    <div class="stat"><div class="stat-top"><span class="stat-label">Aprendentes cadastrados</span><span class="stat-icon purple">♧</span></div><div class="stat-number" id="statPeople">0</div><div class="stat-label">Registros no seu perfil</div></div>
     <div class="stat"><div class="stat-top"><span class="stat-label">Avaliações registradas</span><span class="stat-icon pink">◎</span></div><div class="stat-number" id="statEval">0</div><div class="stat-label">Documentos gerados</div></div>
     <div class="stat"><div class="stat-top"><span class="stat-label">Planos de intervenção</span><span class="stat-icon blue">✳</span></div><div class="stat-number" id="statPlans">0</div><div class="stat-label">Planos salvos</div></div>
     <div class="stat"><div class="stat-top"><span class="stat-label">Registros totais</span><span class="stat-icon green">▧</span></div><div class="stat-number" id="statRecords">0</div><div class="stat-label">Documentos e acompanhamentos</div></div>
@@ -343,7 +354,7 @@ tr:last-child td{border-bottom:0}
   <h2>Sobre a Autora</h2>
   <p class="subtitle">Conheça a trajetória acadêmica e profissional por trás da Plataforma Práxis.</p>
   
-  <div class="card" style="margin-bottom: 20px;">
+  <div class="card" style="margin-bottom: 16px;">
     <h3>Profª Bárbara Vitória</h3>
     <p>Educadora, pesquisadora e desenvolvedora de ferramentas pedagógicas voltadas à inclusão, à psicopedagogia e às metodologias ativas.</p>
     
@@ -356,7 +367,7 @@ tr:last-child td{border-bottom:0}
   <div class="grid two-col" style="margin-top: 0;">
     <div class="card">
       <h3>Licenciaturas</h3>
-      <ul style="padding-left: 20px; line-height: 1.8; color: var(--text);">
+      <ul style="padding-left: 18px; line-height: 1.8; color: var(--text); font-size: 13px;">
         <li>Licenciatura em Letras-Português (UNIPAMPA)</li>
         <li>História (Centro Universitário ETEP)</li>
         <li>Geografia (Centro Universitário ETEP)</li>
@@ -365,7 +376,7 @@ tr:last-child td{border-bottom:0}
 
     <div class="card">
       <h3>Especializações</h3>
-      <ul style="padding-left: 20px; line-height: 1.8; color: var(--text); font-size: 13px;">
+      <ul style="padding-left: 18px; line-height: 1.8; color: var(--text); font-size: 12px;">
         <li>Ciências Humanas e Sociais Aplicadas ao Mundo do Trabalho (UFPI)</li>
         <li>Currículo e prática docente nos anos iniciais do ensino fundamental (UFPI)</li>
         <li>Docência para a Educação Profissional e Tecnológica (IFAM)</li>
@@ -394,7 +405,7 @@ tr:last-child td{border-bottom:0}
       <div class="form-actions"><button class="btn primary" type="submit">Salvar aprendente</button><button class="btn" type="reset">Limpar</button></div>
     </form>
   </div>
-  <div class="section-head"><h3>Cadastros</h3><input id="peopleSearch" placeholder="Filtrar registros..." style="max-width:250px"></div>
+  <div class="section-head"><h3>Cadastros</h3><input id="peopleSearch" placeholder="Filtrar registros..." style="max-width:220px"></div>
   <div class="table-wrap"><table><thead><tr><th>Identificação</th><th>Faixa etária</th><th>Contexto</th><th>Objetivo</th><th>Ações</th></tr></thead><tbody id="peopleTable"></tbody></table></div>
 </section>
 
@@ -561,7 +572,7 @@ tr:last-child td{border-bottom:0}
 
 </div>
 
-<footer class="footer" style="padding: 0 32px 30px;">
+<footer class="footer">
   <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente.</div>
 </footer>
 
@@ -570,13 +581,11 @@ tr:last-child td{border-bottom:0}
 <div id="toast">Ação realizada com sucesso!</div>
 
 <script>
-// --- CÓDIGO UNIVERSAL DE ENTRADA ---
 const CODIGO_UNIVERSAL = "psi-praxis-2026";
 
 let activeKey = "";
 let state = { people: [], records: [], evaluations: [], interventions: [] };
 
-// Verificar autenticação ao carregar
 window.addEventListener('DOMContentLoaded', () => {
   const salvo = localStorage.getItem('praxis_token_ativo');
   if (salvo) {
@@ -587,7 +596,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Validar formulário de código de acesso
 document.getElementById('authForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const digitado = document.getElementById('accessCodeInput').value.trim().toLowerCase();
@@ -622,23 +630,19 @@ function salvarNovoCodigoPessoal() {
 
   let codigosSalvosExtras = JSON.parse(localStorage.getItem('praxis_codigos_extras')) || [];
 
-  // Validação: Verificar se o código já existe
   if (codigosSalvosExtras.includes(novoCod)) {
     alert('Este código já está em uso por outro usuário. Por favor, escolha um nome diferente.');
     return;
   }
 
-  // Adiciona à lista de códigos cadastrados
   codigosSalvosExtras.push(novoCod);
   localStorage.setItem('praxis_codigos_extras', JSON.stringify(codigosSalvosExtras));
 
-  // Migrar dados da chave atual para a nova chave pessoal
   localStorage.setItem('praxis_people_' + novoCod, JSON.stringify(state.people));
   localStorage.setItem('praxis_records_' + novoCod, JSON.stringify(state.records));
   localStorage.setItem('praxis_evaluations_' + novoCod, JSON.stringify(state.evaluations));
   localStorage.setItem('praxis_interventions_' + novoCod, JSON.stringify(state.interventions));
 
-  // Atualizar sessão ativa
   localStorage.setItem('praxis_token_ativo', novoCod);
   activeKey = novoCod;
   atualizarInfoPerfil(novoCod);
@@ -663,7 +667,6 @@ function logout() {
   location.reload();
 }
 
-// Carregar dados específicos do usuário logado
 function carregarDadosUsuario() {
   state.people = JSON.parse(localStorage.getItem('praxis_people_' + activeKey)) || [];
   state.records = JSON.parse(localStorage.getItem('praxis_records_' + activeKey)) || [];
@@ -672,7 +675,6 @@ function carregarDadosUsuario() {
   updateStats();
 }
 
-// Salvar dados específicos do usuário logado
 function saveData() {
   localStorage.setItem('praxis_people_' + activeKey, JSON.stringify(state.people));
   localStorage.setItem('praxis_records_' + activeKey, JSON.stringify(state.records));
@@ -873,7 +875,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
 
 document.getElementById('reportForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const name = document.getElementById('rName5' in window ? 'rName5' : 'rName').value;
+  const name = document.getElementById('rName').value;
   const type = document.getElementById('rType').value;
   const date = document.getElementById('rDate').value || new Date().toISOString().split('T')[0];
 
