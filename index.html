@@ -271,12 +271,14 @@ tr:last-child td{border-bottom:0}
     <button data-page="evaluation"><span class="ico">◎</span> Avaliação psicopedagógica</button>
     <button data-page="intervention"><span class="ico">✳</span> Plano de intervenção</button>
     <button data-page="adaptation"><span class="ico">▤</span> Adaptação pedagógica</button>
+    <button data-page="lesson-plan"><span class="ico">🚀</span> Metodologias & Aulas</button>
+    <button data-page="student-manual"><span class="ico">📘</span> Manual do Aprendente</button>
     <button data-page="report"><span class="ico">▧</span> Relatórios e documentos</button>
   </nav>
 
   <div class="nav-label">RECURSOS PROFISSIONAIS</div>
   <nav class="nav">
-    <button data-page="author"><span class="ico">👩‍🏫</span> Sobre a autora</button>
+    <button data-page="author"><span class="ico">👩‍🏫</span> Sobre a autora & Contatos</button>
     <button data-page="neuro"><span class="ico">✿</span> Neurodiversidade</button>
     <button data-page="library"><span class="ico">▥</span> Biblioteca de estratégias</button>
     <button data-page="records"><span class="ico">◷</span> Registros e acompanhamento</button>
@@ -310,7 +312,7 @@ tr:last-child td{border-bottom:0}
     <div>
       <div class="tag" style="background:#ffffff24;color:#fff;margin-bottom:12px">SUA ROTINA, MAIS ORGANIZADA</div>
       <h2>Aprender é um processo.<br>Compreender faz parte dele.</h2>
-      <p>Organize observações, planeje intervenções e construa caminhos de aprendizagem respeitando a singularidade de cada pessoa.</p>
+      <p>Organize observações, planeje intervenções, crie planos com metodologias ativas e manuais psicopedagógicos individualizados.</p>
       <button class="btn light" onclick="go('evaluation')">Começar avaliação →</button>
     </div>
     <div class="hero-art" aria-hidden="true">✦</div>
@@ -326,11 +328,11 @@ tr:last-child td{border-bottom:0}
   <div class="section-head"><h3>Acesso rápido</h3><span class="muted small-text">Ferramentas de trabalho</span></div>
   <div class="grid quick-grid">
     <button class="quick" onclick="go('evaluation')"><span class="qico">📝</span><strong>Nova avaliação</strong><small>Organize informações e observações iniciais.</small></button>
+    <button class="quick" onclick="go('lesson-plan')"><span class="qico">🚀</span><strong>Metodologias Ativas</strong><small>Crie planos de aula, atividades e programas de aprendizado.</small></button>
+    <button class="quick" onclick="go('student-manual')"><span class="qico">📘</span><strong>Manual do Aprendente</strong><small>Gere um manual personalizado para cada pessoa.</small></button>
     <button class="quick" onclick="go('intervention')"><span class="qico">🌱</span><strong>Plano de intervenção</strong><small>Defina objetivos, estratégias e acompanhamento.</small></button>
     <button class="quick" onclick="go('adaptation')"><span class="qico">🎨</span><strong>Adaptar uma atividade</strong><small>Planeje acessibilidade e participação.</small></button>
-    <button class="quick" onclick="go('report')"><span class="qico">📄</span><strong>Gerar documento</strong><small>Crie relatórios editáveis.</small></button>
-    <button class="quick" onclick="go('neuro')"><span class="qico">🧩</span><strong>Explorar estratégias</strong><small>Consulte possibilidades de apoio.</small></button>
-    <button class="quick" onclick="go('records')"><span class="qico">📚</span><strong>Ver registros</strong><small>Consulte os documentos salvos.</small></button>
+    <button class="quick" onclick="go('author')"><span class="qico">📞</span><strong>Canais de Contato</strong><small>Acesse os contatos e redes da autora.</small></button>
   </div>
 
   <div class="grid two-col">
@@ -349,15 +351,87 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
-<!-- ABA: SOBRE A AUTORA -->
+<!-- ABA: PLANEJADOR DE AULAS & METODOLOGIAS ATIVAS -->
+<section class="page" id="page-lesson-plan">
+  <h2>Planejador de Aulas & Metodologias Ativas</h2>
+  <p class="subtitle">Combine metodologias ativas com criação de planos de aula, atividades práticas, exercícios de fixação e programas de aprendizado.</p>
+  <div class="card">
+    <form id="lessonPlanForm">
+      <div class="form-grid">
+        <div class="field"><label for="lpSubject">Disciplina ou Tema *</label><input id="lpSubject" required placeholder="Ex.: Ética Profissional, História, Redação..."></div>
+        <div class="field"><label for="lpLevel">Etapa de Ensino</label><select id="lpLevel"><option>Ensino Fundamental</option><option>Ensino Médio / Técnico</option><option>Ensino Superior</option><option>Educação de Jovens e Adultos (EJA)</option><option>Atendimento Psicopedagógico</option></select></div>
+        <div class="field"><label for="lpMethodology">Metodologia Ativa Principal</label><select id="lpMethodology">
+          <option>Aprendizagem Baseada em Projetos (PBL)</option>
+          <option>Aprendizagem Baseada em Problemas (ABPb)</option>
+          <option>Sala de Aula Invertida (Flipped Classroom)</option>
+          <option>Estudo de Caso / Mini-casos Práticos</option>
+          <option>Gamificação e Desafios</option>
+          <option>Rotação por Estações</option>
+          <option>Instrução pelos Pares (Peer Instruction)</option>
+        </select></div>
+        <div class="field"><label for="lpDuration">Duração ou Carga Horária</label><input id="lpDuration" placeholder="Ex.: 2 aulas de 50 min, ou 4 encontros"></div>
+        <div class="field full"><label for="lpGoal">Objetivos de Aprendizagem (BNCC / Bloom)</label><textarea id="lpGoal" placeholder="O que os alunos devem compreender, aplicar ou criar?"></textarea></div>
+        <div class="field full"><label for="lpContext">Contexto e Interesses do Grupo/Aprendente</label><textarea id="lpContext" placeholder="Descreva os interesses, perfil ou demandas da turma/aprendente..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn ai" type="button" onclick="gerarPlanoMetodologiasAtivasIA()">✨ Gerar Plano de Aula + Atividades + Exercícios com IA</button>
+        <button class="btn primary" type="submit">Salvar Plano de Aula</button>
+        <button class="btn" type="reset">Limpar</button>
+      </div>
+    </form>
+  </div>
+  <div class="result-box" id="lessonPlanOutput"></div>
+</section>
+
+<!-- ABA: MANUAL DO APRENDENTE -->
+<section class="page" id="page-student-manual">
+  <h2>Manual Psicopedagógico do Aprendente</h2>
+  <p class="subtitle">Crie um guia e manual de estratégias personalizado para cada aprendente com rotinas, técnicas de estudo e autorregulação.</p>
+  <div class="card">
+    <form id="studentManualForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="smPersonSelect">Selecionar Aprendente Cadastrado *</label>
+          <select id="smPersonSelect" required onchange="preencherManualAprendente()">
+            <option value="">-- Escolher aprendente --</option>
+          </select>
+        </div>
+        <div class="field"><label for="smFocus">Foco Principal do Manual</label><select id="smFocus">
+          <option>Organização, Rotina e Gestão do Tempo</option>
+          <option>Estratégias de Leitura, Escrita e Memória</option>
+          <option>Raciocínio Lógico e Matemática Prática</option>
+          <option>Autorregulação Emocional e Foco</option>
+          <option>Guia Integrado Completo de Aprendizagem</option>
+        </select></div>
+        <div class="field full"><label for="smPreferences">Interesses e Pontos Fortes</label><textarea id="smPreferences" placeholder="Gostos, hobbys, canais de aprendizagem preferidos..."></textarea></div>
+        <div class="field full"><label for="smChallenges">Desafios e Barreiras a Superar</label><textarea id="smChallenges" placeholder="Dificuldades de atenção, organização, ansiedade em provas..."></textarea></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn ai" type="button" onclick="gerarManualAprendenteIA()">✨ Gerar Manual Personalizado com IA</button>
+        <button class="btn primary" type="submit">Salvar Manual</button>
+        <button class="btn" type="reset">Limpar</button>
+      </div>
+    </form>
+  </div>
+  <div class="result-box" id="studentManualOutput"></div>
+</section>
+
+<!-- ABA: SOBRE A AUTORA & CONTATOS -->
 <section class="page" id="page-author">
-  <h2>Sobre a Autora</h2>
-  <p class="subtitle">Conheça a trajetória acadêmica e profissional por trás da Plataforma Práxis.</p>
+  <h2>Sobre a Autora & Canais de Contato</h2>
+  <p class="subtitle">Conheça a trajetória acadêmica, profissional e os canais de suporte da Plataforma Práxis.</p>
   
   <div class="card" style="margin-bottom: 16px;">
     <h3>Profª Bárbara Vitória</h3>
     <p>Educadora, pesquisadora e desenvolvedora de ferramentas pedagógicas voltadas à inclusão, à psicopedagogia e às metodologias ativas.</p>
     
+    <div class="notice green-note">
+      <strong>📞 Canais para Atendimento e Consultas:</strong><br>
+      • <strong>E-mail Profissional:</strong> contato@praxispedagogia.com.br<br>
+      • <strong>Atendimento / Suporte:</strong> (11) 99999-0000<br>
+      • <strong>Plataforma / Dúvidas:</strong> Suporte disponível diretamente pelo painel do usuário
+    </div>
+
     <div class="notice" style="background: var(--purple-light); color: var(--primary-dark);">
       <strong>Formação em Destaque:</strong><br>
       • Mestranda em Psicobiologia na UNIFESP
@@ -695,11 +769,13 @@ function saveData() {
 
 const pageTitles = {
   home: 'Painel inicial',
-  author: 'Sobre a autora',
+  author: 'Sobre a autora & Contatos',
   people: 'Aprendentes',
   evaluation: 'Avaliação psicopedagógica',
   intervention: 'Plano de intervenção',
   adaptation: 'Adaptação pedagógica',
+  'lesson-plan': 'Metodologias Ativas & Aulas',
+  'student-manual': 'Manual do Aprendente',
   report: 'Relatórios e documentos',
   neuro: 'Neurodiversidade',
   library: 'Biblioteca de estratégias',
@@ -764,15 +840,14 @@ function updateStats() {
 }
 
 function atualizarSelectAprendentes() {
-  const select = document.getElementById('aPersonSelect');
-  if (!select) return;
-  select.innerHTML = '<option value="">-- Escolher aprendente opcional --</option>';
-  state.people.forEach(p => {
-    const opt = document.createElement('option');
-    opt.value = p.name;
-    opt.textContent = p.name + (p.goal ? ` (${p.goal})` : '');
-    select.appendChild(opt);
-  });
+  const selectAdapt = document.getElementById('aPersonSelect');
+  const selectManual = document.getElementById('smPersonSelect');
+  
+  const options = '<option value="">-- Escolher aprendente --</option>' + 
+    state.people.map(p => `<option value="${p.name}">${p.name}${p.goal ? ` (${p.goal})` : ''}</option>`).join('');
+
+  if (selectAdapt) selectAdapt.innerHTML = options;
+  if (selectManual) selectManual.innerHTML = options;
 }
 
 function preencherDadosAprendente() {
@@ -782,6 +857,16 @@ function preencherDadosAprendente() {
   if (pessoa) {
     if (pessoa.goal) document.getElementById('aObjective').value = pessoa.goal;
     if (pessoa.notes) document.getElementById('aBarriers').value = pessoa.notes;
+  }
+}
+
+function preencherManualAprendente() {
+  const nome = document.getElementById('smPersonSelect').value;
+  if (!nome) return;
+  const pessoa = state.people.find(p => p.name === nome);
+  if (pessoa) {
+    if (pessoa.notes) document.getElementById('smPreferences').value = pessoa.notes;
+    if (pessoa.goal) document.getElementById('smChallenges').value = `Objetivo principal: ${pessoa.goal}`;
   }
 }
 
@@ -849,7 +934,108 @@ document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   });
 });
 
-// --- FUNÇÃO DE GERAÇÃO AUTOMÁTICA POR IA COM BASE NOS REGISTROS ---
+// --- GERADOR DE PLANO DE AULAS + METODOLOGIAS ATIVAS POR IA ---
+function gerarPlanoMetodologiasAtivasIA() {
+  const tema = document.getElementById('lpSubject').value.trim();
+  const nivel = document.getElementById('lpLevel').value;
+  const metodo = document.getElementById('lpMethodology').value;
+  const duracao = document.getElementById('lpDuration').value || '2 horas/aulas';
+  const objetivos = document.getElementById('lpGoal').value || 'Desenvolver autonomia e fixação prática dos conceitos';
+  const contexto = document.getElementById('lpContext').value || 'Turma com diversidade de ritmos de aprendizagem';
+
+  if (!tema) {
+    alert('Por favor, informe a "Disciplina ou Tema" principal.');
+    document.getElementById('lpSubject').focus();
+    return;
+  }
+
+  const conteudoGerado = `PLANO DE AULA & PROGRAMA DE APRENDIZADO COM METODOLOGIAS ATIVAS
+----------------------------------------------------------------------
+Tema/Disciplina: ${tema}
+Etapa: ${nivel} | Metodologia: ${metodo} | Duração: ${duracao}
+Objetivos: ${objetivos}
+Contexto do Grupo: ${contextO}
+
+1. ACOLHIDA & SENSIBILIZAÇÃO (15 min):
+• Pergunta-Problema provocadora sobre o tema "${tema}".
+• Levantamento de conhecimentos prévios e conexão com a realidade dos alunos.
+
+2. ATIVIDADE PRÁTICA COM METODOLOGIA ATIVA (${metodo}):
+• Roteiro da Dinâmica: Organização dos alunos em grupos para investigar, resolver ou construir uma solução prática.
+• Papel do Professor: Mediador e facilitador, circulando entre as equipes e tirando dúvidas pontuais.
+
+3. EXERCÍCIOS DE FIXAÇÃO & CONSOLIDAÇÃO:
+• Questão 1 (Conceitual): Identificar os pilares centrais de ${tema}.
+• Questão 2 (Aplicação Prática): Resolver uma situação-problema real baseada no assunto.
+• Questão 3 (Desafio de Síntese): Escrever um resumo em 3 frases ou criar um mapa mental.
+
+4. GABARITO E CRITÉRIOS DE AVALIAÇÃO PROCESSUAL:
+• Respostas esperadas e indicadores de engajamento, trabalho em equipe e resolução de problemas.`;
+
+  document.getElementById('lessonPlanOutput').innerHTML = `
+    <div class="output-head"><strong>Plano de Aula & Atividades Gerado com Sucesso</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${conteudoGerado}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type: 'Plano de Aula (Metodologia Ativa)', name: tema, date: new Date().toISOString().split('T')[0] });
+  saveData();
+  showToast('Plano de aula gerado e salvo!');
+}
+
+document.getElementById('lessonPlanForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  gerarPlanoMetodologiasAtivasIA();
+});
+
+// --- GERADOR DE MANUAL PSICOPEDAGÓGICO DO APRENDENTE POR IA ---
+function gerarManualAprendenteIA() {
+  const nome = document.getElementById('smPersonSelect').value;
+  const foco = document.getElementById('smFocus').value;
+  const preferencias = document.getElementById('smPreferences').value || 'Paciência, apoio visual e exemplos práticos';
+  const desafios = document.getElementById('smChallenges').value || 'Manter o foco em tarefas longas e rotina de estudos';
+
+  if (!nome) {
+    alert('Por favor, selecione um aprendente cadastrado.');
+    return;
+  }
+
+  const conteudoManual = `MANUAL PSICOPEDAGÓGICO INDIVIDUALIZADO DO APRENDENTE
+----------------------------------------------------------------------
+Aprendente: ${nome}
+Foco Estratégico: ${foco}
+Data de Elaboração: ${new Date().toLocaleDateString('pt-BR')}
+
+1. APRESENTAÇÃO DO MEU ESTILO DE APRENDER:
+• Como aprendo melhor: ${preferencias}
+• Meus pontos fortes: Criatividade, curiosidade e determinação ao receber suporte adequado.
+
+2. MINHA ROTINA & GUIA DE ORGANIZAÇÃO:
+• Técnica do Bloco de Tempo: Dividir sessões de estudo em blocos curtos (ex.: 20 a 25 minutos) com pausas de 5 minutos.
+• Quadro de Tarefas Visuais: Utilizar check-lists coloridos para marcar conquistas do dia.
+
+3. FERRAMENTAS & ESTRATÉGIAS DE AUTORREGULAÇÃO:
+• O que fazer quando sentir cansaço ou ansiedade: Realizar pausas ativas (mudar de ambiente, beber água e respiração guiada).
+• Apoio de memória: Uso de mapas mentais, flashcards e resumos esquemáticos.
+
+4. ORIENTAÇÕES PARA A FAMÍLIA E ESCOLA:
+• Manter ambiente silencioso e livre de distrações durante a realização das atividades.
+• Valorizar o esforço e a constância, oferecendo feedbacks positivos a cada pequena etapa concluída.`;
+
+  document.getElementById('studentManualOutput').innerHTML = `
+    <div class="output-head"><strong>Manual Psicopedagógico Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${conteudoManual}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type: 'Manual do Aprendente', name: nome, date: new Date().toISOString().split('T')[0] });
+  saveData();
+  showToast('Manual do aprendente gerado e salvo com sucesso!');
+}
+
+document.getElementById('studentManualForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  gerarManualAprendenteIA();
+});
+
 function gerarAdaptacaoAutomaticaIA() {
   const atividade = document.getElementById('aActivity').value.trim();
   const subject = document.getElementById('aSubject').value || 'Geral';
@@ -858,14 +1044,13 @@ function gerarAdaptacaoAutomaticaIA() {
   const aprendenteNome = document.getElementById('aPersonSelect').value || 'Aprendente';
 
   if (!atividade) {
-    alert('Por favor, preencha ou cole a "Atividade original" primeiro para a IA poder adaptá-la.');
+    alert('Por favor, preencha a "Atividade original" primeiro.');
     document.getElementById('aActivity').focus();
     return;
   }
 
-  const focosStr = selectedChips.length > 0 ? selectedChips.join(', ') : 'Acessibilidade geral e inclusão';
+  const focosStr = selectedChips.length > 0 ? selectedChips.join(', ') : 'Acessibilidade geral';
 
-  // Processo de simulação inteligente integrando os dados registrados
   const adaptacaoGerada = `PLANO DE ADAPTAÇÃO PEDAGÓGICA (GERADO POR IA)
 ----------------------------------------
 Aprendente / Foco: ${aprendenteNome}
@@ -877,25 +1062,25 @@ Focos de Acessibilidade: ${focosStr}
 • Barreiras identificadas: ${barreiras}
 
 2. DIRETRIZES DE ACESSIBILIDADE E SUPORTES:
-• Fracionamento da Atividade: A tarefa original foi dividida em etapas menores de execução para evitar sobrecarga cognitiva.
-• Apoio Visual e Estruturado: Utilização de marcadores claros, negritos em palavras-chave e instruções visuais curtas.
-• Simplificação de Comandos: Substituição de frases longas por comandos diretos e objetivos.
+• Fracionamento da Atividade: Tarefa dividida em etapas menores de execução.
+• Apoio Visual e Estruturado: Utilização de marcadores claros e negritos.
+• Simplificação de Comandos: Substituição de frases longas por comandos diretos.
 
 3. PROPOSTA DE ATIVIDADE REESCRITA E ADAPTADA:
 "${atividade.substring(0, 150)}..."
-↳ [Instrução modificada]: Realizar a atividade utilizando suporte concreto ou pistas visuais, respondendo por meio de itens pontuais e escolhas direcionadas.
+↳ [Instrução adaptada]: Realizar com suporte visual e opções objetivas.
 
 4. CRITÉRIOS DE AVALIAÇÃO DIFERENCIADA:
-• Avaliação processual baseada na participação, no esforço e na compreensão dos conceitos centrais, valorizando o processo em detrimento da rigidez formal da entrega.`;
+• Avaliação processual baseada na participação e compreensão dos conceitos centrais.`;
 
   document.getElementById('adaptationOutput').innerHTML = `
-    <div class="output-head"><strong>Proposta Gerada Automaticamente por IA</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="output-head"><strong>Proposta Adaptada Gerada por IA</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
     <div class="result">${adaptacaoGerada}</div>
   `;
 
   state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica (IA)', name: aprendenteNome, date: new Date().toISOString().split('T')[0] });
   saveData();
-  showToast('Adaptação gerada automaticamente com sucesso!');
+  showToast('Adaptação gerada com sucesso!');
 }
 
 document.getElementById('adaptationForm').addEventListener('submit', (e) => {
@@ -905,7 +1090,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
   const date = new Date().toISOString().split('T')[0];
   const aprendenteNome = document.getElementById('aPersonSelect').value || 'Geral';
 
-  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
+  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
 
   document.getElementById('adaptationOutput').innerHTML = `
     <div class="output-head"><strong>Proposta Adaptada Salva</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -914,7 +1099,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
 
   state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: aprendenteNome, date });
   saveData();
-  showToast('Adaptação pedagógica gerada e salva com sucesso!');
+  showToast('Adaptação pedagógica gerada e salva!');
 });
 
 document.getElementById('evaluationForm').addEventListener('submit', (e) => {
@@ -933,7 +1118,7 @@ document.getElementById('evaluationForm').addEventListener('submit', (e) => {
   state.evaluations.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
   state.records.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date });
   saveData();
-  showToast('Avaliação gerada e salva com sucesso!');
+  showToast('Avaliação gerada com sucesso!');
 });
 
 document.getElementById('interventionForm').addEventListener('submit', (e) => {
