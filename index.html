@@ -30,6 +30,20 @@ body{
 }
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
+
+/* Tela de Bloqueio / Código de Acesso */
+#auth-screen {
+  position: fixed; inset: 0; background: linear-gradient(135deg, #362878, #5141b5);
+  z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.auth-card {
+  background: white; padding: 40px; border-radius: 20px; width: min(420px, 100%);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
+}
+.auth-card h2 { margin-top: 0; color: var(--primary); font-size: 24px; }
+.auth-card p { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+.auth-card input { margin-bottom: 15px; text-align: center; font-size: 16px; letter-spacing: 1px; font-weight: bold; text-transform: lowercase; }
+
 .app{min-height:100vh}
 .sidebar{
   width:260px;position:fixed;inset:0 auto 0 0;z-index:20;
@@ -214,6 +228,21 @@ tr:last-child td{border-bottom:0}
 </style>
 </head>
 <body>
+
+<!-- TELA DE BLOQUEIO / CÓDIGO DE ACESSO -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <h2>Práxis · Acesso Restrito</h2>
+    <p>Digite o seu código de acesso exclusivo ou o código geral para entrar.</p>
+    <form id="authForm">
+      <input type="text" id="accessCodeInput" placeholder="ex: psi-praxis-2026" required>
+      <button type="submit" class="btn primary" style="width:100%; justify-content:center; padding: 12px;">Entrar na Plataforma</button>
+    </form>
+    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 12px; display:none;">Código inválido. Verifique as informações fornecidas.</div>
+    <div style="margin-top: 20px; font-size: 11px; color: var(--muted);">Dúvidas sobre o acesso? <a href="#" target="_blank" style="color: var(--primary); text-decoration: underline;">Suporte</a></div>
+  </div>
+</div>
+
 <div class="app">
 <div class="mobile-overlay" id="overlay" onclick="toggleMenu(false)"></div>
 
@@ -236,6 +265,7 @@ tr:last-child td{border-bottom:0}
 
   <div class="nav-label">RECURSOS PROFISSIONAIS</div>
   <nav class="nav">
+    <button data-page="author"><span class="ico">👩‍🏫</span> Sobre a autora</button>
     <button data-page="neuro"><span class="ico">✿</span> Neurodiversidade</button>
     <button data-page="library"><span class="ico">▥</span> Biblioteca de estratégias</button>
     <button data-page="records"><span class="ico">◷</span> Registros e acompanhamento</button>
@@ -247,7 +277,7 @@ tr:last-child td{border-bottom:0}
       <strong>Profª Bárbara Vitória</strong>
       <small>Espaço profissional</small>
     </div></div>
-    <div class="small-text muted" style="padding:8px">Práxis · Versão 2.0</div>
+    <button class="btn small danger" style="width:100%; margin-top:10px;" onclick="logout()">Sair do Acesso</button>
   </div>
 </aside>
 
@@ -308,6 +338,47 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<!-- NOVA ABA: SOBRE A AUTORA -->
+<section class="page" id="page-author">
+  <h2>Sobre a Autora</h2>
+  <p class="subtitle">Conheça a trajetória acadêmica e profissional por trás da Plataforma Práxis.</p>
+  
+  <div class="card" style="margin-bottom: 20px;">
+    <h3>Profª Bárbara Vitória</h3>
+    <p>Educadora, pesquisadora e desenvolvedora de ferramentas pedagógicas voltadas à inclusão, à psicopedagogia e às metodologias ativas.</p>
+    
+    <div class="notice" style="background: var(--purple-light); color: var(--primary-dark);">
+      <strong>Formação em Destaque:</strong><br>
+      • Mestranda em Psicobiologia na UNIFESP
+    </div>
+  </div>
+
+  <div class="grid two-col" style="margin-top: 0;">
+    <div class="card">
+      <h3>Licenciaturas</h3>
+      <ul style="padding-left: 20px; line-height: 1.8; color: var(--text);">
+        <li>Licenciatura em Letras-Português (UNIPAMPA)</li>
+        <li>História (Centro Universitário ETEP)</li>
+        <li>Geografia (Centro Universitário ETEP)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Especializações</h3>
+      <ul style="padding-left: 20px; line-height: 1.8; color: var(--text); font-size: 13px;">
+        <li>Ciências Humanas e Sociais Aplicadas ao Mundo do Trabalho (UFPI)</li>
+        <li>Currículo e prática docente nos anos iniciais do ensino fundamental (UFPI)</li>
+        <li>Docência para a Educação Profissional e Tecnológica (IFAM)</li>
+        <li>Língua Brasileira de Sinais - Libras (UNICENTRO)</li>
+        <li>Psicopedagogia Clínica e Institucional (IMES)</li>
+        <li>Programação Neurolinguística - PNL (IMES)</li>
+        <li>Linguística Aplicada e o Estudo das Línguas (IMES)</li>
+        <li>Educação em Direitos Humanos (UFMS)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="page" id="page-people">
   <h2>Aprendentes</h2><p class="subtitle">Cadastre e acompanhe o percurso de aprendizagem.</p>
   <div class="card">
@@ -325,7 +396,6 @@ tr:last-child td{border-bottom:0}
   </div>
   <div class="section-head"><h3>Cadastros</h3><input id="peopleSearch" placeholder="Filtrar registros..." style="max-width:250px"></div>
   <div class="table-wrap"><table><thead><tr><th>Identificação</th><th>Faixa etária</th><th>Contexto</th><th>Objetivo</th><th>Ações</th></tr></thead><tbody id="peopleTable"></tbody></table></div>
-  <div class="notice warn">Os dados ficam neste navegador. Evite armazenar informações sensíveis neste protótipo sem segurança adequada e avaliação dos requisitos da LGPD.</div>
 </section>
 
 <section class="page" id="page-evaluation">
@@ -435,14 +505,12 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="reportOutput"></div>
 </section>
 
-<!-- Novas Páginas de Recursos para Navegação Completa -->
 <section class="page" id="page-neuro">
   <h2>Neurodiversidade</h2>
   <p class="subtitle">Estratégias de acolhimento e compreensão das singularidades cognitivas.</p>
   <div class="card">
     <h3>Orientações e Práticas Inclusivas</h3>
     <p>A neurodiversidade compreende variações no funcionamento cerebral humano como parte natural da diversidade da espécie. O trabalho psicopedagógico foca na identificação de barreiras ambientais e na construção de suportes que favoreçam a autonomia e a aprendizagem.</p>
-    <div class="notice">Dica: Utilize a aba "Adaptação pedagógica" para planejar recursos específicos baseados nas necessidades de cada aprendente.</div>
   </div>
 </section>
 
@@ -450,21 +518,9 @@ tr:last-child td{border-bottom:0}
   <h2>Biblioteca de estratégias</h2>
   <p class="subtitle">Consulta rápida de metodologias e abordagens de apoio.</p>
   <div class="grid library-grid">
-    <div class="resource">
-      <div class="resource-icon">📌</div>
-      <h3>Suportes Visuais</h3>
-      <p>Utilização de rotinas visuais, quadros de tarefas e organizadores gráficos para previsibilidade e autonomia.</p>
-    </div>
-    <div class="resource">
-      <div class="resource-icon">⏱️</div>
-      <h3>Gestão do Tempo</h3>
-      <p>Uso de temporizadores visuais e fracionamento de tarefas longas em etapas menores.</p>
-    </div>
-    <div class="resource">
-      <div class="resource-icon">🎯</div>
-      <h3>Aprendizagem Ativa</h3>
-      <p>Estratégias baseadas na resolução de problemas, manipulação de materiais concretos e gamificação.</p>
-    </div>
+    <div class="resource"><div class="resource-icon">📌</div><h3>Suportes Visuais</h3><p>Utilização de rotinas visuais e organizadores gráficos.</p></div>
+    <div class="resource"><div class="resource-icon">⏱️</div><h3>Gestão do Tempo</h3><p>Uso de temporizadores visuais e fracionamento de etapas.</p></div>
+    <div class="resource"><div class="resource-icon">🎯</div><h3>Aprendizagem Ativa</h3><p>Resolução de problemas e materiais concretos.</p></div>
   </div>
 </section>
 
@@ -489,13 +545,12 @@ tr:last-child td{border-bottom:0}
   <h2>Privacidade e Configurações</h2>
   <p class="subtitle">Gerenciamento de dados e conformidade local.</p>
   <div class="card">
-    <h3>Armazenamento Local</h3>
-    <p>Todos os registros cadastrados na plataforma são salvos exclusivamente no armazenamento local (`localStorage`) do seu navegador. Nenhum dado é enviado a servidores externos.</p>
-    <div class="notice green-note">Plataforma em conformidade com o uso offline e seguro para anotações preliminares.</div>
+    <h3>Armazenamento e Segurança</h3>
+    <p>Acesso liberado mediante código de chave única de cliente ou código mestre.</p>
   </div>
 </section>
 
-</div> <!-- Fim .content -->
+</div>
 
 <footer class="footer" style="padding: 0 32px 30px;">
   <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente.</div>
@@ -505,9 +560,47 @@ tr:last-child td{border-bottom:0}
 </div>
 <div id="toast">Ação realizada com sucesso!</div>
 
-<!-- SCRIPT DE FUNCIONALIDADE COMPLETA -->
 <script>
-// Estado da Aplicação e Manipulação de Dados LocalStorage
+// --- LISTA DE CÓDIGOS VÁLIDOS (INCLUINDO O CÓDIGO MESTRE) ---
+const codigosValidos = [
+  "psi-praxis-2026", // Código Geral / Mestre
+  "BARBARA-CLIENTE-01",
+  "PSICO-ESP-1234",
+  "PROFESSORA-BARBARA"
+];
+
+// Verificar se o usuário já inseriu um código válido anteriormente neste navegador
+window.addEventListener('DOMContentLoaded', () => {
+  const salvo = localStorage.getItem('praxis_token_ativo');
+  if (salvo && codigosValidos.map(c => c.toLowerCase()).includes(salvo)) {
+    document.getElementById('auth-screen').style.display = 'none';
+  }
+  updateStats();
+});
+
+// Validar formulário de código de acesso
+document.getElementById('authForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const digitado = document.getElementById('accessCodeInput').value.trim().toLowerCase();
+  const erroEl = document.getElementById('authError');
+
+  const codigosMinusculos = codigosValidos.map(c => c.toLowerCase());
+
+  if (codigosMinusculos.includes(digitado)) {
+    localStorage.setItem('praxis_token_ativo', digitado);
+    document.getElementById('auth-screen').style.display = 'none';
+    showToast('Acesso liberado com sucesso!');
+  } else {
+    erroEl.style.display = 'block';
+  }
+});
+
+function logout() {
+  localStorage.removeItem('praxis_token_ativo');
+  location.reload();
+}
+
+// Estado e Manipulação da Aplicação
 let state = {
   people: JSON.parse(localStorage.getItem('praxis_people')) || [],
   records: JSON.parse(localStorage.getItem('praxis_records')) || [],
@@ -523,9 +616,9 @@ function saveData() {
   updateStats();
 }
 
-// Navegação entre Abas
 const pageTitles = {
   home: 'Painel inicial',
+  author: 'Sobre a autora',
   people: 'Aprendentes',
   evaluation: 'Avaliação psicopedagógica',
   intervention: 'Plano de intervenção',
@@ -554,14 +647,12 @@ function go(pageId) {
   toggleMenu(false);
 }
 
-// Eventos de clique no menu lateral
 document.querySelectorAll('.nav button[data-page]').forEach(btn => {
   btn.addEventListener('click', () => {
     go(btn.getAttribute('data-page'));
   });
 });
 
-// Menu Mobile
 function toggleMenu(forceState) {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
@@ -575,7 +666,6 @@ function toggleMenu(forceState) {
   }
 }
 
-// Toast de Notificação
 function showToast(msg) {
   const toast = document.getElementById('toast');
   toast.textContent = msg;
@@ -583,20 +673,19 @@ function showToast(msg) {
   setTimeout(() => { toast.style.display = 'none'; }, 3000);
 }
 
-// Atualizar Estatísticas e Tabelas
 function updateStats() {
   document.getElementById('statPeople').textContent = state.people.length;
   document.getElementById('statEval').textContent = state.evaluations.length;
   document.getElementById('statPlans').textContent = state.interventions.length;
   document.getElementById('statRecords').textContent = state.records.length;
-  document.getElementById('peopleCount').textContent = state.people.length;
+  const pCount = document.getElementById('peopleCount');
+  if(pCount) pCount.textContent = state.people.length;
 
   renderPeopleTable();
   renderRecordsTable();
   renderRecentRecords();
 }
 
-// Cadastro de Aprendentes
 document.getElementById('peopleForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const newPerson = {
@@ -615,6 +704,7 @@ document.getElementById('peopleForm').addEventListener('submit', (e) => {
 
 function renderPeopleTable(filter = '') {
   const tbody = document.getElementById('peopleTable');
+  if(!tbody) return;
   tbody.innerHTML = '';
   const filtered = state.people.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.goal.toLowerCase().includes(filter.toLowerCase()));
   
@@ -642,11 +732,11 @@ function deletePerson(id) {
   showToast('Aprendente removido.');
 }
 
-document.getElementById('peopleSearch').addEventListener('input', (e) => {
-  renderPeopleTable(e.target.value);
-});
+const pSearch = document.getElementById('peopleSearch');
+if(pSearch) {
+  pSearch.addEventListener('input', (e) => { renderPeopleTable(e.target.value); });
+}
 
-// Chips de Acessibilidade (Adaptação Pedagógica)
 let selectedChips = [];
 document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   chip.addEventListener('click', () => {
@@ -660,31 +750,13 @@ document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   });
 });
 
-// Formulários e Geração de Documentos / Saídas
 document.getElementById('evaluationForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const name = document.getElementById('eName').value;
   const date = document.getElementById('eDate').value || new Date().toISOString().split('T')[0];
   const demand = document.getElementById('eDemand').value;
   
-  const content = `AVALIAÇÃO PSICOPEDAGÓGICA
-----------------------------------------
-Identificação: ${name}
-Data: ${date}
-Fonte: ${document.getElementById('eSource').value}
-Demanda Principal: ${demand}
-
-Histórico Relevante:
-${document.getElementById('eHistory').value || 'Não informado'}
-
-Potencialidades e Interesses:
-${document.getElementById('eStrengths').value || 'Não informado'}
-
-Dificuldades Observadas:
-${document.getElementById('eDifficulties').value || 'Não informado'}
-
-Próximos Passos:
-${document.getElementById('eNext').value || 'Não informado'}`;
+  const content = `AVALIAÇÃO PSICOPEDAGÓGICA\n----------------------------------------\nIdentificação: ${name}\nData: ${date}\nFonte: ${document.getElementById('eSource').value}\nDemanda Principal: ${demand}\n\nHistórico Relevante:\n${document.getElementById('eHistory').value || 'Não informado'}\n\nPotencialidades e Interesses:\n${document.getElementById('eStrengths').value || 'Não informado'}\n\nDificuldades Observadas:\n${document.getElementById('eDifficulties').value || 'Não informado'}\n\nPróximos Passos:\n${document.getElementById('eNext').value || 'Não informado'}`;
 
   document.getElementById('evaluationOutput').innerHTML = `
     <div class="output-head"><strong>Resultado Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -703,14 +775,7 @@ document.getElementById('interventionForm').addEventListener('submit', (e) => {
   const date = new Date().toISOString().split('T')[0];
   const goal = document.getElementById('iGoal').value;
 
-  const content = `PLANO DE INTERVENÇÃO
-----------------------------------------
-Aprendente: ${name}
-Período: ${document.getElementById('iPeriod').value || 'Não informado'}
-Objetivo Prioritário: ${goal}
-Estratégias: ${document.getElementById('iStrategy').value || 'Não informado'}
-Frequência: ${document.getElementById('iFrequency').value || 'Não informado'}
-Indicadores de Progresso: ${document.getElementById('iIndicators').value || 'Não informado'}`;
+  const content = `PLANO DE INTERVENÇÃO\n----------------------------------------\nAprendente: ${name}\nPeríodo: ${document.getElementById('iPeriod').value || 'Não informado'}\nObjetivo Prioritário: ${goal}\nEstratégias: ${document.getElementById('iStrategy').value || 'Não informado'}\nFrequência: ${document.getElementById('iFrequency').value || 'Não informado'}\nIndicadores de Progresso: ${document.getElementById('iIndicators').value || 'Não informado'}`;
 
   document.getElementById('interventionOutput').innerHTML = `
     <div class="output-head"><strong>Plano Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -729,20 +794,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
   const activity = document.getElementById('aActivity').value;
   const date = new Date().toISOString().split('T')[0];
 
-  const content = `ADAPTAÇÃO PEDAGÓGICA
-----------------------------------------
-Área/Disciplina: ${subject}
-Etapa: ${document.getElementById('aLevel').value}
-Focos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}
-
-Atividade Original:
-${activity}
-
-Objetivo de Aprendizagem:
-${document.getElementById('aObjective').value || 'Não informado'}
-
-Barreiras Identificadas:
-${document.getElementById('aBarriers').value || 'Não informado'}`;
+  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nÁrea/Disciplina: ${subject}\nEtapa: ${document.getElementById('aLevel').value}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
 
   document.getElementById('adaptationOutput').innerHTML = `
     <div class="output-head"><strong>Proposta Adaptada</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -760,18 +812,7 @@ document.getElementById('reportForm').addEventListener('submit', (e) => {
   const type = document.getElementById('rType').value;
   const date = document.getElementById('rDate').value || new Date().toISOString().split('T')[0];
 
-  const content = `${type.toUpperCase()}
-----------------------------------------
-Identificação: ${name}
-Data: ${date}
-Destinatário: ${document.getElementById('rAudience').value || 'Não informado'}
-Finalidade: ${document.getElementById('rPurpose').value || 'Não informado'}
-
-Conteúdo:
-${document.getElementById('rBody').value}
-
-Recomendações:
-${document.getElementById('rRecommendations').value || 'Nenhuma'}`;
+  const content = `${type.toUpperCase()}\n----------------------------------------\nIdentificação: ${name}\nData: ${date}\nDestinatário: ${document.getElementById('rAudience').value || 'Não informado'}\nFinalidade: ${document.getElementById('rPurpose').value || 'Não informado'}\n\nConteúdo:\n${document.getElementById('rBody').value}\n\nRecomendações:\n${document.getElementById('rRecommendations').value || 'Nenhuma'}`;
 
   document.getElementById('reportOutput').innerHTML = `
     <div class="output-head"><strong>Documento Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -783,7 +824,6 @@ ${document.getElementById('rRecommendations').value || 'Nenhuma'}`;
   showToast('Relatório gerado e salvo!');
 });
 
-// Renderizar Registros nas Tabelas
 function renderRecordsTable() {
   const tbody = document.getElementById('allRecordsTable');
   if (!tbody) return;
@@ -834,16 +874,9 @@ function deleteRecord(id) {
 function clearAllData() {
   if (confirm('Deseja realmente apagar todos os dados salvos neste dispositivo?')) {
     localStorage.clear();
-    state = { people: [], records: [], evaluations: [], interventions: [] };
-    updateStats();
-    showToast('Dados limpos com sucesso.');
+    location.reload();
   }
 }
-
-// Inicializar contadores e tabelas ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-  updateStats();
-});
 </script>
 </body>
 </html>
