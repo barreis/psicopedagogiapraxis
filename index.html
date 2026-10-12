@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#263b67">
+<title>Práxis — Apoio Psicopedagógico</title>
+<style>
+:root{--navy:#263b67;--blue:#4567a8;--teal:#16877b;--cream:#f7f8fc;--ink:#20283a;--muted:#68738a;--line:#dfe4ef;--white:#fff;--soft:#eaf0ff;--gold:#fff2ce;--shadow:0 10px 30px #263b6712}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:linear-gradient(120deg,#263b67,#3d679a);color:#fff;padding:28px max(20px,calc((100% - 1180px)/2)) 24px}.brand{display:flex;gap:13px;align-items:center}.logo{width:48px;height:48px;border-radius:14px;background:#ffffff20;display:grid;place-items:center;font-size:25px}.top h1{font-size:clamp(1.6rem,4vw,2.25rem);line-height:1.15;margin:0}.top p{margin:5px 0 0;color:#e1e9ff}.topnote{margin-top:18px;border:1px solid #ffffff44;background:#ffffff12;padding:10px 13px;border-radius:12px;font-size:.92rem}.shell{max-width:1180px;margin:auto;padding:22px 18px 55px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tab{border:1px solid var(--line);background:white;color:var(--navy);padding:10px 15px;border-radius:10px;font-weight:650}.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);grid-column:span 12}.half{grid-column:span 6}.third{grid-column:span 4}.card h2,.card h3{color:var(--navy);margin:0 0 10px;line-height:1.25}.card h2{font-size:1.35rem}.card h3{font-size:1.06rem}.muted{color:var(--muted)}.field{display:flex;flex-direction:column;gap:5px;margin:10px 0}.field label{font-weight:650;font-size:.94rem}.field small{color:var(--muted)}input,select,textarea{width:100%;padding:10px 12px;border:1px solid #cbd3e3;border-radius:9px;background:white;color:var(--ink)}textarea{min-height:95px;resize:vertical}input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid #91b7ff;outline-offset:2px}.btn{border:0;background:var(--blue);color:#fff;padding:10px 15px;border-radius:9px;font-weight:700}.btn.secondary{background:#edf1fa;color:var(--navy);border:1px solid var(--line)}.btn.teal{background:var(--teal)}.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.pill{display:inline-block;background:var(--soft);color:var(--navy);padding:4px 9px;border-radius:99px;font-size:.8rem;font-weight:700;margin:3px 4px 3px 0}.notice{padding:12px 14px;border-left:4px solid #d8a32e;background:var(--gold);border-radius:8px;margin:12px 0}.success{padding:12px 14px;background:#e5f6f1;border-left:4px solid var(--teal);border-radius:8px;margin:12px 0}.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.check{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff}.check input{width:auto;margin-top:5px}.result{border:1px solid var(--line);border-radius:12px;padding:15px;margin:12px 0;background:#fbfcff}.result h3{margin-bottom:7px}.result ul{padding-left:21px;margin:7px 0}.result li{margin:4px 0}.metric{font-size:1.8rem;color:var(--teal);font-weight:800}.footer{margin-top:25px;text-align:center;color:var(--muted);font-size:.85rem}.hide{display:none!important}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.divider{border:0;border-top:1px solid var(--line);margin:18px 0}.printonly{display:none}
+@media(max-width:720px){.half,.third{grid-column:span 12}.two,.checklist{grid-template-columns:1fr}.shell{padding:15px 12px 35px}.card{padding:16px}.tab{flex:1 1 42%;padding:9px}.top{padding:23px 16px}.brand{align-items:flex-start}}
+@media print{body{background:white}.top{background:white;color:#111;padding:0}.top p,.topnote,.tabs,.btnrow,.footer{display:none!important}.shell{max-width:none;padding:0}.panel{display:none!important}.panel.active{display:block!important}.card{box-shadow:none;break-inside:avoid}.printonly{display:block}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand"><div class="logo" aria-hidden="true">✦</div><div><h1>Práxis</h1><p>Planejamento psicopedagógico e acessibilidade pedagógica</p></div></div>
+ <div class="topnote"><strong>Importante:</strong> esta ferramenta organiza observações e sugere estratégias educacionais. Não realiza diagnóstico clínico, não substitui avaliação profissional, instrumentos validados, protocolos oficiais ou encaminhamento quando necessário.</div>
+</header>
+<main class="shell">
+<nav class="tabs" aria-label="Áreas do programa">
+ <button class="tab active" data-tab="avaliacao">1. Avaliação inicial</button>
+ <button class="tab" data-tab="intervencao">2. Plano de intervenção</button>
+ <button class="tab" data-tab="adaptacao">3. Adaptar aula/material</button>
+ <button class="tab" data-tab="biblioteca">4. Guia de aprendizagem</button>
+ <button class="tab" data-tab="sobre">Sobre a criadora</button>
+</nav>
+
+<section id="avaliacao" class="panel active">
+<div class="grid">
+ <article class="card">
+  <h2>Registro de observação psicopedagógica</h2>
+  <p class="muted">Use para levantar hipóteses educacionais, descrever barreiras e planejar os próximos passos — sem rotular o estudante.</p>
+  <div class="two">
+   <div class="field"><label for="student">Identificação (opcional ou código)</label><input id="student" placeholder="Ex.: Estudante A-01"></div>
+   <div class="field"><label for="age">Faixa etária</label><select id="age"><option>Educação infantil</option><option>Ensino fundamental — anos iniciais</option><option>Ensino fundamental — anos finais</option><option>Ensino médio</option><option>Educação profissional/técnica</option><option>Ensino superior</option><option>Adulto em aprendizagem</option></select></div>
+  </div>
+  <div class="two">
+   <div class="field"><label for="context">Contexto e pontos fortes</label><textarea id="context" placeholder="Interesses, habilidades, línguas usadas, estratégias que já funcionam..."></textarea></div>
+   <div class="field"><label for="concern">Dificuldade observada e impacto</label><textarea id="concern" placeholder="Descreva o que acontece, em quais tarefas e com que frequência."></textarea></div>
+  </div>
+  <h3>Áreas que merecem investigação</h3>
+  <div class="checklist" id="areas">
+   <label class="check"><input type="checkbox" value="Leitura e fluência"> Leitura, decodificação e fluência</label>
+   <label class="check"><input type="checkbox" value="Compreensão leitora"> Compreensão leitora</label>
+   <label class="check"><input type="checkbox" value="Escrita e ortografia"> Escrita, ortografia e produção textual</label>
+   <label class="check"><input type="checkbox" value="Matemática"> Matemática e raciocínio numérico</label>
+   <label class="check"><input type="checkbox" value="Atenção e funções executivas"> Atenção, planejamento e organização</label>
+   <label class="check"><input type="checkbox" value="Memória e processamento"> Memória de trabalho e processamento</label>
+   <label class="check"><input type="checkbox" value="Linguagem oral"> Linguagem oral e comunicação</label>
+   <label class="check"><input type="checkbox" value="Coordenação motora e grafomotricidade"> Coordenação motora e grafomotricidade</label>
+   <label class="check"><input type="checkbox" value="Aspectos socioemocionais"> Aspectos socioemocionais e motivação</label>
+   <label class="check"><input type="checkbox" value="Acesso sensorial e acessibilidade"> Acesso sensorial, físico e acessibilidade</label>
+   <label class="check"><input type="checkbox" value="Frequência e contexto escolar"> Frequência, oportunidades de ensino e contexto</label>
+   <label class="check"><input type="checkbox" value="Autonomia e habilidades de estudo"> Autonomia e hábitos de estudo</label>
+  </div>
+  <div class="field"><label for="history">Histórico relevante (sem incluir dados desnecessários)</label><textarea id="history" placeholder="Oportunidades de ensino, intervenções tentadas, resposta observada, idioma, sono/frequência se pertinente..."></textarea></div>
+  <div class="field"><label for="evidence">Evidências concretas</label><textarea id="evidence" placeholder="Ex.: em 4 de 5 tarefas, perde a etapa após uma instrução com 3 passos. Evite interpretações sem evidências."></textarea></div>
+  <div class="btnrow"><button class="btn" id="makeAssessment">Organizar avaliação inicial</button><button class="btn secondary" id="clearAssessment">Limpar formulário</button></div>
+ </article>
+ <article class="card hide" id="assessmentResult" aria-live="polite"><h2>Resumo para discussão profissional</h2><div id="assessmentOutput"></div><div class="btnrow"><button class="btn" onclick="window.print()">Imprimir / salvar em PDF</button><button class="btn secondary" id="toPlan">Usar áreas no plano de intervenção</button></div></article>
+ <article class="card">
+  <h3>Roteiro de coleta de evidências</h3>
+  <p>Antes de concluir que existe um transtorno, investigue se a habilidade foi ensinada, se a instrução estava acessível, se há barreiras linguísticas/sensoriais, quais apoios foram oferecidos e como o desempenho muda com esses apoios.</p>
+  <ul><li>Converse com estudante e responsáveis conforme a idade e as regras institucionais.</li><li>Analise produções reais e observe tarefas em mais de uma ocasião.</li><li>Registre linha de base, estratégia aplicada e resposta do estudante.</li><li>Considere avaliação multiprofissional quando a dificuldade é persistente, intensa ou afeta várias áreas.</li></ul>
+ </article>
+</div>
+</section>
+
+<section id="intervencao" class="panel">
+<div class="grid">
+ <article class="card">
+  <h2>Gerador de plano de intervenção pedagógica</h2>
+  <p class="muted">Selecione uma ou mais áreas. As sugestões são pontos de partida e precisam ser ajustadas ao estudante, à idade, ao currículo e às evidências observadas.</p>
+  <div class="field"><label for="focus">Área prioritária</label><select id="focus">
+   <option value="reading">Leitura e fluência</option><option value="comprehension">Compreensão leitora</option><option value="writing">Escrita e ortografia</option><option value="math">Matemática</option><option value="executive">Atenção e funções executivas</option><option value="memory">Memória de trabalho</option><option value="language">Linguagem oral</option><option value="motor">Grafomotricidade e acesso motor</option><option value="socio">Socioemocional e motivação</option><option value="sensory">Acessibilidade sensorial/física</option><option value="study">Autonomia e hábitos de estudo</option><option value="context">Contexto e oportunidades de ensino</option>
+  </select></div>
+  <div class="two">
+   <div class="field"><label for="goal">Objetivo observável</label><input id="goal" placeholder="Ex.: identificar ideia principal em 4/5 textos"></div>
+   <div class="field"><label for="duration">Período de acompanhamento</label><select id="duration"><option>2 semanas</option><option selected>4 semanas</option><option>6 semanas</option><option>8 semanas</option></select></div>
+  </div>
+  <div class="field"><label for="frequency">Frequência e duração das atividades</label><input id="frequency" value="3 vezes por semana, 15–20 minutos"></div>
+  <div class="field"><label for="supports">Apoios já tentados / preferências</label><textarea id="supports" placeholder="O que funcionou? O que não funcionou? Quais interesses podem ajudar?"></textarea></div>
+  <div class="btnrow"><button class="btn teal" id="makePlan">Gerar plano sugerido</button></div>
+ </article>
+ <article class="card hide" id="planResult" aria-live="polite"><h2>Plano sugerido</h2><div id="planOutput"></div><div class="btnrow"><button class="btn" onclick="window.print()">Imprimir / salvar em PDF</button><button class="btn secondary" id="copyPlan">Copiar plano</button></div></article>
+</div>
+</section>
+
+<section id="adaptacao" class="panel">
+<div class="grid">
+ <article class="card">
+  <h2>Adaptador de aulas e materiais</h2>
+  <p class="muted">Gera um roteiro de adaptação didática com base no conteúdo e nas barreiras informadas. Mantém o objetivo essencial sempre que possível, mudando acesso, apoio, ritmo ou forma de resposta.</p>
+  <div class="two">
+   <div class="field"><label for="subject">Disciplina / tema</label><input id="subject" placeholder="Ex.: História — Revolta dos Malês"></div>
+   <div class="field"><label for="level">Etapa de ensino</label><select id="level"><option>Educação infantil</option><option>Ensino fundamental — anos iniciais</option><option>Ensino fundamental — anos finais</option><option selected>Ensino médio</option><option>Ensino técnico/profissional</option><option>Ensino superior</option><option>Educação de jovens e adultos</option></select></div>
+  </div>
+  <div class="field"><label for="objective">Objetivo de aprendizagem</label><textarea id="objective" placeholder="O que o estudante deve compreender, demonstrar ou produzir?"></textarea></div>
+  <div class="field"><label for="material">Cole o texto, enunciado ou descrição da atividade</label><textarea id="material" style="min-height:150px" placeholder="Cole aqui o material que deseja adaptar. Não inclua dados pessoais identificáveis."></textarea></div>
+  <h3>Necessidades/barreiras a considerar</h3>
+  <div class="checklist" id="needs">
+   <label class="check"><input type="checkbox" value="Dificuldade de leitura"> Dificuldade de leitura</label>
+   <label class="check"><input type="checkbox" value="Dificuldade de escrita"> Dificuldade de escrita</label>
+   <label class="check"><input type="checkbox" value="Atenção e organização"> Atenção e organização</label>
+   <label class="check"><input type="checkbox" value="Linguagem simples e instruções explícitas"> Linguagem simples e instruções explícitas</label>
+   <label class="check"><input type="checkbox" value="Baixa visão ou acesso visual"> Baixa visão / acesso visual</label>
+   <label class="check"><input type="checkbox" value="Surdez ou acesso auditivo"> Surdez / acesso auditivo</label>
+   <label class="check"><input type="checkbox" value="Mobilidade ou coordenação motora"> Mobilidade / coordenação motora</label>
+   <label class="check"><input type="checkbox" value="Sensibilidade sensorial"> Sensibilidade sensorial</label>
+   <label class="check"><input type="checkbox" value="Ansiedade ou sobrecarga"> Ansiedade / sobrecarga</label>
+   <label class="check"><input type="checkbox" value="Pouco domínio do idioma acadêmico"> Pouco domínio do idioma acadêmico</label>
+   <label class="check"><input type="checkbox" value="Necessidade de desafio adicional"> Necessidade de desafio adicional</label>
+   <label class="check"><input type="checkbox" value="Preferência por respostas orais ou multimodais"> Respostas orais ou multimodais</label>
+  </div>
+  <div class="field"><label for="format">Formato de saída</label><select id="format"><option>Roteiro de aula acessível</option><option>Texto em linguagem simples</option><option>Atividade passo a passo</option><option>Avaliação com alternativas de resposta</option><option>Material visual e organizador gráfico</option><option>Plano universal com múltiplas formas de participação</option></select></div>
+  <div class="btnrow"><button class="btn" id="makeAdaptation">Criar adaptação</button><button class="btn secondary" id="clearAdaptation">Limpar</button></div>
+ </article>
+ <article class="card hide" id="adaptResult" aria-live="polite"><h2>Proposta de adaptação</h2><div id="adaptOutput"></div><div class="btnrow"><button class="btn" onclick="window.print()">Imprimir / salvar em PDF</button><button class="btn secondary" id="copyAdapt">Copiar adaptação</button></div></article>
+</div>
+</section>
+
+<section id="biblioteca" class="panel">
+<div class="grid">
+ <article class="card">
+  <h2>Guia de áreas de aprendizagem</h2>
+  <p class="muted">Mapa inicial de possíveis barreiras, observações úteis e estratégias educacionais. Uma dificuldade isolada não confirma um transtorno.</p>
+  <div class="field"><label for="searchGuide">Buscar por área ou estratégia</label><input id="searchGuide" placeholder="Ex.: matemática, dislexia, memória, acessibilidade..."></div>
+  <div id="guideList"></div>
+ </article>
+ <article class="card">
+  <h3>Quando considerar encaminhamento</h3>
+  <p>Considere conversar com a família e a equipe escolar e orientar busca de avaliação qualificada quando a dificuldade persiste apesar de ensino explícito e apoio consistente, aparece em contextos distintos, provoca sofrimento ou interfere significativamente na participação. A depender dos sinais, podem ser pertinentes profissionais de psicopedagogia, fonoaudiologia, psicologia, terapia ocupacional, pediatria/neuropediatria ou outros serviços — sem pressupor um diagnóstico específico.</p>
+  <div class="notice"><strong>Instrumentos e testes:</strong> utilize somente instrumentos adequados à finalidade, faixa etária, formação profissional e normas éticas aplicáveis. Testes psicológicos restritos devem ser utilizados exclusivamente por psicólogas(os) habilitados, conforme as regras do CFP/SATEPSI. Não reproduza nem aplique testes proprietários sem autorização.</div>
+ </article>
+</div>
+</section>
+
+<section id="sobre" class="panel">
+ <div class="grid">
+  <article class="card">
+   <span class="pill">Idealização e curadoria educacional</span>
+   <h2>Sobre a criadora</h2>
+   <p>O <strong>Práxis — Apoio Psicopedagógico</strong> é uma iniciativa criada e mantida pela <strong>Profª Bárbara Vitória</strong>, educadora e pesquisadora em formação, com trajetória interdisciplinar nas áreas de linguagem, Ciências Humanas, educação e psicopedagogia.</p>
+   <p>O projeto nasce do compromisso com uma educação mais acessível, fundamentada e atenta às diferentes formas de aprender. Seu propósito é apoiar o planejamento pedagógico, a organização de observações e a elaboração de estratégias educacionais inclusivas — sempre reconhecendo a singularidade de cada estudante e a importância da atuação ética e responsável.</p>
+   <h3>Formação acadêmica</h3>
+   <ul>
+    <li><strong>Licenciatura em Letras — Português</strong>, Universidade Federal do Pampa (UNIPAMPA).</li>
+    <li><strong>Graduação em História</strong>, Centro Universitário ETEP.</li>
+    <li><strong>Graduação em Geografia</strong>, Centro Universitário ETEP.</li>
+    <li><strong>Especialização em Psicopedagogia Clínica e Institucional</strong>, IMES.</li>
+    <li><strong>Especialização em Ciências Humanas e Sociais</strong>, IMES.</li>
+    <li><strong>Especialização em Currículo e Prática Docente para o Ensino Fundamental — Anos Iniciais</strong>, Universidade Federal do Piauí (UFPI).</li>
+    <li><strong>Especialização em Programação Neurolinguística</strong>, IMES.</li>
+    <li><strong>Especialização em Libras</strong>, Universidade Estadual do Centro-Oeste (UNICENTRO).</li>
+    <li><strong>Especialização em Linguística Aplicada e os Estudos das Línguas</strong>, IMES.</li>
+    <li><strong>Especialização em Docência para a Educação Profissional e Tecnológica</strong>, Instituto Federal do Amazonas (IFAM).</li>
+    <li><strong>Especialização em Educação em Direitos Humanos</strong>, Universidade Federal de Mato Grosso do Sul (UFMS).</li>
+    <li><strong>Mestranda em Psicobiologia</strong>, Universidade Federal de São Paulo (UNIFESP) — em curso.</li>
+   </ul>
+   <div class="notice"><strong>Compromisso e limites de uso:</strong> o Práxis é uma ferramenta de apoio educacional. Não substitui avaliação profissional, instrumentos padronizados, diagnóstico clínico, protocolos institucionais ou encaminhamento multiprofissional quando necessário. As sugestões devem ser analisadas e adaptadas por quem as utiliza.</div>
+   <h3>Contato profissional</h3>
+   <p><strong>E-mail:</strong> <a href="mailto:prof.barbaravitoria@gmail.com">prof.barbaravitoria@gmail.com</a></p>
+   <p><strong>Instagram:</strong> <a href="https://www.instagram.com/prof.barbaravitoria/" target="_blank" rel="noopener noreferrer">@prof.barbaravitoria</a></p>
+  </article>
+ </div>
+</section>
+<div class="footer">Práxis — Apoio Psicopedagógico • Criado e mantido pela Profª Bárbara Vitória<br>Contato: <a href="mailto:prof.barbaravitoria@gmail.com">prof.barbaravitoria@gmail.com</a> · <a href="https://www.instagram.com/prof.barbaravitoria/" target="_blank" rel="noopener noreferrer">Instagram @prof.barbaravitoria</a><br>Protótipo educacional local • Os dados preenchidos não são enviados a um servidor por este arquivo. Evite inserir informações sensíveis.</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab));}));
+const selected=selector=>[...document.querySelectorAll(selector+' input:checked')].map(x=>x.value);
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const list=items=>'<ul>'+items.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+const areaHelp={
+reading:{name:'Leitura e fluência',observe:['Precisão ao decodificar palavras familiares e novas','Fluência, pausas e autocorreção','Diferenças entre leitura silenciosa e em voz alta'],strategies:['Ensino explícito e cumulativo de relações entre sons e letras, conforme a etapa e a necessidade','Leitura compartilhada/modelada, seguida de leitura guiada e prática breve e frequente','Textos compatíveis com o nível de ensino, sem infantilizar o conteúdo; acompanhar precisão e compreensão']},
+comprehension:{name:'Compreensão leitora',observe:['Identificação de tema, ideia principal e evidências','Inferências e compreensão de vocabulário em contexto','Se a dificuldade muda quando o texto é lido em voz alta'],strategies:['Pré-ensinar vocabulário-chave e ativar conhecimentos prévios','Dividir textos em trechos; modelar perguntas “o que o texto diz?” e “como sei?”','Usar organizadores de ideia principal, evidência e inferência; retirar apoios gradualmente']},
+writing:{name:'Escrita e ortografia',observe:['Planejamento, sequência de ideias e revisão','Padrões de erros ortográficos e legibilidade','Se o desempenho muda com teclado, ditado ou tempo adicional'],strategies:['Separar planejamento, rascunho, revisão e edição em etapas visíveis','Modelar textos-exemplo e oferecer listas de verificação curtas','Permitir tecnologia assistiva ou resposta oral quando o objetivo avaliado não for a caligrafia; ensinar ortografia explicitamente']},
+math:{name:'Matemática',observe:['Senso numérico, valor posicional e fatos básicos','Compreensão do enunciado versus execução do cálculo','Estratégias usadas e tipos de erro recorrentes'],strategies:['Usar concreto/visual/simbólico e explicitar a passagem entre representações','Resolver um exemplo modelado e depois um exemplo guiado','Destacar dados, pergunta e operação; trabalhar conceitos em pequenos passos e revisar erros como informação']},
+executive:{name:'Atenção e funções executivas',observe:['Início e conclusão de tarefas, organização de materiais','Efeito de ruído, duração, transições e quantidade de instruções','Diferença entre tarefas de interesse e tarefas longas'],strategies:['Dar instruções curtas, também por escrito, uma etapa de cada vez','Usar agenda visual, checklist, timer visual e pausas combinadas','Reduzir distrações e dividir tarefas extensas; ensinar planejamento com modelagem, não apenas cobrar organização']},
+memory:{name:'Memória de trabalho e processamento',observe:['Quantidade de etapas retidas sem apoio','Tempo de resposta e benefício de repetição ou pistas visuais','Se a dificuldade ocorre sob pressão de tempo'],strategies:['Externalizar informações em cartões, fórmulas, esquemas e exemplos resolvidos','Dar tempo de processamento e checar compreensão pedindo que a pessoa explique a primeira etapa','Praticar recuperação espaçada e cumulativa, com pausas e feedback']},
+language:{name:'Linguagem oral e comunicação',observe:['Compreensão de vocabulário e instruções','Organização narrativa, turnos e formas preferidas de comunicação','Diferenças entre idiomas e contextos de comunicação'],strategies:['Usar linguagem direta, exemplos e apoio visual; verificar compreensão sem constranger','Oferecer tempo de resposta e opções de comunicação oral, escrita ou assistiva','Ensinar vocabulário antes da tarefa e modelar estruturas de resposta']},
+motor:{name:'Grafomotricidade e acesso motor',observe:['Esforço, fadiga e legibilidade ao escrever','Acessibilidade de mobiliário, materiais e ambiente','Se o conhecimento aparece melhor em resposta digitada ou oral'],strategies:['Disponibilizar teclado, ditado, escriba ou respostas selecionáveis conforme o objetivo','Garantir espaço, postura e materiais acessíveis com apoio especializado quando necessário','Não avaliar caligrafia quando ela não é o objetivo da atividade']},
+socio:{name:'Socioemocional e motivação',observe:['Situações associadas a frustração, evitação ou medo de errar','Percepção de pertencimento, vínculo e previsibilidade','Interesses, competências e condições em que participa melhor'],strategies:['Criar rotina previsível e feedback específico sobre estratégia e progresso','Oferecer escolhas limitadas, metas alcançáveis e oportunidades de sucesso','Evitar exposição pública, comparação e linguagem culpabilizante; acionar rede de apoio se houver sofrimento persistente']},
+sensory:{name:'Acessibilidade sensorial e física',observe:['Barreiras no espaço, comunicação, materiais e deslocamento','Condições de iluminação, ruído, contraste e legibilidade','Recursos de acessibilidade já previstos no plano individual'],strategies:['Oferecer formatos acessíveis: texto digital compatível com leitor de tela, alto contraste, legenda e descrição de imagens','Planejar rotas, mobiliário e participação acessíveis; combinar sinalização e pausas quando necessárias','Perguntar à pessoa quais recursos funcionam e articular adaptações com equipe e família']},
+study:{name:'Autonomia e hábitos de estudo',observe:['Planejamento, revisão e recuperação do conteúdo','Uso de agenda, prazos e estratégias de estudo','Sono, rotina e acesso a ambiente/recursos quando pertinente'],strategies:['Ensinar a dividir objetivos grandes em tarefas pequenas e calendarizadas','Usar prática de recuperação, revisão espaçada e exemplos de como estudar','Fazer revisão semanal de metas e ajustar carga, apoio e prazos de modo realista']},
+context:{name:'Contexto e oportunidades de ensino',observe:['Frequência, continuidade do ensino e acesso a materiais','Idioma de instrução, currículo, mudanças e oportunidades de prática','Adequação das explicações, exemplos e formas de avaliação'],strategies:['Verificar se a habilidade foi ensinada explicitamente e se o material é acessível','Reensinar de outra forma, com prática guiada e feedback, antes de atribuir a dificuldade a um transtorno','Documentar o apoio oferecido e a resposta ao longo do tempo; remover barreiras institucionais']}
+};
+const guideExtra=[
+{title:'Dificuldades específicas de leitura (possível dislexia)',desc:'Leitura de palavras e/ou fluência persistentemente difíceis podem justificar investigação; erros isolados não bastam. Avaliação requer histórico, ensino recebido, linguagem e dados convergentes.',area:'reading'},
+{title:'Dificuldades específicas de escrita',desc:'Observar ortografia, construção textual e/ou transcrição separadamente. Planejamento e expressão podem precisar de apoios diferentes.',area:'writing'},
+{title:'Dificuldades específicas em matemática (possível discalculia)',desc:'Investigue conceitos numéricos, fatos aritméticos, procedimentos e compreensão de problemas, considerando a qualidade e continuidade do ensino.',area:'math'},
+{title:'Atenção e autorregulação (incluindo possíveis sinais de TDAH)',desc:'Desatenção ou inquietação em uma tarefa não permite concluir TDAH. Registre duração, contextos, impacto e resposta a ajustes; diagnóstico é clínico e requer avaliação apropriada.',area:'executive'},
+{title:'Linguagem e comunicação',desc:'Dificuldades persistentes de compreensão/expressão, fala ou comunicação podem justificar avaliação fonoaudiológica e colaboração entre escola e família.',area:'language'},
+{title:'Altas habilidades e necessidade de enriquecimento',desc:'Desempenho avançado ou domínio rápido podem indicar necessidade de aprofundamento, escolha, complexidade e enriquecimento, sem reduzir o acesso ao currículo comum.',area:'study'},
+{title:'Deficiência, neurodivergência e acessibilidade',desc:'Parta das barreiras funcionais, preferências e recursos necessários, não de estereótipos ou de um diagnóstico presumido. Adaptações podem ser úteis com ou sem laudo.',area:'sensory'},
+{title:'Ansiedade, sofrimento ou recusa escolar',desc:'Observe gatilhos, contexto e impacto sem presumir causa. Use acolhimento e previsibilidade; sofrimento intenso ou persistente pede articulação com responsáveis e rede de apoio.',area:'socio'},
+{title:'Ausência de oportunidades de aprendizagem',desc:'Mudanças escolares, faltas, barreiras linguísticas, materiais inacessíveis ou ensino insuficiente podem explicar lacunas. Priorize garantir acesso e ensino explícito.',area:'context'}
+];
+function showResult(id,html){$(id).classList.remove('hide');html.scrollIntoView({behavior:'smooth',block:'start'});}
+$('makeAssessment').onclick=()=>{
+ const areas=selected('#areas'), student=$('student').value.trim(), concern=$('concern').value.trim();
+ if(!areas.length&&!concern){alert('Selecione ao menos uma área ou descreva uma dificuldade observada.');return}
+ const blocks=areas.map(a=>{const key=Object.keys(areaHelp).find(k=>areaHelp[k].name===a);return key?`<div class="result"><h3>${esc(a)}</h3><strong>O que observar</strong>${list(areaHelp[key].observe)}<strong>Estratégias iniciais</strong>${list(areaHelp[key].strategies)}</div>`:''}).join('');
+ $('assessmentOutput').innerHTML=`<p><strong>Registro:</strong> ${esc(student||'Sem identificação')}</p><p><strong>Etapa:</strong> ${esc($('age').value)}</p><p><strong>Pontos fortes/contexto:</strong><br>${esc($('context').value||'Não informado').replace(/\n/g,'<br>')}</p><p><strong>Preocupação descrita:</strong><br>${esc(concern||'Não informada').replace(/\n/g,'<br>')}</p><p><strong>Histórico:</strong><br>${esc($('history').value||'Não informado').replace(/\n/g,'<br>')}</p><p><strong>Evidências:</strong><br>${esc($('evidence').value||'Ainda precisam ser registradas').replace(/\n/g,'<br>')}</p><div class="notice">Este resumo organiza hipóteses pedagógicas para investigação; não identifica nem confirma transtornos.</div>${blocks}<h3>Próximos passos sugeridos</h3>${list(['Definir uma linha de base com 2–3 tarefas curtas e registrar resultados.','Escolher uma estratégia, aplicar por período definido e documentar a resposta.','Rever com estudante/equipe; se a dificuldade persistir ou for significativa, discutir encaminhamento apropriado.'])}`;
+ showResult('assessmentResult',$('assessmentResult'));
+};
+$('clearAssessment').onclick=()=>{['student','context','concern','history','evidence'].forEach(id=>$(id).value='');document.querySelectorAll('#areas input').forEach(x=>x.checked=false);$('assessmentResult').classList.add('hide')};
+$('toPlan').onclick=()=>{const areas=selected('#areas');const map={'Leitura e fluência':'reading','Compreensão leitora':'comprehension','Escrita e ortografia':'writing','Matemática':'math','Atenção e funções executivas':'executive','Memória e processamento':'memory','Linguagem oral':'language','Coordenação motora e grafomotricidade':'motor','Aspectos socioemocionais':'socio','Acesso sensorial e acessibilidade':'sensory','Autonomia e habilidades de estudo':'study','Frequência e contexto escolar':'context'};const first=areas.map(a=>map[a]).find(Boolean);if(first)$('focus').value=first;document.querySelector('[data-tab="intervencao"]').click()};
+$('makePlan').onclick=()=>{
+ const a=areaHelp[$('focus').value], goal=$('goal').value.trim()||'Definir uma meta específica, observável e adequada ao ponto de partida',dur=$('duration').value,freq=$('frequency').value;
+ $('planOutput').innerHTML=`<div class="result"><span class="pill">${esc(dur)}</span><span class="pill">${esc(freq)}</span><h3>Área: ${esc(a.name)}</h3><p><strong>Objetivo:</strong> ${esc(goal)}</p><p><strong>Linha de base:</strong> antes de iniciar, registrar o desempenho em 2 ou 3 tarefas comparáveis.</p><strong>Estratégias propostas</strong>${list(a.strategies)}<strong>Atividades possíveis</strong>${list(a.observe.map((x,i)=>['Planejar uma tarefa curta que revele: '+x.toLowerCase()+'.','Modelar a habilidade, praticar junto e depois oferecer tentativa independente.','Retomar o mesmo tipo de tarefa e comparar o progresso.'][i]))}<strong>Monitoramento</strong>${list(['Registrar data, tarefa, nível de ajuda e resultado, não apenas “foi bem/mal”.','Revisar semanalmente se o apoio melhora participação e aprendizagem.','Se não houver progresso, verificar adequação do ensino, barreiras e necessidade de avaliação complementar.'])}<p><strong>Apoios considerados:</strong> ${esc($('supports').value||'Ainda não informado')}</p><div class="notice">Ajuste a proposta ao currículo, à idade, às preferências do estudante e às orientações da equipe. Não substitui atendimento clínico.</div></div>`;
+ showResult('planResult',$('planResult'));
+};
+$('copyPlan').onclick=()=>copyText($('planOutput').innerText);
+const adaptTemplates={
+'Dificuldade de leitura':['Apresentar texto em trechos curtos com títulos claros.','Pré-ensinar vocabulário e oferecer áudio/leitura compartilhada quando apropriado.','Manter conceitos e termos importantes; evitar simplificar até retirar o conteúdo essencial.'],
+'Dificuldade de escrita':['Reduzir cópia extensa e oferecer organizador de ideias.','Permitir teclado, ditado ou resposta oral quando a escrita não for o objetivo avaliado.','Separar conteúdo, organização e ortografia nos critérios de avaliação.'],
+'Atenção e organização':['Apresentar uma instrução por vez e destacar verbos de ação.','Dividir a atividade em etapas numeradas com checklist e pausas planejadas.','Indicar tempo aproximado e mostrar exemplo concluído.'],
+'Linguagem simples e instruções explícitas':['Usar frases diretas, explicar termos técnicos e dar um exemplo.','Destacar o que fazer, com o quê, e como saber que terminou.','Pedir que o estudante explique a primeira etapa para checar entendimento.'],
+'Baixa visão ou acesso visual':['Oferecer arquivo digital acessível, contraste alto e fonte redimensionável.','Descrever imagens/gráficos em texto e não depender apenas de cores.','Verificar compatibilidade com leitor de tela e preferências do estudante.'],
+'Surdez ou acesso auditivo':['Fornecer instruções por escrito e garantir visibilidade de quem fala.','Adicionar legendas/transcrição a vídeos e descrição textual de áudios.','Articular recursos de comunicação e intérprete quando previstos/necessários.'],
+'Mobilidade ou coordenação motora':['Garantir acesso físico, espaço e tempo adequados.','Permitir tecnologia assistiva, teclado, seleção de opções ou resposta oral conforme o objetivo.','Evitar penalizar barreiras motoras quando não fazem parte da competência avaliada.'],
+'Sensibilidade sensorial':['Antecipar mudanças, reduzir estímulos evitáveis e disponibilizar local/pausa combinados.','Organizar layout previsível e permitir formas alternativas de participação.','Combinar previamente como solicitar ajuda ou pausa sem exposição.'],
+'Ansiedade ou sobrecarga':['Explicitar etapas e critérios; evitar surpresa e exposição pública desnecessária.','Oferecer tempo de preparação, pausas combinadas e feedback privado.','Manter desafio pedagógico com apoios graduais, sem presumir incapacidade.'],
+'Pouco domínio do idioma acadêmico':['Pré-ensinar vocabulário e apoiar com glossário, imagens e exemplos.','Permitir rascunho ou planejamento no idioma mais confortável quando possível.','Avaliar separadamente conhecimento do conteúdo e domínio linguístico, quando adequado.'],
+'Necessidade de desafio adicional':['Propor problema aberto, comparação de fontes ou aplicação a um caso real.','Oferecer escolha, aprofundamento e produção autoral sem apenas aumentar quantidade.','Definir critérios claros e oportunidade de compartilhar estratégias.'],
+'Preferência por respostas orais ou multimodais':['Oferecer opções equivalentes: texto, apresentação oral, esquema ou recurso digital.','Explicitar os mesmos critérios essenciais para todos os formatos.','Confirmar que o formato alternativo permite demonstrar a habilidade pretendida.']
+};
+$('makeAdaptation').onclick=()=>{
+ const subject=$('subject').value.trim()||'Tema não informado', objective=$('objective').value.trim()||'Definir objetivo observável antes da aplicação', material=$('material').value.trim(), needs=selected('#needs'), format=$('format').value;
+ const recommendations=[];needs.forEach(n=>(adaptTemplates[n]||[]).forEach(s=>recommendations.push(s)));
+ if(!needs.length)recommendations.push('Oferecer instruções explícitas, exemplo-modelo, etapas visíveis e mais de uma forma de participação.','Verificar compreensão e acessibilidade antes da atividade.');
+ const textMaterial=material?material.split(/\n+/).filter(Boolean).map((line,i)=>`${i+1}. ${line}`):['Inserir o conteúdo original e dividi-lo em blocos curtos.'];
+ $('adaptOutput').innerHTML=`<div class="result"><p><strong>Disciplina/tema:</strong> ${esc(subject)}</p><p><strong>Objetivo essencial:</strong> ${esc(objective)}</p><p><strong>Formato:</strong> ${esc(format)}</p><p><strong>Necessidades selecionadas:</strong> ${esc(needs.join('; ')||'Não especificadas')}</p><h3>Orientações de acesso</h3>${list([...new Set(recommendations)])}<h3>Roteiro adaptado sugerido</h3>${list(['Antes: apresentar o objetivo, explicar vocabulário-chave e mostrar um exemplo do resultado esperado.','Durante: dividir a tarefa em etapas numeradas; oferecer os apoios selecionados e checar compreensão sem expor o estudante.','Resposta: permitir formato acessível compatível com a habilidade que se deseja avaliar.','Depois: dar feedback específico, registrar o que funcionou e combinar o próximo passo.'])}<h3>Material fornecido / conteúdo a adaptar</h3><div class="result">${textMaterial.map((t,i)=>`<p>${esc(t)}</p>`).join('')}</div><h3>Checklist de qualidade</h3>${list(['O objetivo de aprendizagem foi preservado?','O estudante consegue acessar instruções, imagens, áudio e espaço físico?','Há exemplo, critérios claros e tempo adequado?','A forma de resposta permite demonstrar o conhecimento?','O estudante foi consultado sobre os apoios que funcionam?'])}<div class="notice">Este gerador organiza orientações, mas não reescreve automaticamente todo o material em versões complexas ou valida sua adequação. Revise o resultado antes de usar.</div></div>`;
+ showResult('adaptResult',$('adaptResult'));
+};
+$('clearAdaptation').onclick=()=>{['subject','objective','material'].forEach(id=>$(id).value='');document.querySelectorAll('#needs input').forEach(x=>x.checked=false);$('adaptResult').classList.add('hide')};
+$('copyAdapt').onclick=()=>copyText($('adaptOutput').innerText);
+function copyText(t){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(()=>alert('Texto copiado.')).catch(()=>fallbackCopy(t));else fallbackCopy(t)}
+function fallbackCopy(t){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');alert('Texto copiado.')}catch(e){alert('Não foi possível copiar automaticamente. Selecione e copie o texto.')}ta.remove()}
+function renderGuide(filter=''){const all=[...Object.entries(areaHelp).map(([key,v])=>({title:v.name,desc:'Observe: '+v.observe.join('; ')+'. Estratégias: '+v.strategies.join(' '),area:key})),...guideExtra];const found=all.filter(x=>(x.title+' '+x.desc).toLowerCase().includes(filter.toLowerCase()));$('guideList').innerHTML=found.map(x=>`<details class="result"><summary><strong>${esc(x.title)}</strong></summary><p>${esc(x.desc)}</p><button class="btn secondary" onclick="$('focus').value='${esc(x.area)}';document.querySelector('[data-tab=intervencao]').click()">Criar plano para esta área</button></details>`).join('')||'<p>Nenhum item encontrado. Tente outro termo.</p>'}
+$('searchGuide').addEventListener('input',e=>renderGuide(e.target.value));renderGuide();
+</script>
+</body>
+</html>
