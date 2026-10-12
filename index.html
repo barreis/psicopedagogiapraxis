@@ -117,7 +117,7 @@
         <div id="recoveryResultBox" class="hidden p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-900 font-medium"></div>
         <div class="pt-3 flex justify-end gap-2">
           <button type="button" onclick="closeRecoveryModal()" class="px-4 py-2 border rounded-xl text-xs text-slate-600">Cancelar</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold">Verificar Credentials</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold">Verificar Credenciais</button>
         </div>
       </form>
     </div>
@@ -167,9 +167,7 @@
         </div>
         <button onclick="closeGuideModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
       </div>
-      <div id="modalTopicBody" class="text-xs text-slate-600 space-y-4 overflow-y-auto flex-1 pr-2 leading-relaxed">
-        <!-- Content inserted dynamically -->
-      </div>
+      <div id="modalTopicBody" class="text-xs text-slate-600 space-y-4 overflow-y-auto flex-1 pr-2 leading-relaxed"></div>
       <div class="pt-4 border-t flex justify-end gap-2">
         <button onclick="closeGuideModal()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold">Entendi / Sair</button>
       </div>
@@ -337,7 +335,7 @@
           </div>
         </section>
 
-        <!-- 2. GESTÃO DE APRENDENTES (CADASTRAR, EDITAR, EXCLUIR) -->
+        <!-- 2. GESTÃO DE APRENDENTES -->
         <section id="sec-aprendentes" class="tab-content hidden space-y-6">
           <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -652,7 +650,7 @@
           </div>
         </section>
 
-        <!-- 9. SOBRE A AUTORA (COM FORMAÇÃO E ATUAÇÃO NO CPS COMPLETA) -->
+        <!-- 9. SOBRE A AUTORA (ATUALIZADO COM SUA FORMAÇÃO EXATA) -->
         <section id="sec-autora" class="tab-content hidden space-y-6">
           <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
             <div class="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
@@ -668,34 +666,45 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 text-xs text-slate-600">
-              <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-2">
-                <h3 class="font-bold text-indigo-900 text-sm flex items-center gap-2">
-                  <i class="fa-solid fa-graduation-cap"></i> Formação Acadêmica (Graduações)
+            <div class="mt-6 space-y-6 text-xs text-slate-600">
+              
+              <!-- MESTRADO -->
+              <div class="bg-amber-50/60 p-5 rounded-2xl border border-amber-200">
+                <h3 class="font-bold text-amber-900 text-sm flex items-center gap-2 mb-1">
+                  <i class="fa-solid fa-graduation-cap text-amber-600"></i> Mestrado (Em Andamento)
                 </h3>
-                <ul class="space-y-1.5 list-disc pl-4 text-slate-700">
-                  <li>Licenciatura em Letras - Português</li>
-                  <li>Licenciatura em História</li>
-                  <li>Licenciatura em Geografia</li>
-                  <li>Tecnólogo em Gestão Comercial</li>
-                  <li>Tecnólogo em Comércio Exterior</li>
-                  <li>Graduação em Administração (em andamento)</li>
-                </ul>
+                <p class="text-slate-800 font-semibold">Psicobiologia — UNIFESP (Universidade Federal de São Paulo)</p>
               </div>
 
-              <div class="bg-purple-50/50 p-5 rounded-2xl border border-purple-100 space-y-2">
-                <h3 class="font-bold text-purple-900 text-sm flex items-center gap-2">
-                  <i class="fa-solid fa-award"></i> Pós-Graduações e Especializações
-                </h3>
-                <ul class="space-y-1.5 list-disc pl-4 text-slate-700">
-                  <li>Psicopedagogia Clínica e Institucional</li>
-                  <li>Programação Neurolinguística (PNL)</li>
-                  <li>Docência para o Ensino Profissional e Tecnológico (EPT)</li>
-                  <li>Comunicação e Marketing & Gestão Comercial</li>
-                  <li>Currículo e Prática Docente & Ciências Humanas Aplicadas</li>
-                  <li>Gestão de Pessoas, Design Thinking e Projetos Cloud</li>
-                </ul>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- GRADUAÇÕES -->
+                <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-2">
+                  <h3 class="font-bold text-indigo-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> Graduações
+                  </h3>
+                  <ul class="space-y-1.5 list-disc pl-4 text-slate-700">
+                    <li><strong>Letras - Português:</strong> UNIPAMPA</li>
+                    <li><strong>História e Geografia:</strong> Centro Universitário ETEP</li>
+                  </ul>
+                </div>
+
+                <!-- ESPECIALIZAÇÕES -->
+                <div class="bg-purple-50/50 p-5 rounded-2xl border border-purple-100 space-y-2">
+                  <h3 class="font-bold text-purple-900 text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-award"></i> Especializações (Pós-Graduação)
+                  </h3>
+                  <ul class="space-y-1.5 list-disc pl-4 text-slate-700">
+                    <li><strong>Ciências Humanas e Sociais Aplicadas ao Mundo do Trabalho:</strong> UFPI</li>
+                    <li><strong>Currículo e Prática Docente nos Anos Iniciais do EF:</strong> UFPI</li>
+                    <li><strong>Docência para a Educação Profissional e Tecnológica:</strong> IFAM</li>
+                    <li><strong>Libras:</strong> UNICENTRO</li>
+                    <li><strong>Psicopedagogia Clínica e Institucional:</strong> IMES</li>
+                    <li><strong>Programação Neurolinguística (PNL):</strong> IMES</li>
+                    <li><strong>Educação em Direitos Humanos:</strong> UFMS</li>
+                  </ul>
+                </div>
               </div>
+
             </div>
           </div>
         </section>
@@ -803,9 +812,6 @@
   </div>
 
   <script>
-    /* ==========================================================================
-       1. DATA STRUCTURES & 30 CLICABLE GUIDE TOPICS
-       ========================================================================== */
     const MASTER_KEY = 'psi-praxis-2026';
     const ADMIN_CODE = 'prof.barbaravitoria';
 
@@ -819,7 +825,6 @@
       { id: 'std-2', name: 'Sofia Oliveira', age: 7, grade: '2º Ano EF', parent: 'Carlos Oliveira' }
     ];
 
-    // Detailed Guide Content Database
     const guideDetails = [
       { title: "Acolhimento e Escuta Escolar Sensível", summary: "Estudo do vínculo afetivo e escuta não-julgadora para redução da ansiedade escolar.", detail: "<strong>Objetivo:</strong> Estabelecer vínculo de confiança com o aprendente.<br><br><strong>Estratégias:</strong><br>• Realizar os primeiros 10 minutos de sessão com escuta aberta sem cobranças formais.<br>• Utilizar cartões de emoções ou termômetro dos sentimentos para quantificar o estado afetivo do dia.<br>• Garantir um ambiente livre de ruídos externos ou excesso de estímulos concorrentes." },
       { title: "Anamnese Familiar e Histórico de Desenvolvimento", summary: "Roteiro estruturado de entrevista com responsáveis.", detail: "<strong>Roteiro de Coleta:</strong><br>• Gestação, parto e marcos do desenvolvimento psicomotor (sustentação cefálica, engatinhar, andar).<br>• Aquisição da linguagem e histórico do sono.<br>• Dinâmica familiar, rotina de estudos em casa e histórico escolar anterior." },
@@ -880,9 +885,6 @@
       setTimeout(() => { toast.classList.add('opacity-0'); setTimeout(() => toast.remove(), 300); }, 3500);
     }
 
-    /* ==========================================================================
-       2. SIDEBAR TOGGLE & AUTH
-       ========================================================================== */
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('w-64');
@@ -946,9 +948,6 @@
       showToast('Sessão encerrada.', 'info');
     }
 
-    /* ==========================================================================
-       3. GUIDE TOPICS MODAL & INTERACTIVITY
-       ========================================================================== */
     function renderGuideTopics() {
       const grid = document.getElementById('guideTopicsGrid');
       grid.innerHTML = '';
@@ -1008,9 +1007,6 @@
       document.getElementById('readingProgressBar').style.width = `${percentage}%`;
     }
 
-    /* ==========================================================================
-       4. FULL APRENDENTES MANAGEMENT (CADASTRAR, EDITAR, EXCLUIR)
-       ========================================================================== */
     function renderStudentsList() {
       const grid = document.getElementById('studentsListGrid');
       grid.innerHTML = '';
@@ -1103,9 +1099,6 @@
       showToast('Aprendente salvo com sucesso!', 'success');
     }
 
-    /* ==========================================================================
-       5. FORM SAMPLE HELPERS
-       ========================================================================== */
     function fillSampleEval() {
       document.getElementById('evalAnamnese').value = "Aprendente encaminhado pela equipe pedagógica por oscilações no foco atencional e dificuldade de retenção leitora em textos longos.";
       document.getElementById('evalCognitive').value = "Memória de trabalho preservada para estímulos visuais; fadiga atencional em tarefas verbais repetitivas sem suporte de imagem.";
@@ -1122,9 +1115,6 @@
       showToast('Modelo PEI inserido!', 'info');
     }
 
-    /* ==========================================================================
-       6. CORE PLATFORM INITIALIZATION
-       ========================================================================== */
     function populateStudentSelectors() {
       const selectors = ['globalStudentSelect', 'evalStudentSelect', 'planStudentSelect', 'aiStudentSelect', 'methodStudentSelect', 'reportStudentSelect'];
       selectors.forEach(id => {
