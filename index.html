@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#4936a8">
-<title>Práxis | Plataforma Psicopedagógica</title>
+<title>Práxis | Plataforma Psicopedagógica & Guia Prático 2026</title>
+
+<!-- Tailwind CSS para o Guia Prático e Componentes de Estilo Rápido -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Font Awesome para Ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
@@ -31,6 +36,12 @@ body{
 }
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar { width: 6px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 /* Tela de Bloqueio / Código de Acesso */
 #auth-screen {
@@ -267,6 +278,7 @@ tr:last-child td{border-bottom:0}
   <div class="nav-label">ESPAÇO DE TRABALHO</div>
   <nav class="nav">
     <button class="active" data-page="home"><span class="ico">▦</span> Painel inicial</button>
+    <button data-page="guide-2026"><span class="ico">📖</span> Guia Prático 2026</button>
     <button data-page="people"><span class="ico">♧</span> Aprendentes <span class="nav-count" id="peopleCount">0</span></button>
     <button data-page="evaluation"><span class="ico">◎</span> Avaliação psicopedagógica</button>
     <button data-page="intervention"><span class="ico">✳</span> Plano de intervenção</button>
@@ -301,19 +313,24 @@ tr:last-child td{border-bottom:0}
     <div class="breadcrumb">Práxis <span style="padding:0 5px">/</span> <strong id="currentTitle">Painel inicial</strong></div>
   </div>
   <div class="top-actions">
+    <a href="mailto:prof.barbaravitoria@gmail.com" class="btn small" style="background:#eef2ff; color:#3730a3; border-color:#c7d2fe;">
+      <i class="fa-regular fa-envelope"></i> prof.barbaravitoria@gmail.com
+    </a>
     <input class="search" id="globalSearch" placeholder="Buscar aprendente..." aria-label="Buscar aprendente">
     <button class="btn primary" onclick="go('evaluation')">＋ Novo</button>
   </div>
 </header>
 
 <div class="content">
+
+<!-- PAINEL INICIAL -->
 <section class="page active" id="page-home">
   <div class="hero">
     <div>
       <div class="tag" style="background:#ffffff24;color:#fff;margin-bottom:12px">SUA ROTINA, MAIS ORGANIZADA</div>
       <h2>Aprender é um processo.<br>Compreender faz parte dele.</h2>
-      <p>Organize observações, planeje intervenções, crie planos com metodologias ativas e manuais psicopedagógicos individualizados.</p>
-      <button class="btn light" onclick="go('evaluation')">Começar avaliação →</button>
+      <p>Organize observações, consulte o Guia Prático 2026, planeje intervenções com metodologias ativas e manuais psicopedagógicos individualizados.</p>
+      <button class="btn light" onclick="go('guide-2026')">Acessar Guia Prático 2026 →</button>
     </div>
     <div class="hero-art" aria-hidden="true">✦</div>
   </div>
@@ -327,12 +344,12 @@ tr:last-child td{border-bottom:0}
 
   <div class="section-head"><h3>Acesso rápido</h3><span class="muted small-text">Ferramentas de trabalho</span></div>
   <div class="grid quick-grid">
+    <button class="quick" onclick="go('guide-2026')"><span class="qico">📖</span><strong>Guia Prático 2026</strong><small>30 tópicos da avaliação psicopedagógica.</small></button>
     <button class="quick" onclick="go('evaluation')"><span class="qico">📝</span><strong>Nova avaliação</strong><small>Organize informações e observações iniciais.</small></button>
-    <button class="quick" onclick="go('lesson-plan')"><span class="qico">🚀</span><strong>Metodologias Ativas</strong><small>Crie planos de aula, atividades e programas de aprendizado.</small></button>
-    <button class="quick" onclick="go('student-manual')"><span class="qico">📘</span><strong>Manual do Aprendente</strong><small>Gere um manual personalizado para cada pessoa.</small></button>
-    <button class="quick" onclick="go('intervention')"><span class="qico">🌱</span><strong>Plano de intervenção</strong><small>Defina objetivos, estratégias e acompanhamento.</small></button>
-    <button class="quick" onclick="go('adaptation')"><span class="qico">🎨</span><strong>Adaptar uma atividade</strong><small>Planeje acessibilidade e participação.</small></button>
-    <button class="quick" onclick="go('records')"><span class="qico">📚</span><strong>Ver registros</strong><small>Consulte, baixe ou exclua documentos salvos.</small></button>
+    <button class="quick" onclick="go('lesson-plan')"><span class="qico">🚀</span><strong>Metodologias Ativas</strong><small>Crie planos de aula, atividades e programas.</small></button>
+    <button class="quick" onclick="go('student-manual')"><span class="qico">📘</span><strong>Manual do Aprendente</strong><small>Gere um guia personalizado para o estudante.</small></button>
+    <button class="quick" onclick="go('adaptation')"><span class="qico">🎨</span><strong>Adaptar uma atividade</strong><small>Planeje acessibilidade por IA.</small></button>
+    <button class="quick" onclick="go('records')"><span class="qico">📚</span><strong>Ver registros</strong><small>Consulte, baixe ou exclua documentos.</small></button>
   </div>
 
   <div class="grid two-col">
@@ -351,7 +368,101 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
-<!-- ABA: PLANEJADOR DE AULAS & METODOLOGIAS ATIVAS -->
+<!-- GUIA PRÁTICO DA AVALIAÇÃO PSICOPEDAGÓGICA 2026 (INTEGRADO) -->
+<section class="page" id="page-guide-2026">
+  <div class="flex flex-col h-[calc(100vh-120px)] bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+    
+    <!-- BARRA SUPERIOR DO GUIA -->
+    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-600 text-white font-black text-lg px-3 py-1 rounded-lg tracking-wider">PRÁXIS</div>
+            <div class="h-6 w-px bg-slate-300"></div>
+            <div>
+                <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Guia Prático da Avaliação Psicopedagógica 2026</h1>
+                <p class="text-xs text-slate-500">Apostila Digital Interativa & Central de Ferramentas</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs">
+            <!-- Barra de Progresso -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                <span class="text-slate-600 font-medium">Progresso:</span>
+                <div class="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
+                    <div id="progressBar" class="bg-blue-600 h-2 rounded-full w-0 transition-all duration-300"></div>
+                </div>
+                <span id="progressText" class="font-bold text-blue-600">0%</span>
+            </div>
+
+            <a href="mailto:prof.barbaravitoria@gmail.com" class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-200 transition">
+                <i class="fa-regular fa-envelope"></i>
+                <span class="font-semibold hidden sm:inline">prof.barbaravitoria@gmail.com</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- CORPO DO GUIA -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- SIDEBAR DE TÓPICOS -->
+        <aside class="w-80 md:w-96 bg-white border-r border-slate-200 flex flex-col shrink-0">
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Buscar nos 30 tópicos..." 
+                        class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1.5" id="topicList">
+                <!-- Inserido dinamicamente via JS -->
+            </div>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL DO TÓPICO SELECIONADO -->
+        <main class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar p-6 md:p-8 flex flex-col justify-between" id="mainContent">
+            <div class="max-w-4xl mx-auto w-full">
+                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="chapBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Tópico 01</span>
+                        <button onclick="toggleCompleted()" id="btnComplete" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1.5 transition">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <span>Marcar como Lido</span>
+                        </button>
+                    </div>
+
+                    <h2 id="chapTitle" class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-3">Carregando...</h2>
+                    <p id="chapSubtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-6"></p>
+
+                    <!-- CAIXA DE AÇÃO DIRETA COM A PLATAFORMA PRÁXIS -->
+                    <div id="actionBox" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                                <i class="fa-solid fa-bolt text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-blue-900 text-sm">Ferramenta Interativa Práxis</h4>
+                                <p class="text-xs text-blue-700" id="actionDesc">Acesse a função correspondente diretamente no sistema.</p>
+                            </div>
+                        </div>
+                        <button id="actionBtn" onclick="executeSystemAction()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-4 py-2.5 rounded-lg transition shadow-sm whitespace-nowrap">
+                            Abrir no Sistema
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-6 text-slate-700 leading-relaxed text-sm md:text-base" id="chapBody">
+                </div>
+            </div>
+
+            <footer class="mt-8 border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
+                <p>Plataforma Práxis &copy; 2026 — Guia Prático da Avaliação Psicopedagógica</p>
+                <p class="mt-1">Contato e Suporte: <a href="mailto:prof.barbaravitoria@gmail.com" class="text-blue-600 font-semibold hover:underline">prof.barbaravitoria@gmail.com</a> | Instagram: <a href="https://instagram.com/prof.barbaravitoria" target="_blank" class="text-blue-600 font-semibold hover:underline">@prof.barbaravitoria</a></p>
+            </footer>
+        </main>
+    </div>
+  </div>
+</section>
+
+<!-- PLANEJADOR DE AULAS & METODOLOGIAS ATIVAS -->
 <section class="page" id="page-lesson-plan">
   <h2>Planejador de Aulas & Metodologias Ativas</h2>
   <p class="subtitle">Combine metodologias ativas com criação de planos de aula, atividades práticas, exercícios de fixação e programas de aprendizado.</p>
@@ -383,7 +494,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="lessonPlanOutput"></div>
 </section>
 
-<!-- ABA: MANUAL DO APRENDENTE -->
+<!-- MANUAL DO APRENDENTE -->
 <section class="page" id="page-student-manual">
   <h2>Manual Psicopedagógico do Aprendente</h2>
   <p class="subtitle">Crie um guia e manual de estratégias personalizado para cada aprendente com rotinas, técnicas de estudo e autorregulação.</p>
@@ -416,7 +527,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="studentManualOutput"></div>
 </section>
 
-<!-- ABA: SOBRE A AUTORA & CONTATOS -->
+<!-- SOBRE A AUTORA & CONTATOS -->
 <section class="page" id="page-author">
   <h2>Sobre a Autora & Canais de Contato</h2>
   <p class="subtitle">Conheça a trajetória acadêmica, profissional e os canais de suporte da Plataforma Práxis.</p>
@@ -426,9 +537,10 @@ tr:last-child td{border-bottom:0}
     <p>Educadora, pesquisadora e desenvolvedora de ferramentas pedagógicas voltadas à inclusão, à psicopedagogia e às metodologias ativas.</p>
     
     <div class="notice green-note">
-      <strong>📞 Canais para Atendimento e Consultas:</strong><br>
-      • <strong>E-mail Profissional:</strong> prof.barbaravitoria@gmail.com<br>
-      • <strong>Plataforma / Dúvidas:</strong> Suporte disponível diretamente pelo painel do usuário
+      <strong>📞 Canais para Atendimento, Consultas e Dúvidas:</strong><br>
+      • <strong>E-mail Profissional:</strong> <a href="mailto:prof.barbaravitoria@gmail.com" class="font-bold underline">prof.barbaravitoria@gmail.com</a><br>
+      • <strong>Instagram Profissional:</strong> <a href="https://instagram.com/prof.barbaravitoria" target="_blank" class="font-bold underline">@prof.barbaravitoria</a><br>
+      • <strong>Plataforma / Dúvidas:</strong> Suporte direto disponível pelo e-mail e rede social.
     </div>
 
     <div class="notice" style="background: var(--purple-light); color: var(--primary-dark);">
@@ -463,6 +575,7 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<!-- APRENDENTES -->
 <section class="page" id="page-people">
   <h2>Aprendentes</h2><p class="subtitle">Cadastre e acompanhe o percurso de aprendizagem.</p>
   <div class="card">
@@ -482,6 +595,7 @@ tr:last-child td{border-bottom:0}
   <div class="table-wrap"><table><thead><tr><th>Identificação</th><th>Faixa etária</th><th>Contexto</th><th>Objetivo</th><th>Ações</th></tr></thead><tbody id="peopleTable"></tbody></table></div>
 </section>
 
+<!-- AVALIAÇÃO PSICOPEDAGÓGICA -->
 <section class="page" id="page-evaluation">
   <h2>Avaliação psicopedagógica</h2>
   <p class="subtitle">Registre informações, dificuldades relatadas, potencialidades e hipóteses de trabalho.</p>
@@ -509,6 +623,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="evaluationOutput"></div>
 </section>
 
+<!-- PLANO DE INTERVENÇÃO -->
 <section class="page" id="page-intervention">
   <h2>Plano de intervenção</h2>
   <p class="subtitle">Defina objetivos observáveis, estratégias e acompanhamento.</p>
@@ -531,6 +646,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="interventionOutput"></div>
 </section>
 
+<!-- ADAPTAÇÃO PEDAGÓGICA POR IA -->
 <section class="page" id="page-adaptation">
   <h2>Adaptação pedagógica por IA</h2>
   <p class="subtitle">Selecione o aprendente cadastrado e a atividade para que o sistema gere a adaptação automática inteligente.</p>
@@ -575,6 +691,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="adaptationOutput"></div>
 </section>
 
+<!-- RELATÓRIOS E DOCUMENTOS -->
 <section class="page" id="page-report">
   <h2>Relatórios e documentos</h2>
   <p class="subtitle">Crie documentos editáveis e revise o conteúdo antes de compartilhar.</p>
@@ -597,6 +714,7 @@ tr:last-child td{border-bottom:0}
   <div class="result-box" id="reportOutput"></div>
 </section>
 
+<!-- NEURODIVERSIDADE -->
 <section class="page" id="page-neuro">
   <h2>Neurodiversidade</h2>
   <p class="subtitle">Estratégias de acolhimento e compreensão das singularidades cognitivas.</p>
@@ -606,6 +724,7 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<!-- BIBLIOTECA DE ESTRATÉGIAS -->
 <section class="page" id="page-library">
   <h2>Biblioteca de estratégias</h2>
   <p class="subtitle">Consulta rápida de metodologias e abordagens de apoio.</p>
@@ -616,7 +735,7 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
-<!-- ABA: REGISTROS E ACOMPANHAMENTO -->
+<!-- REGISTROS E ACOMPANHAMENTO -->
 <section class="page" id="page-records">
   <h2>Registros e Acompanhamento</h2>
   <p class="subtitle">Histórico de documentos, avaliações, planos e relatórios gerados.</p>
@@ -645,6 +764,7 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
+<!-- PRIVACIDADE E CONFIGURAÇÕES -->
 <section class="page" id="page-privacy">
   <h2>Privacidade e Configurações</h2>
   <p class="subtitle">Gerenciamento de dados e conformidade local.</p>
@@ -666,7 +786,7 @@ tr:last-child td{border-bottom:0}
 </div>
 
 <footer class="footer">
-  <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente.</div>
+  <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente. Contato: prof.barbaravitoria@gmail.com | Instagram: @prof.barbaravitoria</div>
 </footer>
 
 </main>
@@ -679,6 +799,43 @@ const CODIGO_UNIVERSAL = "psi-praxis-2026";
 let activeKey = "";
 let state = { people: [], records: [], evaluations: [], interventions: [] };
 
+// BASE DE DADOS DOS 30 TÓPICOS DO GUIA PRÁTICO 2026
+const topics = [
+    { id: 1, color: 'bg-blue-500', targetPage: 'home', title: 'Capa — Guia Prático 2026', desc: 'Apresentação e visão geral da avaliação psicopedagógica contemporânea.', action: 'Ver Apresentação', body: 'Bem-vindo ao Guia Prático da Avaliação Psicopedagógica 2026. Este material foi desenhado para integrar teoria e prática no sistema Práxis.' },
+    { id: 2, color: 'bg-green-500', targetPage: 'records', title: 'Sumário', desc: 'Estrutura completa e navegação pelos 30 módulos de avaliação.', action: 'Ver Estrutura', body: 'Organização hoje, mais clareza amanhã! Navegue pelos módulos laterais para acessar conteúdos teóricos e formulários associados.' },
+    { id: 3, color: 'bg-amber-500', targetPage: 'evaluation', title: 'Mapa da Avaliação Psicopedagógica', desc: 'Fluxograma completo das etapas do processo de avaliação.', action: 'Abrir Fluxograma', body: 'O mapa da avaliação detalha desde a acolhida inicial até a entrega da devolutiva. Mapeie cada fase no prontuário do seu paciente.' },
+    { id: 4, color: 'bg-pink-500', targetPage: 'evaluation', title: 'O que é avaliar psicopedagogicamente em 2026?', desc: 'Paradigmas atuais, neurociência aplicada e tecnologia na avaliação.', action: 'Ler Diretrizes 2026', body: 'Avaliar em 2026 exige olhar para o sujeito de forma holística, considerando habilidades cognitivas, socioemocionais e contextuais.' },
+    { id: 5, color: 'bg-purple-500', targetPage: 'evaluation', title: 'Da queixa à pergunta de investigação', desc: 'Como transformar queixas escolares/familiares em hipóteses claras.', action: 'Gerar Pergunta de Investigação', body: 'Transforme relatos vagos em hipóteses testáveis. Utilize nosso assistente de formulação de perguntas clínicas.' },
+    { id: 6, color: 'bg-sky-500', targetPage: 'people', title: 'O triângulo da avaliação: criança + família + escola', desc: 'A articulação necessária entre os três pilares do atendimento.', action: 'Cadastrar Atores no Prontuário', body: 'A avaliação não ocorre isolada. Integre as percepções da escola e da família nos formulários unificados do Práxis.' },
+    { id: 7, color: 'bg-emerald-500', targetPage: 'evaluation', title: 'Anamnese inteligente — o que realmente observar', desc: 'Roteiro e dados essenciais do histórico de desenvolvimento.', action: 'Iniciar Anamnese Digital', body: 'Acesse o formulário de Anamnese Inteligente no Práxis com salvamento automático e relatórios pré-formatados.' },
+    { id: 8, color: 'bg-amber-500', targetPage: 'evaluation', title: 'EOCA na prática', desc: 'Estruturação da Entrevista Operativa Centrada na Aprendizagem.', action: 'Abrir Protocolo EOCA', body: 'A EOCA permite observar o modelo de aprendizagem da criança. Registre as consignas e observações diretamente no sistema.' },
+    { id: 9, color: 'bg-rose-500', targetPage: 'evaluation', title: 'Matriz de hipóteses psicopedagógicas', desc: 'Cruzamento de dados para confirmação ou refutação de hipóteses.', action: 'Montar Matriz no Prontuário', body: 'Construa uma matriz dinâmica vinculando sintomas, instrumentos aplicados e evidências coletadas.' },
+    { id: 10, color: 'bg-indigo-500', targetPage: 'library', title: 'Qual instrumento usar? Mapa de decisão', desc: 'Guia de seleção de testes e provas formais/informais.', action: 'Acessar Calculadora de Testes', body: 'Filtre os melhores instrumentos com base na idade do paciente, suspeita diagnóstica e tempo disponível.' },
+    { id: 11, color: 'bg-blue-500', targetPage: 'evaluation', title: 'Funções cognitivas e executivas', desc: 'Atenção, memória de trabalho, flexibilidade e controle inibitório.', action: 'Lançar Dados Cognitivos', body: 'Avalie e registre os níveis de atenção sustentada, memória de trabalho e planejamento na ficha de perfil cognitivo.' },
+    { id: 12, color: 'bg-green-500', targetPage: 'adaptation', title: 'Mapa da avaliação da leitura', desc: 'Decodificação, fluência, rota fonológica/lexical e compreensão.', action: 'Abrir Protocolo de Leitura', body: 'Alique as provas de leitura e registre os tempos de latência e índices de precisão no módulo de linguagem.' },
+    { id: 13, color: 'bg-amber-500', targetPage: 'adaptation', title: 'Mapa da avaliação da escrita', desc: 'Grafomotricidade, ortografia, produção textual e coerência.', action: 'Abrir Protocolo de Escrita', body: 'Avalie a qualidade da caligrafia, erros ortográficos (naturais vs. arbitrários) e estruturação de frases.' },
+    { id: 14, color: 'bg-pink-500', targetPage: 'adaptation', title: 'Mapa da avaliação matemática', desc: 'Senso numérico, raciocínio lógico, cálculo e resolução de problemas.', action: 'Abrir Protocolo de Matemática', body: 'Provas operatórias e avaliação do raciocínio quantitativo com registro quantitativo e qualitativo.' },
+    { id: 15, color: 'bg-purple-500', targetPage: 'neuro', title: 'Linguagem oral, processamento auditivo e comunicação', desc: 'Habilidades pragmáticas, léxico e percepção auditiva.', action: 'Registrar Perfil Comunicativo', body: 'Análise da fluência verbal, vocabulário expressivo e recepção de ordens complexas.' },
+    { id: 16, color: 'bg-sky-500', targetPage: 'neuro', title: 'Desenvolvimento motor, visoespacial e temporal', desc: 'Lateralidade, esquemas corporais e orientação no tempo/espaço.', action: 'Abrir Avaliação Motora', body: 'Registre observações sobre praxia fina, global e capacidade de organização visoespacial.' },
+    { id: 17, color: 'bg-emerald-500', targetPage: 'adaptation', title: 'TDAH e funções executivas — mapa de rastreio', desc: 'Escalas comportamentais e indicadores de desatenção/hiperatividade.', action: 'Aplicar Escala TDAH', body: 'Formulários digitais de rastreio para pais e professores com cálculo de corte percentílico.' },
+    { id: 18, color: 'bg-amber-500', targetPage: 'adaptation', title: 'Dislexia e transtornos de aprendizagem', desc: 'Sinais de alerta, diagnóstico diferencial e marcadores neurobiológicos.', action: 'Checklist de Rastreio Dislexia', body: 'Verifique a presença de marcadores específicos no processamento fonológico e automação de leitura.' },
+    { id: 19, color: 'bg-rose-500', targetPage: 'adaptation', title: 'Discalculia × Disgrafia × Disortografia', desc: 'Quadro comparativo e critérios de identificação dos transtornos específicos.', action: 'Ver Tabela Comparativa', body: 'Diferencie dificuldades secundárias de transtornos específicos com nossa ferramenta de análise comparativa.' },
+    { id: 20, color: 'bg-purple-500', targetPage: 'neuro', title: 'TEA e aprendizagem — visão atualizada 2026', desc: 'Perfil de aprendizagem no Espectro Autista e adaptabilidade.', action: 'Abrir Rastreio TEA/Perfil', body: 'Avaliação da flexibilidade cognitiva, teoria da mente e comportamentos repetitivos no contexto de aprendizagem.' },
+    { id: 21, color: 'bg-blue-500', targetPage: 'student-manual', title: 'Altas habilidades + dupla excepcionalidade', desc: 'Identificação de superdotado com transtornos associados.', action: 'Mapear AH/SD e Dupla Excepcionalidade', body: 'Instrumentos para mapear precocidade, hiperfoco e possíveis assincronias do desenvolvimento.' },
+    { id: 22, color: 'bg-green-500', targetPage: 'lesson-plan', title: 'Educação inclusiva em 2026', desc: 'Adequações curriculares, PEI e legislação vigente.', action: 'Criar Minuta PEI', body: 'Gerador de Plano de Ensino Individualizado (PEI) integrado aos achados da avaliação psicopedagógica.' },
+    { id: 23, color: 'bg-amber-500', targetPage: 'report', title: 'Quando encaminhar?', desc: 'Critérios para encaminhamento multidisciplinar (Neuro, Fono, Psiquiatria).', action: 'Gerar Guia de Encaminhamento', body: 'Modelos de cartas e relatórios de encaminhamento com linguagem técnica padronizada.' },
+    { id: 24, color: 'bg-pink-500', targetPage: 'library', title: 'Instrumentos, ética e SATEPSI', desc: 'Uso de testes restritos e regulamentação da prática psicopedagógica.', action: 'Consultar Lista Etiqueta SATEPSI', body: 'Orientações éticas sobre quais instrumentos são de uso exclusivo e quais são liberados para psicopedagogos.' },
+    { id: 25, color: 'bg-purple-500', targetPage: 'evaluation', title: 'Como cruzar todos os resultados', desc: 'Síntese diagnóstica e triangulação de evidências.', action: 'Gerar Matriz de Triangulação', body: 'Cruze dados da anamnese, observações e testes formais para fundamentar a devolutiva.' },
+    { id: 26, color: 'bg-sky-500', targetPage: 'report', title: 'Da avaliação à devolutiva', desc: 'Como planejar a sessão de entrega para a família e para a escola.', action: 'Roteiro de Devolutiva', body: 'Guia passo a passo para conduzir devolutivas acolhedoras e propositivas com entrega de documentos.' },
+    { id: 27, color: 'bg-emerald-500', targetPage: 'report', title: 'Como estruturar um relatório que realmente ajuda', desc: 'Modelo e redação técnica do Laudo/Relatório Psicopedagógico.', action: 'Gerar Relatório Automático', body: 'Utilize o motor de Inteligência Artificial do Práxis para consolidar os dados do prontuário em um relatório claro.' },
+    { id: 28, color: 'bg-amber-500', targetPage: 'intervention', title: 'Plano de intervenção de 90 dias', desc: 'Estruturação do plano terapêutico pós-avaliação.', action: 'Criar Plano de 90 Dias', body: 'Defina metas SMART, estratégias e cronograma de sessões para o acompanhamento psicopedagógico.' },
+    { id: 29, color: 'bg-rose-500', targetPage: 'privacy', title: 'Avaliação em 2026: registros digitais, dados e IA', desc: 'Segurança de dados (LGPD), suporte por IA e prontuário em nuvem.', action: 'Configurar Prontuário Digital', body: 'Como manter registros seguros, organizados e em conformidade com as exigências legais e tecnológicas.' },
+    { id: 30, color: 'bg-purple-500', targetPage: 'records', title: 'Mapa mental mestre + checklist final', desc: 'Checklist de encerramento do processo de avaliação psicopedagógica.', action: 'Abrir Checklist de Encerramento', body: 'Valide se todas as etapas foram concluídas antes de assinar o relatório e arquivar o caso.' }
+];
+
+let currentTopic = 1;
+let completedTopics = new Set();
+
 window.addEventListener('DOMContentLoaded', () => {
   const salvo = localStorage.getItem('praxis_token_ativo');
   if (salvo) {
@@ -687,6 +844,8 @@ window.addEventListener('DOMContentLoaded', () => {
     atualizarInfoPerfil(salvo);
     carregarDadosUsuario();
   }
+  renderTopicList();
+  loadTopic(1);
 });
 
 document.getElementById('authForm').addEventListener('submit', (e) => {
@@ -780,6 +939,7 @@ function saveData() {
 
 const pageTitles = {
   home: 'Painel inicial',
+  'guide-2026': 'Guia Prático da Avaliação Psicopedagógica 2026',
   author: 'Sobre a autora & Contatos',
   people: 'Aprendentes',
   evaluation: 'Avaliação psicopedagógica',
@@ -881,6 +1041,107 @@ function preencherManualAprendente() {
   }
 }
 
+// LÓGICA DO GUIA PRÁTICO 2026
+function renderTopicList(filter = '') {
+    const listContainer = document.getElementById('topicList');
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+
+    topics.forEach(t => {
+        if (filter && !t.title.toLowerCase().includes(filter.toLowerCase()) && !t.desc.toLowerCase().includes(filter.toLowerCase())) {
+            return;
+        }
+
+        const isActive = t.id === currentTopic;
+        const isDone = completedTopics.has(t.id);
+
+        const item = document.createElement('div');
+        item.className = `p-3 rounded-xl cursor-pointer transition flex items-center justify-between border ${isActive ? 'bg-blue-50/80 border-blue-300 shadow-sm' : 'bg-white hover:bg-slate-50 border-slate-100'}`;
+        item.onclick = () => loadTopic(t.id);
+
+        item.innerHTML = `
+            <div class="flex items-center gap-3 overflow-hidden">
+                <span class="w-7 h-7 rounded-lg ${t.color} text-white font-bold text-xs flex items-center justify-center shrink-0">
+                    ${t.id < 10 ? '0' + t.id : t.id}
+                </span>
+                <div class="truncate">
+                    <h4 class="text-xs font-bold text-slate-800 truncate">${t.title}</h4>
+                    <p class="text-[10px] text-slate-500 truncate">${t.desc}</p>
+                </div>
+            </div>
+            ${isDone ? '<i class="fa-solid fa-circle-check text-green-500 text-xs ml-2"></i>' : ''}
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+function loadTopic(id) {
+    currentTopic = id;
+    const topic = topics.find(t => t.id === id);
+
+    document.getElementById('chapBadge').innerText = `Tópico ${topic.id < 10 ? '0' + topic.id : topic.id}`;
+    document.getElementById('chapBadge').className = `px-3 py-1 rounded-full text-xs font-bold ${topic.color.replace('bg-', 'bg-opacity-20 text-')}`;
+    document.getElementById('chapTitle').innerText = topic.title;
+    document.getElementById('chapSubtitle').innerText = topic.desc;
+    document.getElementById('actionBtn').innerText = topic.action;
+    document.getElementById('actionDesc').innerText = `Execute: ${topic.desc}`;
+    
+    document.getElementById('chapBody').innerHTML = `
+        <p class="font-medium text-slate-800">${topic.body}</p>
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600 space-y-2">
+            <p class="font-bold text-slate-700"><i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i> Dica de Aplicação no Práxis:</p>
+            <p>Ao concluir a leitura deste tópico, você pode clicar no botão <strong>"${topic.action}"</strong> acima para aplicar as orientações diretamente no módulo correspondente.</p>
+        </div>
+    `;
+
+    updateCompleteButton();
+    renderTopicList(document.getElementById('searchInput').value);
+}
+
+function toggleCompleted() {
+    if (completedTopics.has(currentTopic)) {
+        completedTopics.delete(currentTopic);
+    } else {
+        completedTopics.add(currentTopic);
+    }
+    updateCompleteButton();
+    updateProgress();
+    renderTopicList(document.getElementById('searchInput').value);
+}
+
+function updateCompleteButton() {
+    const btn = document.getElementById('btnComplete');
+    if (!btn) return;
+    if (completedTopics.has(currentTopic)) {
+        btn.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-700 font-semibold">Concluído</span>`;
+        btn.className = "text-xs px-3 py-1.5 rounded-lg border border-green-200 bg-green-50 flex items-center gap-1.5 transition";
+    } else {
+        btn.innerHTML = `<i class="fa-regular fa-circle-check"></i> <span>Marcar como Lido</span>`;
+        btn.className = "text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1.5 transition";
+    }
+}
+
+function updateProgress() {
+    const pct = Math.round((completedTopics.size / topics.length) * 100);
+    document.getElementById('progressBar').style.width = `${pct}%`;
+    document.getElementById('progressText').innerText = `${pct}%`;
+}
+
+function filterTopics() {
+    const query = document.getElementById('searchInput').value;
+    renderTopicList(query);
+}
+
+function executeSystemAction() {
+    const topic = topics.find(t => t.id === currentTopic);
+    if (topic && topic.targetPage) {
+        go(topic.targetPage);
+        showToast(`Redirecionado para o módulo: ${pageTitles[topic.targetPage]}`);
+    } else {
+        alert(`[Ação do Sistema Práxis]\nExecutando: "${topic.action}"`);
+    }
+}
+
 document.getElementById('peopleForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const newPerson = {
@@ -945,7 +1206,6 @@ document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   });
 });
 
-// --- GERADORES COM SALVAMENTO DE CONTEÚDO COMPLETO ---
 function gerarPlanoMetodologiasAtivasIA() {
   const tema = document.getElementById('lpSubject').value.trim();
   const nivel = document.getElementById('lpLevel').value;
@@ -1100,7 +1360,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
   const date = new Date().toISOString().split('T')[0];
   const aprendenteNome = document.getElementById('aPersonSelect').value || 'Geral';
 
-  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Non informado'}`;
+  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
 
   document.getElementById('adaptationOutput').innerHTML = `
     <div class="output-head"><strong>Proposta Adaptada Salva</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
@@ -1168,7 +1428,6 @@ document.getElementById('reportForm').addEventListener('submit', (e) => {
   showToast('Relatório gerado e salvo!');
 });
 
-// --- RENDERIZAÇÃO DA TABELA DE REGISTROS COM OPÇÕES DE ACESSO ---
 function renderRecordsTable() {
   const tbody = document.getElementById('allRecordsTable');
   if (!tbody) return;
