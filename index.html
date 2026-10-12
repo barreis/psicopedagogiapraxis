@@ -72,6 +72,13 @@
           </div>
         </div>
 
+        <!-- Recuperar Senha -->
+        <div class="flex items-center justify-between text-xs">
+          <button type="button" onclick="openRecoveryModal()" class="text-indigo-600 font-semibold hover:underline">
+            <i class="fa-solid fa-key mr-1"></i> Esqueceu a senha?
+          </button>
+        </div>
+
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition duration-200">
           Entrar na Plataforma
         </button>
@@ -104,6 +111,40 @@
       <div class="mt-6 text-center text-xs text-slate-400">
         Plataforma Práxis 2026 &bull; Todos os direitos reservados
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RECUPERAÇÃO DE SENHA -->
+  <div id="recoveryModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl p-6 border border-slate-200 animate-fade-in">
+      <div class="flex items-center justify-between border-b pb-3 mb-4">
+        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-unlock-keyhole text-indigo-600"></i> Recuperar Senha de Acesso
+        </h3>
+        <button onclick="closeRecoveryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      
+      <p class="text-xs text-slate-500 mb-4 leading-relaxed">
+        Informe seu <strong>Código de Acesso</strong> e o <strong>E-mail</strong> cadastrado para verificar suas credenciais.
+      </p>
+
+      <form onsubmit="handlePasswordRecovery(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Código de Acesso</label>
+          <input type="text" id="recCode" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ex: prof.barbaravitoria">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">E-mail Cadastrado</label>
+          <input type="email" id="recEmail" required class="w-full px-3 py-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-indigo-500" placeholder="seu-email@exemplo.com">
+        </div>
+
+        <div id="recoveryResultBox" class="hidden p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-900 font-medium"></div>
+
+        <div class="pt-3 flex justify-end gap-2">
+          <button type="button" onclick="closeRecoveryModal()" class="px-4 py-2 border rounded-xl text-xs text-slate-600">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow">Verificar Credenciais</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -909,7 +950,7 @@
     }
 
     /* ==========================================================================
-       2. AUTHENTICATION & ACCESS CONTROL
+       2. AUTHENTICATION & ACCESS CONTROL & RECOVERY
        ========================================================================== */
     function handleLogin(e) {
       e.preventDefault();
@@ -943,12 +984,40 @@
       loginUser(user);
     }
 
+    function openRecoveryModal() {
+      document.getElementById('recoveryModal').classList.remove('hidden');
+      document.getElementById('recoveryResultBox').classList.add('hidden');
+      document.getElementById('recCode').value = '';
+      document.getElementById('recEmail').value = '';
+    }
+
+    function closeRecoveryModal() {
+      document.getElementById('recoveryModal').classList.add('hidden');
+    }
+
+    function handlePasswordRecovery(e) {
+      e.preventDefault();
+      const code = document.getElementById('recCode').value.trim().toLowerCase();
+      const email = document.getElementById('recEmail').value.trim().toLowerCase();
+      const resultBox = document.getElementById('recoveryResultBox');
+
+      const user = users.find(u => u.code.toLowerCase() === code && u.email.toLowerCase() === email);
+
+      resultBox.classList.remove('hidden');
+      if (user) {
+        resultBox.className = "p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 font-medium";
+        resultBox.innerHTML = `<strong>Conta Encontrada!</strong><br>Sua senha atual é: <span class="font-mono font-bold text-sm text-emerald-700">${user.password}</span>`;
+      } else {
+        resultBox.className = "p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 font-medium";
+        resultBox.innerHTML = `<strong>Dados não conferem.</strong> Verifique se o código e o e-mail informados estão corretos.`;
+      }
+    }
+
     function handleMasterKey(e) {
       e.preventDefault();
       const codeInput = document.getElementById('masterCodeInput').value.trim();
 
       if (codeInput === MASTER_KEY) {
-        // Open user registration modal
         document.getElementById('registerModal').classList.remove('hidden');
       } else {
         showToast('Chave Mestre inválida!', 'error');
@@ -992,7 +1061,6 @@
       closeRegisterModal();
       showToast('Perfil criado com sucesso! Faça login com seu novo código.', 'success');
       
-      // Auto login user
       loginUser(newUser);
     }
 
@@ -1001,11 +1069,9 @@
       document.getElementById('authScreen').classList.add('hidden');
       document.getElementById('appContainer').classList.remove('hidden');
 
-      // Update Nav Details
       document.getElementById('navUserName').innerText = user.name;
       document.getElementById('navUserRole').innerText = user.role === 'admin' ? 'Administrador Supremo' : 'Psicopedagogo(a)';
 
-      // Show/Hide Admin Nav Button
       const adminBtn = document.getElementById('adminPanelNavBtn');
       if (user.code === ADMIN_CODE || user.role === 'admin') {
         adminBtn.classList.remove('hidden');
@@ -1050,7 +1116,6 @@
         targetTabBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'font-bold');
       }
 
-      // Sync views
       if (tabName === 'relatorios') {
         const sel = document.getElementById('reportStudentSelect');
         if (sel.value) renderReportView(sel.value);
@@ -1168,7 +1233,6 @@
 
       const newCode = document.getElementById('usrCode').value.trim();
 
-      // Master code guardrail
       if (u.code === ADMIN_CODE && newCode !== ADMIN_CODE) {
         showToast('O código de prof.barbaravitoria não pode ser alterado!', 'error');
         return;
@@ -1372,26 +1436,22 @@
        7. PEDAGOGICAL MODULE OPERATIONS
        ========================================================================== */
     function loadStudentData(studentId) {
-      // Load Evaluation
       const ev = studentEvaluations[studentId] || {};
       document.getElementById('evalAnamnese').value = ev.anamnese || '';
       document.getElementById('evalCognitive').value = ev.cognitive || '';
       document.getElementById('evalEmotional').value = ev.emotional || '';
       document.getElementById('evalHypothesis').value = ev.hypothesis || '';
 
-      // Load Plan
       const pl = studentPlans[studentId] || {};
       document.getElementById('planGoal').value = pl.goal || '';
       document.getElementById('planFreq').value = pl.freq || '';
       document.getElementById('planDuration').value = pl.duration || '';
       document.getElementById('planMethods').value = pl.methods || '';
 
-      // Load Methods
       const mt = studentMethods[studentId] || {};
       document.getElementById('methodGamification').value = mt.gamification || '';
       document.getElementById('methodPbl').value = mt.pbl || '';
 
-      // Update Report View
       renderReportView(studentId);
     }
 
@@ -1449,7 +1509,6 @@
       showToast('Estratégias de Metodologias Ativas salvas!', 'success');
     }
 
-    // AI Adaptation Simulator
     function generateAiAdaptation() {
       const studentId = document.getElementById('aiStudentSelect').value;
       if (!studentId) {
@@ -1516,7 +1575,6 @@
       document.getElementById('repParent').innerText = std.parent;
       document.getElementById('repSpecialist').innerText = currentUser ? currentUser.name : 'Especialista';
 
-      // Load data
       const ev = studentEvaluations[studentId];
       if (ev) {
         document.getElementById('repEvalText').innerText = `• Anamnese: ${ev.anamnese || 'N/A'}\n• Cognitivo: ${ev.cognitive || 'N/A'}\n• Hipótese Diagnóstica: ${ev.hypothesis || 'N/A'}`;
@@ -1553,9 +1611,7 @@
       showToast('Exportando PDF...', 'info');
     }
 
-    // Initialize Default Selectors on Load
     window.onload = function() {
-      // Auto select first student if available
       if (students.length > 0) {
         syncStudentSelection(students[0].id);
       }
