@@ -37,11 +37,11 @@ button{cursor:pointer}
   z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px;
 }
 .auth-card {
-  background: white; padding: 40px; border-radius: 20px; width: min(420px, 100%);
+  background: white; padding: 40px; border-radius: 20px; width: min(440px, 100%);
   box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
 }
 .auth-card h2 { margin-top: 0; color: var(--primary); font-size: 24px; }
-.auth-card p { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+.auth-card p { color: var(--muted); font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
 .auth-card input { margin-bottom: 15px; text-align: center; font-size: 16px; letter-spacing: 1px; font-weight: bold; text-transform: lowercase; }
 
 .app{min-height:100vh}
@@ -233,13 +233,13 @@ tr:last-child td{border-bottom:0}
 <div id="auth-screen">
   <div class="auth-card">
     <h2>Práxis · Acesso Restrito</h2>
-    <p>Digite o seu código de acesso exclusivo ou o código geral para entrar.</p>
+    <p>Digite o código universal recebido após a compra ou o seu código pessoal criado anteriormente.</p>
     <form id="authForm">
-      <input type="text" id="accessCodeInput" placeholder="ex: psi-praxis-2026" required>
+      <input type="text" id="accessCodeInput" placeholder="digite seu código aqui" required>
       <button type="submit" class="btn primary" style="width:100%; justify-content:center; padding: 12px;">Entrar na Plataforma</button>
     </form>
-    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 12px; display:none;">Código inválido. Verifique as informações fornecidas.</div>
-    <div style="margin-top: 20px; font-size: 11px; color: var(--muted);">Dúvidas sobre o acesso? <a href="#" target="_blank" style="color: var(--primary); text-decoration: underline;">Suporte</a></div>
+    <div id="authError" style="color: var(--danger); font-size: 12px; margin-top: 12px; display:none;">Código inválido. Verifique se digitou corretamente.</div>
+    <div style="margin-top: 20px; font-size: 11px; color: var(--muted);">Primeiro acesso? Use o código universal ou crie o seu após entrar.</div>
   </div>
 </div>
 
@@ -274,10 +274,10 @@ tr:last-child td{border-bottom:0}
 
   <div class="side-bottom">
     <div class="profile"><div class="avatar">BV</div><div>
-      <strong>Profª Bárbara Vitória</strong>
-      <small>Espaço profissional</small>
+      <strong id="activeUserLabel">Profª Bárbara</strong>
+      <small id="activeCodeLabel">Usuário Ativo</small>
     </div></div>
-    <button class="btn small danger" style="width:100%; margin-top:10px;" onclick="logout()">Sair do Acesso</button>
+    <button class="btn small danger" style="width:100%; margin-top:10px;" onclick="logout()">Sair / Trocar de Código</button>
   </div>
 </aside>
 
@@ -306,9 +306,9 @@ tr:last-child td{border-bottom:0}
   </div>
 
   <div class="grid stats">
-    <div class="stat"><div class="stat-top"><span class="stat-label">Aprendentes cadastrados</span><span class="stat-icon purple">♧</span></div><div class="stat-number" id="statPeople">0</div><div class="stat-label">Registros neste dispositivo</div></div>
-    <div class="stat"><div class="stat-top"><span class="stat-label">Avaliações registradas</span><span class="stat-icon pink">◎</span></div><div class="stat-number" id="statEval">0</div><div class="stat-label">Documentos gerados e salvos</div></div>
-    <div class="stat"><div class="stat-top"><span class="stat-label">Planos de intervenção</span><span class="stat-icon blue">✳</span></div><div class="stat-number" id="statPlans">0</div><div class="stat-label">Planos salvos localmente</div></div>
+    <div class="stat"><div class="stat-top"><span class="stat-label">Aprendentes cadastrados</span><span class="stat-icon purple">♧</span></div><div class="stat-number" id="statPeople">0</div><div class="stat-label">Registros salvos no seu perfil</div></div>
+    <div class="stat"><div class="stat-top"><span class="stat-label">Avaliações registradas</span><span class="stat-icon pink">◎</span></div><div class="stat-number" id="statEval">0</div><div class="stat-label">Documentos gerados</div></div>
+    <div class="stat"><div class="stat-top"><span class="stat-label">Planos de intervenção</span><span class="stat-icon blue">✳</span></div><div class="stat-number" id="statPlans">0</div><div class="stat-label">Planos salvos</div></div>
     <div class="stat"><div class="stat-top"><span class="stat-label">Registros totais</span><span class="stat-icon green">▧</span></div><div class="stat-number" id="statRecords">0</div><div class="stat-label">Documentos e acompanhamentos</div></div>
   </div>
 
@@ -338,7 +338,7 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
-<!-- NOVA ABA: SOBRE A AUTORA -->
+<!-- ABA: SOBRE A AUTORA -->
 <section class="page" id="page-author">
   <h2>Sobre a Autora</h2>
   <p class="subtitle">Conheça a trajetória acadêmica e profissional por trás da Plataforma Práxis.</p>
@@ -530,7 +530,7 @@ tr:last-child td{border-bottom:0}
   <div class="card">
     <div class="section-head" style="margin-top:0">
       <h3>Todos os documentos salvos</h3>
-      <button class="btn small danger" onclick="clearAllData()">Limpar todos os dados</button>
+      <button class="btn small danger" onclick="clearAllData()">Limpar dados deste perfil</button>
     </div>
     <div class="table-wrap">
       <table>
@@ -544,9 +544,18 @@ tr:last-child td{border-bottom:0}
 <section class="page" id="page-privacy">
   <h2>Privacidade e Configurações</h2>
   <p class="subtitle">Gerenciamento de dados e conformidade local.</p>
-  <div class="card">
-    <h3>Armazenamento e Segurança</h3>
-    <p>Acesso liberado mediante código de chave única de cliente ou código mestre.</p>
+  <div class="card" style="margin-bottom: 20px;">
+    <h3>Criar ou Alterar Seu Próprio Código Pessoal</h3>
+    <p>Se você entrou usando o código universal, pode criar seu próprio código de acesso exclusivo para não precisar digitar o código universal novamente e manter suas anotações salvas de forma segura.</p>
+    <div class="form-grid" style="margin-top: 15px;">
+      <div class="field full">
+        <label for="newCustomCode">Novo código pessoal desejado</label>
+        <input id="newCustomCode" placeholder="ex: meu-codigo-123">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" onclick="salvarNovoCodigoPessoal()">Salvar e migrar dados para meu código</button>
+    </div>
   </div>
 </section>
 
@@ -561,21 +570,21 @@ tr:last-child td{border-bottom:0}
 <div id="toast">Ação realizada com sucesso!</div>
 
 <script>
-// --- LISTA DE CÓDIGOS VÁLIDOS (INCLUINDO O CÓDIGO MESTRE) ---
-const codigosValidos = [
-  "psi-praxis-2026", // Código Geral / Mestre
-  "BARBARA-CLIENTE-01",
-  "PSICO-ESP-1234",
-  "PROFESSORA-BARBARA"
-];
+// --- CÓDIGO UNIVERSAL DE ENTRADA ---
+const CODIGO_UNIVERSAL = "psi-praxis-2026";
 
-// Verificar se o usuário já inseriu um código válido anteriormente neste navegador
+let activeKey = "";
+let state = { people: [], records: [], evaluations: [], interventions: [] };
+
+// Verificar autenticação ao carregar
 window.addEventListener('DOMContentLoaded', () => {
   const salvo = localStorage.getItem('praxis_token_ativo');
-  if (salvo && codigosValidos.map(c => c.toLowerCase()).includes(salvo)) {
+  if (salvo) {
+    activeKey = salvo;
     document.getElementById('auth-screen').style.display = 'none';
+    atualizarInfoPerfil(salvo);
+    carregarDadosUsuario();
   }
-  updateStats();
 });
 
 // Validar formulário de código de acesso
@@ -584,35 +593,91 @@ document.getElementById('authForm').addEventListener('submit', (e) => {
   const digitado = document.getElementById('accessCodeInput').value.trim().toLowerCase();
   const erroEl = document.getElementById('authError');
 
-  const codigosMinusculos = codigosValidos.map(c => c.toLowerCase());
+  const codigosSalvosExtras = JSON.parse(localStorage.getItem('praxis_codigos_extras')) || [];
 
-  if (codigosMinusculos.includes(digitado)) {
+  if (digitado === CODIGO_UNIVERSAL || codigosSalvosExtras.includes(digitado)) {
     localStorage.setItem('praxis_token_ativo', digitado);
+    activeKey = digitado;
     document.getElementById('auth-screen').style.display = 'none';
+    atualizarInfoPerfil(digitado);
+    carregarDadosUsuario();
     showToast('Acesso liberado com sucesso!');
   } else {
     erroEl.style.display = 'block';
   }
 });
 
+function salvarNovoCodigoPessoal() {
+  const novoCod = document.getElementById('newCustomCode').value.trim().toLowerCase();
+  
+  if (!novoCod || novoCod.length < 3) {
+    alert('Digite um código válido com pelo menos 3 caracteres.');
+    return;
+  }
+
+  if (novoCod === CODIGO_UNIVERSAL) {
+    alert('Este código é reservado e não pode ser utilizado como código pessoal.');
+    return;
+  }
+
+  let codigosSalvosExtras = JSON.parse(localStorage.getItem('praxis_codigos_extras')) || [];
+
+  // Validação: Verificar se o código já existe
+  if (codigosSalvosExtras.includes(novoCod)) {
+    alert('Este código já está em uso por outro usuário. Por favor, escolha um nome diferente.');
+    return;
+  }
+
+  // Adiciona à lista de códigos cadastrados
+  codigosSalvosExtras.push(novoCod);
+  localStorage.setItem('praxis_codigos_extras', JSON.stringify(codigosSalvosExtras));
+
+  // Migrar dados da chave atual para a nova chave pessoal
+  localStorage.setItem('praxis_people_' + novoCod, JSON.stringify(state.people));
+  localStorage.setItem('praxis_records_' + novoCod, JSON.stringify(state.records));
+  localStorage.setItem('praxis_evaluations_' + novoCod, JSON.stringify(state.evaluations));
+  localStorage.setItem('praxis_interventions_' + novoCod, JSON.stringify(state.interventions));
+
+  // Atualizar sessão ativa
+  localStorage.setItem('praxis_token_ativo', novoCod);
+  activeKey = novoCod;
+  atualizarInfoPerfil(novoCod);
+  document.getElementById('newCustomCode').value = '';
+  showToast('Código pessoal criado e dados salvos com sucesso!');
+}
+
+function atualizarInfoPerfil(codigo) {
+  const codeLabel = document.getElementById('activeCodeLabel');
+  const userLabel = document.getElementById('activeUserLabel');
+  if(codigo === CODIGO_UNIVERSAL) {
+    userLabel.textContent = 'Profª Bárbara Vitória';
+    codeLabel.textContent = 'Acesso Universal';
+  } else {
+    userLabel.textContent = 'Profissional Práxis';
+    codeLabel.textContent = 'Código: ' + codigo;
+  }
+}
+
 function logout() {
   localStorage.removeItem('praxis_token_ativo');
   location.reload();
 }
 
-// Estado e Manipulação da Aplicação
-let state = {
-  people: JSON.parse(localStorage.getItem('praxis_people')) || [],
-  records: JSON.parse(localStorage.getItem('praxis_records')) || [],
-  evaluations: JSON.parse(localStorage.getItem('praxis_evaluations')) || [],
-  interventions: JSON.parse(localStorage.getItem('praxis_interventions')) || []
-};
+// Carregar dados específicos do usuário logado
+function carregarDadosUsuario() {
+  state.people = JSON.parse(localStorage.getItem('praxis_people_' + activeKey)) || [];
+  state.records = JSON.parse(localStorage.getItem('praxis_records_' + activeKey)) || [];
+  state.evaluations = JSON.parse(localStorage.getItem('praxis_evaluations_' + activeKey)) || [];
+  state.interventions = JSON.parse(localStorage.getItem('praxis_interventions_' + activeKey)) || [];
+  updateStats();
+}
 
+// Salvar dados específicos do usuário logado
 function saveData() {
-  localStorage.setItem('praxis_people', JSON.stringify(state.people));
-  localStorage.setItem('praxis_records', JSON.stringify(state.records));
-  localStorage.setItem('praxis_evaluations', JSON.stringify(state.evaluations));
-  localStorage.setItem('praxis_interventions', JSON.stringify(state.interventions));
+  localStorage.setItem('praxis_people_' + activeKey, JSON.stringify(state.people));
+  localStorage.setItem('praxis_records_' + activeKey, JSON.stringify(state.records));
+  localStorage.setItem('praxis_evaluations_' + activeKey, JSON.stringify(state.evaluations));
+  localStorage.setItem('praxis_interventions_' + activeKey, JSON.stringify(state.interventions));
   updateStats();
 }
 
@@ -709,7 +774,7 @@ function renderPeopleTable(filter = '') {
   const filtered = state.people.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.goal.toLowerCase().includes(filter.toLowerCase()));
   
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="empty">Nenhum aprendente cadastrado.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="empty">Nenhum aprendente cadastrado neste perfil.</td></tr>`;
     return;
   }
 
@@ -808,7 +873,7 @@ document.getElementById('adaptationForm').addEventListener('submit', (e) => {
 
 document.getElementById('reportForm').addEventListener('submit', (e) => {
   e.preventDefault();
-  const name = document.getElementById('rName').value;
+  const name = document.getElementById('rName5' in window ? 'rName5' : 'rName').value;
   const type = document.getElementById('rType').value;
   const date = document.getElementById('rDate').value || new Date().toISOString().split('T')[0];
 
@@ -830,7 +895,7 @@ function renderRecordsTable() {
   tbody.innerHTML = '';
 
   if (state.records.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="4" class="empty">Nenhum registro encontrado.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" class="empty">Nenhum registro encontrado neste perfil.</td></tr>`;
     return;
   }
 
@@ -872,9 +937,14 @@ function deleteRecord(id) {
 }
 
 function clearAllData() {
-  if (confirm('Deseja realmente apagar todos os dados salvos neste dispositivo?')) {
-    localStorage.clear();
-    location.reload();
+  if (confirm('Deseja realmente apagar todos os dados salvos deste perfil?')) {
+    localStorage.removeItem('praxis_people_' + activeKey);
+    localStorage.removeItem('praxis_records_' + activeKey);
+    localStorage.removeItem('praxis_evaluations_' + activeKey);
+    localStorage.removeItem('praxis_interventions_' + activeKey);
+    state = { people: [], records: [], evaluations: [], interventions: [] };
+    updateStats();
+    showToast('Dados do perfil limpos com sucesso.');
   }
 }
 </script>
