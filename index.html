@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -171,12 +170,6 @@ tr:last-child td{border-bottom:0}
 .chip:hover,.chip.selected{background:var(--purple-light);border-color:#c9c0fa;color:var(--primary)}
 .footer{margin-top:38px;padding:22px 0;border-top:1px solid var(--border);font-size:11px;color:var(--muted);line-height:1.8}
 .footer a{color:var(--primary);text-decoration:none}
-.modal-backdrop{display:none;position:fixed;inset:0;background:#1f1c3580;z-index:60;align-items:center;justify-content:center;padding:18px}
-.modal-backdrop.open{display:flex}
-.modal{background:#fff;border-radius:18px;padding:24px;width:min(620px,100%);max-height:90vh;overflow:auto}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-.close{border:0;background:#f1eff9;border-radius:9px;padding:7px 10px}
-#toast{position:fixed;bottom:22px;right:22px;z-index:100;background:#282442;color:white;padding:13px 18px;border-radius:11px;box-shadow:var(--shadow);display:none;max-width:90vw}
 .mobile-overlay{display:none}
 @media(max-width:1100px){
  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -441,3 +434,416 @@ tr:last-child td{border-bottom:0}
   </div>
   <div class="result-box" id="reportOutput"></div>
 </section>
+
+<!-- Novas Páginas de Recursos para Navegação Completa -->
+<section class="page" id="page-neuro">
+  <h2>Neurodiversidade</h2>
+  <p class="subtitle">Estratégias de acolhimento e compreensão das singularidades cognitivas.</p>
+  <div class="card">
+    <h3>Orientações e Práticas Inclusivas</h3>
+    <p>A neurodiversidade compreende variações no funcionamento cerebral humano como parte natural da diversidade da espécie. O trabalho psicopedagógico foca na identificação de barreiras ambientais e na construção de suportes que favoreçam a autonomia e a aprendizagem.</p>
+    <div class="notice">Dica: Utilize a aba "Adaptação pedagógica" para planejar recursos específicos baseados nas necessidades de cada aprendente.</div>
+  </div>
+</section>
+
+<section class="page" id="page-library">
+  <h2>Biblioteca de estratégias</h2>
+  <p class="subtitle">Consulta rápida de metodologias e abordagens de apoio.</p>
+  <div class="grid library-grid">
+    <div class="resource">
+      <div class="resource-icon">📌</div>
+      <h3>Suportes Visuais</h3>
+      <p>Utilização de rotinas visuais, quadros de tarefas e organizadores gráficos para previsibilidade e autonomia.</p>
+    </div>
+    <div class="resource">
+      <div class="resource-icon">⏱️</div>
+      <h3>Gestão do Tempo</h3>
+      <p>Uso de temporizadores visuais e fracionamento de tarefas longas em etapas menores.</p>
+    </div>
+    <div class="resource">
+      <div class="resource-icon">🎯</div>
+      <h3>Aprendizagem Ativa</h3>
+      <p>Estratégias baseadas na resolução de problemas, manipulação de materiais concretos e gamificação.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-records">
+  <h2>Registros e Acompanhamento</h2>
+  <p class="subtitle">Histórico de documentos, avaliações e relatórios gerados.</p>
+  <div class="card">
+    <div class="section-head" style="margin-top:0">
+      <h3>Todos os documentos salvos</h3>
+      <button class="btn small danger" onclick="clearAllData()">Limpar todos os dados</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tipo</th><th>Identificação</th><th>Data</th><th>Ações</th></tr></thead>
+        <tbody id="allRecordsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-privacy">
+  <h2>Privacidade e Configurações</h2>
+  <p class="subtitle">Gerenciamento de dados e conformidade local.</p>
+  <div class="card">
+    <h3>Armazenamento Local</h3>
+    <p>Todos os registros cadastrados na plataforma são salvos exclusivamente no armazenamento local (`localStorage`) do seu navegador. Nenhum dado é enviado a servidores externos.</p>
+    <div class="notice green-note">Plataforma em conformidade com o uso offline e seguro para anotações preliminares.</div>
+  </div>
+</section>
+
+</div> <!-- Fim .content -->
+
+<footer class="footer" style="padding: 0 32px 30px;">
+  <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente.</div>
+</footer>
+
+</main>
+</div>
+<div id="toast">Ação realizada com sucesso!</div>
+
+<!-- SCRIPT DE FUNCIONALIDADE COMPLETA -->
+<script>
+// Estado da Aplicação e Manipulação de Dados LocalStorage
+let state = {
+  people: JSON.parse(localStorage.getItem('praxis_people')) || [],
+  records: JSON.parse(localStorage.getItem('praxis_records')) || [],
+  evaluations: JSON.parse(localStorage.getItem('praxis_evaluations')) || [],
+  interventions: JSON.parse(localStorage.getItem('praxis_interventions')) || []
+};
+
+function saveData() {
+  localStorage.setItem('praxis_people', JSON.stringify(state.people));
+  localStorage.setItem('praxis_records', JSON.stringify(state.records));
+  localStorage.setItem('praxis_evaluations', JSON.stringify(state.evaluations));
+  localStorage.setItem('praxis_interventions', JSON.stringify(state.interventions));
+  updateStats();
+}
+
+// Navegação entre Abas
+const pageTitles = {
+  home: 'Painel inicial',
+  people: 'Aprendentes',
+  evaluation: 'Avaliação psicopedagógica',
+  intervention: 'Plano de intervenção',
+  adaptation: 'Adaptação pedagógica',
+  report: 'Relatórios e documentos',
+  neuro: 'Neurodiversidade',
+  library: 'Biblioteca de estratégias',
+  records: 'Registros e acompanhamento',
+  privacy: 'Privacidade e configurações'
+};
+
+function go(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  
+  const targetPage = document.getElementById('page-' + pageId);
+  if (targetPage) targetPage.classList.add('active');
+  
+  const targetBtn = document.querySelector(`.nav button[data-page="${pageId}"]`);
+  if (targetBtn) targetBtn.classList.add('active');
+  
+  const titleEl = document.getElementById('currentTitle');
+  if (titleEl && pageTitles[pageId]) titleEl.textContent = pageTitles[pageId];
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  toggleMenu(false);
+}
+
+// Eventos de clique no menu lateral
+document.querySelectorAll('.nav button[data-page]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    go(btn.getAttribute('data-page'));
+  });
+});
+
+// Menu Mobile
+function toggleMenu(forceState) {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
+  if (isOpen) {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  } else {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  }
+}
+
+// Toast de Notificação
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+// Atualizar Estatísticas e Tabelas
+function updateStats() {
+  document.getElementById('statPeople').textContent = state.people.length;
+  document.getElementById('statEval').textContent = state.evaluations.length;
+  document.getElementById('statPlans').textContent = state.interventions.length;
+  document.getElementById('statRecords').textContent = state.records.length;
+  document.getElementById('peopleCount').textContent = state.people.length;
+
+  renderPeopleTable();
+  renderRecordsTable();
+  renderRecentRecords();
+}
+
+// Cadastro de Aprendentes
+document.getElementById('peopleForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const newPerson = {
+    id: Date.now(),
+    name: document.getElementById('pName').value,
+    age: document.getElementById('pAge').value,
+    context: document.getElementById('pContext').value,
+    goal: document.getElementById('pGoal').value,
+    notes: document.getElementById('pNotes').value
+  };
+  state.people.push(newPerson);
+  saveData();
+  document.getElementById('peopleForm').reset();
+  showToast('Aprendente cadastrado com sucesso!');
+});
+
+function renderPeopleTable(filter = '') {
+  const tbody = document.getElementById('peopleTable');
+  tbody.innerHTML = '';
+  const filtered = state.people.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.goal.toLowerCase().includes(filter.toLowerCase()));
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="empty">Nenhum aprendente cadastrado.</td></tr>`;
+    return;
+  }
+
+  filtered.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${p.name}</strong><br><small class="muted">${p.notes || ''}</small></td>
+      <td>${p.age || '-'}</td>
+      <td>${p.context || '-'}</td>
+      <td>${p.goal || '-'}</td>
+      <td><button class="btn small danger" onclick="deletePerson(${p.id})">Excluir</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function deletePerson(id) {
+  state.people = state.people.filter(p => p.id !== id);
+  saveData();
+  showToast('Aprendente removido.');
+}
+
+document.getElementById('peopleSearch').addEventListener('input', (e) => {
+  renderPeopleTable(e.target.value);
+});
+
+// Chips de Acessibilidade (Adaptação Pedagógica)
+let selectedChips = [];
+document.querySelectorAll('#adaptChips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    chip.classList.toggle('selected');
+    const val = chip.getAttribute('data-value');
+    if (selectedChips.includes(val)) {
+      selectedChips = selectedChips.filter(c => c !== val);
+    } else {
+      selectedChips.push(val);
+    }
+  });
+});
+
+// Formulários e Geração de Documentos / Saídas
+document.getElementById('evaluationForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('eName').value;
+  const date = document.getElementById('eDate').value || new Date().toISOString().split('T')[0];
+  const demand = document.getElementById('eDemand').value;
+  
+  const content = `AVALIAÇÃO PSICOPEDAGÓGICA
+----------------------------------------
+Identificação: ${name}
+Data: ${date}
+Fonte: ${document.getElementById('eSource').value}
+Demanda Principal: ${demand}
+
+Histórico Relevante:
+${document.getElementById('eHistory').value || 'Não informado'}
+
+Potencialidades e Interesses:
+${document.getElementById('eStrengths').value || 'Não informado'}
+
+Dificuldades Observadas:
+${document.getElementById('eDifficulties').value || 'Não informado'}
+
+Próximos Passos:
+${document.getElementById('eNext').value || 'Não informado'}`;
+
+  document.getElementById('evaluationOutput').innerHTML = `
+    <div class="output-head"><strong>Resultado Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${content}</div>
+  `;
+
+  state.evaluations.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date, content });
+  state.records.push({ id: Date.now(), type: 'Avaliação Psicopedagógica', name, date });
+  saveData();
+  showToast('Avaliação gerada e salva com sucesso!');
+});
+
+document.getElementById('interventionForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('iName').value;
+  const date = new Date().toISOString().split('T')[0];
+  const goal = document.getElementById('iGoal').value;
+
+  const content = `PLANO DE INTERVENÇÃO
+----------------------------------------
+Aprendente: ${name}
+Período: ${document.getElementById('iPeriod').value || 'Não informado'}
+Objetivo Prioritário: ${goal}
+Estratégias: ${document.getElementById('iStrategy').value || 'Não informado'}
+Frequência: ${document.getElementById('iFrequency').value || 'Não informado'}
+Indicadores de Progresso: ${document.getElementById('iIndicators').value || 'Não informado'}`;
+
+  document.getElementById('interventionOutput').innerHTML = `
+    <div class="output-head"><strong>Plano Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${content}</div>
+  `;
+
+  state.interventions.push({ id: Date.now(), type: 'Plano de Intervenção', name, date, content });
+  state.records.push({ id: Date.now(), type: 'Plano de Intervenção', name, date });
+  saveData();
+  showToast('Plano de intervenção criado com sucesso!');
+});
+
+document.getElementById('adaptationForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const subject = document.getElementById('aSubject').value || 'Geral';
+  const activity = document.getElementById('aActivity').value;
+  const date = new Date().toISOString().split('T')[0];
+
+  const content = `ADAPTAÇÃO PEDAGÓGICA
+----------------------------------------
+Área/Disciplina: ${subject}
+Etapa: ${document.getElementById('aLevel').value}
+Focos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}
+
+Atividade Original:
+${activity}
+
+Objetivo de Aprendizagem:
+${document.getElementById('aObjective').value || 'Não informado'}
+
+Barreiras Identificadas:
+${document.getElementById('aBarriers').value || 'Não informado'}`;
+
+  document.getElementById('adaptationOutput').innerHTML = `
+    <div class="output-head"><strong>Proposta Adaptada</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${content}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: subject, date });
+  saveData();
+  showToast('Adaptação pedagógica gerada com sucesso!');
+});
+
+document.getElementById('reportForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('rName').value;
+  const type = document.getElementById('rType').value;
+  const date = document.getElementById('rDate').value || new Date().toISOString().split('T')[0];
+
+  const content = `${type.toUpperCase()}
+----------------------------------------
+Identificação: ${name}
+Data: ${date}
+Destinatário: ${document.getElementById('rAudience').value || 'Não informado'}
+Finalidade: ${document.getElementById('rPurpose').value || 'Não informado'}
+
+Conteúdo:
+${document.getElementById('rBody').value}
+
+Recomendações:
+${document.getElementById('rRecommendations').value || 'Nenhuma'}`;
+
+  document.getElementById('reportOutput').innerHTML = `
+    <div class="output-head"><strong>Documento Gerado</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${content}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type, name, date });
+  saveData();
+  showToast('Relatório gerado e salvo!');
+});
+
+// Renderizar Registros nas Tabelas
+function renderRecordsTable() {
+  const tbody = document.getElementById('allRecordsTable');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  if (state.records.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" class="empty">Nenhum registro encontrado.</td></tr>`;
+    return;
+  }
+
+  state.records.slice().reverse().forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${r.type}</strong></td>
+      <td>${r.name}</td>
+      <td>${r.date || '-'}</td>
+      <td><button class="btn small danger" onclick="deleteRecord(${r.id})">Excluir</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderRecentRecords() {
+  const container = document.getElementById('recentRecords');
+  if (!container) return;
+
+  if (state.records.length === 0) {
+    container.className = 'empty';
+    container.textContent = 'Seus registros aparecerão aqui quando salvar o primeiro documento.';
+    return;
+  }
+
+  container.className = '';
+  let html = '<div class="table-wrap"><table><thead><tr><th>Tipo</th><th>Identificação</th><th>Data</th></tr></thead><tbody>';
+  state.records.slice(-3).reverse().forEach(r => {
+    html += `<tr><td><strong>${r.type}</strong></td><td>${r.name}</td><td>${r.date || '-'}</td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+function deleteRecord(id) {
+  state.records = state.records.filter(r => r.id !== id);
+  saveData();
+  showToast('Registro excluído.');
+}
+
+function clearAllData() {
+  if (confirm('Deseja realmente apagar todos os dados salvos neste dispositivo?')) {
+    localStorage.clear();
+    state = { people: [], records: [], evaluations: [], interventions: [] };
+    updateStats();
+    showToast('Dados limpos com sucesso.');
+  }
+}
+
+// Inicializar contadores e tabelas ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+  updateStats();
+});
+</script>
+</body>
+</html>
