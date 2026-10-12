@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#4936a8">
 <title>Práxis | Plataforma Psicopedagógica & Guia Prático 2026</title>
 
-<!-- Tailwind CSS para o Guia Prático e Componentes de Estilo Rápido -->
+<!-- Tailwind CSS para estilização ágil -->
 <script src="https://cdn.tailwindcss.com"></script>
 <!-- Font Awesome para Ícones -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -313,9 +313,6 @@ tr:last-child td{border-bottom:0}
     <div class="breadcrumb">Práxis <span style="padding:0 5px">/</span> <strong id="currentTitle">Painel inicial</strong></div>
   </div>
   <div class="top-actions">
-    <a href="mailto:prof.barbaravitoria@gmail.com" class="btn small" style="background:#eef2ff; color:#3730a3; border-color:#c7d2fe;">
-      <i class="fa-regular fa-envelope"></i> prof.barbaravitoria@gmail.com
-    </a>
     <input class="search" id="globalSearch" placeholder="Buscar aprendente..." aria-label="Buscar aprendente">
     <button class="btn primary" onclick="go('evaluation')">＋ Novo</button>
   </div>
@@ -368,60 +365,58 @@ tr:last-child td{border-bottom:0}
   </div>
 </section>
 
-<!-- GUIA PRÁTICO DA AVALIAÇÃO PSICOPEDAGÓGICA 2026 (INTEGRADO) -->
+<!-- GUIA PRÁTICO DA AVALIAÇÃO PSICOPEDAGÓGICA 2026 (INTEGRADO, RESPONSIVO E CLICÁVEL) -->
 <section class="page" id="page-guide-2026">
-  <div class="flex flex-col h-[calc(100vh-120px)] bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+  <div class="flex flex-col min-h-[calc(100vh-120px)] bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
     
-    <!-- BARRA SUPERIOR DO GUIA -->
-    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shrink-0 shadow-sm z-10">
+    <!-- BARRA SUPERIOR DO GUIA DA APOSTILA -->
+    <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-3 flex items-center justify-between shrink-0 shadow-sm z-10 flex-wrap gap-2">
         <div class="flex items-center gap-3">
             <div class="bg-blue-600 text-white font-black text-lg px-3 py-1 rounded-lg tracking-wider">PRÁXIS</div>
-            <div class="h-6 w-px bg-slate-300"></div>
+            <div class="h-6 w-px bg-slate-300 hidden sm:block"></div>
             <div>
-                <h1 class="font-bold text-slate-800 text-sm md:text-base leading-tight">Guia Prático da Avaliação Psicopedagógica 2026</h1>
-                <p class="text-xs text-slate-500">Apostila Digital Interativa & Central de Ferramentas</p>
+                <h1 class="font-bold text-slate-800 text-xs md:text-base leading-tight">Guia Prático da Avaliação Psicopedagógica 2026</h1>
+                <p class="text-[11px] text-slate-500 hidden sm:block">Apostila Digital Interativa & Central de Ferramentas</p>
             </div>
         </div>
 
-        <div class="flex items-center gap-4 text-xs">
-            <!-- Barra de Progresso -->
-            <div class="hidden md:flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-                <span class="text-slate-600 font-medium">Progresso:</span>
-                <div class="w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
+        <div class="flex items-center gap-3 text-xs">
+            <!-- Barra de Progresso de Leitura -->
+            <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+                <span class="text-slate-600 font-medium hidden md:inline">Progresso:</span>
+                <div class="w-16 md:w-24 bg-slate-200 rounded-full h-2 overflow-hidden">
                     <div id="progressBar" class="bg-blue-600 h-2 rounded-full w-0 transition-all duration-300"></div>
                 </div>
                 <span id="progressText" class="font-bold text-blue-600">0%</span>
             </div>
-
-            <a href="mailto:prof.barbaravitoria@gmail.com" class="flex items-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-200 transition">
-                <i class="fa-regular fa-envelope"></i>
-                <span class="font-semibold hidden sm:inline">prof.barbaravitoria@gmail.com</span>
-            </a>
         </div>
     </header>
 
-    <!-- CORPO DO GUIA -->
-    <div class="flex flex-1 overflow-hidden">
-        <!-- SIDEBAR DE TÓPICOS -->
-        <aside class="w-80 md:w-96 bg-white border-r border-slate-200 flex flex-col shrink-0">
-            <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+    <!-- CORPO DA APOSTILA (SIDEBAR + CONTEÚDO LEITURA) -->
+    <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+        
+        <!-- SIDEBAR DE TÓPICOS INDEXADOS (01 a 30) -->
+        <aside class="w-full md:w-80 lg:w-96 bg-white border-b md:border-b-0 md:border-r border-slate-200 flex flex-col shrink-0 max-h-60 md:max-h-none">
+            <div class="p-3 border-b border-slate-100 bg-slate-50/50">
                 <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-                    <input type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Buscar nos 30 tópicos..." 
-                        class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    <input type="text" id="searchInput" onkeyup="filterTopics()" placeholder="Buscar nos 30 tópicos da apostila..." 
+                        class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
 
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1.5" id="topicList">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1" id="topicList">
                 <!-- Inserido dinamicamente via JS -->
             </div>
         </aside>
 
-        <!-- CONTEÚDO PRINCIPAL DO TÓPICO SELECIONADO -->
-        <main class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar p-6 md:p-8 flex flex-col justify-between" id="mainContent">
+        <!-- CONTEÚDO DA APOSTILA E AÇÕES INTERATIVAS -->
+        <main class="flex-1 bg-slate-50 overflow-y-auto custom-scrollbar p-4 md:p-8 flex flex-col justify-between" id="mainContent">
             <div class="max-w-4xl mx-auto w-full">
-                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm mb-6">
-                    <div class="flex items-center justify-between mb-4">
+                
+                <!-- CARTÃO PRINCIPAL DO TÓPICO -->
+                <div class="bg-white rounded-2xl p-5 md:p-8 border border-slate-200 shadow-sm mb-6">
+                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
                         <span id="chapBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">Tópico 01</span>
                         <button onclick="toggleCompleted()" id="btnComplete" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 flex items-center gap-1.5 transition">
                             <i class="fa-regular fa-circle-check"></i>
@@ -429,10 +424,10 @@ tr:last-child td{border-bottom:0}
                         </button>
                     </div>
 
-                    <h2 id="chapTitle" class="text-2xl md:text-3xl font-extrabold text-slate-800 mb-3">Carregando...</h2>
-                    <p id="chapSubtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-6"></p>
+                    <h2 id="chapTitle" class="text-xl md:text-3xl font-extrabold text-slate-800 mb-3">Carregando...</h2>
+                    <p id="chapSubtitle" class="text-slate-600 text-xs md:text-base leading-relaxed mb-6"></p>
 
-                    <!-- CAIXA DE AÇÃO DIRETA COM A PLATAFORMA PRÁXIS -->
+                    <!-- CAIXA DE AÇÃO DIRETA NO SISTEMA PRÁXIS -->
                     <div id="actionBox" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
@@ -449,13 +444,25 @@ tr:last-child td{border-bottom:0}
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm space-y-6 text-slate-700 leading-relaxed text-sm md:text-base" id="chapBody">
+                <!-- CORPO DO TEXTO DA APOSTILA -->
+                <div class="bg-white rounded-2xl p-5 md:p-8 border border-slate-200 shadow-sm space-y-6 text-slate-700 leading-relaxed text-xs md:text-base" id="chapBody">
+                    <!-- Conteúdo dinâmico injetado via JS -->
+                </div>
+
+                <!-- NAVEGAÇÃO ENTRE TÓPICOS (ANTERIOR / PRÓXIMO) -->
+                <div class="flex items-center justify-between mt-6 gap-4">
+                    <button id="btnPrevTopic" onclick="navigateTopic(-1)" class="btn small" style="padding: 8px 14px;">
+                        ← Tópico Anterior
+                    </button>
+                    <button id="btnNextTopic" onclick="navigateTopic(1)" class="btn small primary" style="padding: 8px 14px;">
+                        Próximo Tópico →
+                    </button>
                 </div>
             </div>
 
+            <!-- RODAPÉ DA APOSTILA -->
             <footer class="mt-8 border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
                 <p>Plataforma Práxis &copy; 2026 — Guia Prático da Avaliação Psicopedagógica</p>
-                <p class="mt-1">Contato e Suporte: <a href="mailto:prof.barbaravitoria@gmail.com" class="text-blue-600 font-semibold hover:underline">prof.barbaravitoria@gmail.com</a> | Instagram: <a href="https://instagram.com/prof.barbaravitoria" target="_blank" class="text-blue-600 font-semibold hover:underline">@prof.barbaravitoria</a></p>
             </footer>
         </main>
     </div>
@@ -786,7 +793,7 @@ tr:last-child td{border-bottom:0}
 </div>
 
 <footer class="footer">
-  <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente. Contato: prof.barbaravitoria@gmail.com | Instagram: @prof.barbaravitoria</div>
+  <div>Práxis · Plataforma Psicopedagógica desenvolvida para apoio docente.</div>
 </footer>
 
 </main>
@@ -799,38 +806,296 @@ const CODIGO_UNIVERSAL = "psi-praxis-2026";
 let activeKey = "";
 let state = { people: [], records: [], evaluations: [], interventions: [] };
 
-// BASE DE DADOS DOS 30 TÓPICOS DO GUIA PRÁTICO 2026
+// BASE COMPLETA DOS 30 TÓPICOS DA APOSTILA DIGITAL (DETALHADA E PRÁTICA)
 const topics = [
-    { id: 1, color: 'bg-blue-500', targetPage: 'home', title: 'Capa — Guia Prático 2026', desc: 'Apresentação e visão geral da avaliação psicopedagógica contemporânea.', action: 'Ver Apresentação', body: 'Bem-vindo ao Guia Prático da Avaliação Psicopedagógica 2026. Este material foi desenhado para integrar teoria e prática no sistema Práxis.' },
-    { id: 2, color: 'bg-green-500', targetPage: 'records', title: 'Sumário', desc: 'Estrutura completa e navegação pelos 30 módulos de avaliação.', action: 'Ver Estrutura', body: 'Organização hoje, mais clareza amanhã! Navegue pelos módulos laterais para acessar conteúdos teóricos e formulários associados.' },
-    { id: 3, color: 'bg-amber-500', targetPage: 'evaluation', title: 'Mapa da Avaliação Psicopedagógica', desc: 'Fluxograma completo das etapas do processo de avaliação.', action: 'Abrir Fluxograma', body: 'O mapa da avaliação detalha desde a acolhida inicial até a entrega da devolutiva. Mapeie cada fase no prontuário do seu paciente.' },
-    { id: 4, color: 'bg-pink-500', targetPage: 'evaluation', title: 'O que é avaliar psicopedagogicamente em 2026?', desc: 'Paradigmas atuais, neurociência aplicada e tecnologia na avaliação.', action: 'Ler Diretrizes 2026', body: 'Avaliar em 2026 exige olhar para o sujeito de forma holística, considerando habilidades cognitivas, socioemocionais e contextuais.' },
-    { id: 5, color: 'bg-purple-500', targetPage: 'evaluation', title: 'Da queixa à pergunta de investigação', desc: 'Como transformar queixas escolares/familiares em hipóteses claras.', action: 'Gerar Pergunta de Investigação', body: 'Transforme relatos vagos em hipóteses testáveis. Utilize nosso assistente de formulação de perguntas clínicas.' },
-    { id: 6, color: 'bg-sky-500', targetPage: 'people', title: 'O triângulo da avaliação: criança + família + escola', desc: 'A articulação necessária entre os três pilares do atendimento.', action: 'Cadastrar Atores no Prontuário', body: 'A avaliação não ocorre isolada. Integre as percepções da escola e da família nos formulários unificados do Práxis.' },
-    { id: 7, color: 'bg-emerald-500', targetPage: 'evaluation', title: 'Anamnese inteligente — o que realmente observar', desc: 'Roteiro e dados essenciais do histórico de desenvolvimento.', action: 'Iniciar Anamnese Digital', body: 'Acesse o formulário de Anamnese Inteligente no Práxis com salvamento automático e relatórios pré-formatados.' },
-    { id: 8, color: 'bg-amber-500', targetPage: 'evaluation', title: 'EOCA na prática', desc: 'Estruturação da Entrevista Operativa Centrada na Aprendizagem.', action: 'Abrir Protocolo EOCA', body: 'A EOCA permite observar o modelo de aprendizagem da criança. Registre as consignas e observações diretamente no sistema.' },
-    { id: 9, color: 'bg-rose-500', targetPage: 'evaluation', title: 'Matriz de hipóteses psicopedagógicas', desc: 'Cruzamento de dados para confirmação ou refutação de hipóteses.', action: 'Montar Matriz no Prontuário', body: 'Construa uma matriz dinâmica vinculando sintomas, instrumentos aplicados e evidências coletadas.' },
-    { id: 10, color: 'bg-indigo-500', targetPage: 'library', title: 'Qual instrumento usar? Mapa de decisão', desc: 'Guia de seleção de testes e provas formais/informais.', action: 'Acessar Calculadora de Testes', body: 'Filtre os melhores instrumentos com base na idade do paciente, suspeita diagnóstica e tempo disponível.' },
-    { id: 11, color: 'bg-blue-500', targetPage: 'evaluation', title: 'Funções cognitivas e executivas', desc: 'Atenção, memória de trabalho, flexibilidade e controle inibitório.', action: 'Lançar Dados Cognitivos', body: 'Avalie e registre os níveis de atenção sustentada, memória de trabalho e planejamento na ficha de perfil cognitivo.' },
-    { id: 12, color: 'bg-green-500', targetPage: 'adaptation', title: 'Mapa da avaliação da leitura', desc: 'Decodificação, fluência, rota fonológica/lexical e compreensão.', action: 'Abrir Protocolo de Leitura', body: 'Alique as provas de leitura e registre os tempos de latência e índices de precisão no módulo de linguagem.' },
-    { id: 13, color: 'bg-amber-500', targetPage: 'adaptation', title: 'Mapa da avaliação da escrita', desc: 'Grafomotricidade, ortografia, produção textual e coerência.', action: 'Abrir Protocolo de Escrita', body: 'Avalie a qualidade da caligrafia, erros ortográficos (naturais vs. arbitrários) e estruturação de frases.' },
-    { id: 14, color: 'bg-pink-500', targetPage: 'adaptation', title: 'Mapa da avaliação matemática', desc: 'Senso numérico, raciocínio lógico, cálculo e resolução de problemas.', action: 'Abrir Protocolo de Matemática', body: 'Provas operatórias e avaliação do raciocínio quantitativo com registro quantitativo e qualitativo.' },
-    { id: 15, color: 'bg-purple-500', targetPage: 'neuro', title: 'Linguagem oral, processamento auditivo e comunicação', desc: 'Habilidades pragmáticas, léxico e percepção auditiva.', action: 'Registrar Perfil Comunicativo', body: 'Análise da fluência verbal, vocabulário expressivo e recepção de ordens complexas.' },
-    { id: 16, color: 'bg-sky-500', targetPage: 'neuro', title: 'Desenvolvimento motor, visoespacial e temporal', desc: 'Lateralidade, esquemas corporais e orientação no tempo/espaço.', action: 'Abrir Avaliação Motora', body: 'Registre observações sobre praxia fina, global e capacidade de organização visoespacial.' },
-    { id: 17, color: 'bg-emerald-500', targetPage: 'adaptation', title: 'TDAH e funções executivas — mapa de rastreio', desc: 'Escalas comportamentais e indicadores de desatenção/hiperatividade.', action: 'Aplicar Escala TDAH', body: 'Formulários digitais de rastreio para pais e professores com cálculo de corte percentílico.' },
-    { id: 18, color: 'bg-amber-500', targetPage: 'adaptation', title: 'Dislexia e transtornos de aprendizagem', desc: 'Sinais de alerta, diagnóstico diferencial e marcadores neurobiológicos.', action: 'Checklist de Rastreio Dislexia', body: 'Verifique a presença de marcadores específicos no processamento fonológico e automação de leitura.' },
-    { id: 19, color: 'bg-rose-500', targetPage: 'adaptation', title: 'Discalculia × Disgrafia × Disortografia', desc: 'Quadro comparativo e critérios de identificação dos transtornos específicos.', action: 'Ver Tabela Comparativa', body: 'Diferencie dificuldades secundárias de transtornos específicos com nossa ferramenta de análise comparativa.' },
-    { id: 20, color: 'bg-purple-500', targetPage: 'neuro', title: 'TEA e aprendizagem — visão atualizada 2026', desc: 'Perfil de aprendizagem no Espectro Autista e adaptabilidade.', action: 'Abrir Rastreio TEA/Perfil', body: 'Avaliação da flexibilidade cognitiva, teoria da mente e comportamentos repetitivos no contexto de aprendizagem.' },
-    { id: 21, color: 'bg-blue-500', targetPage: 'student-manual', title: 'Altas habilidades + dupla excepcionalidade', desc: 'Identificação de superdotado com transtornos associados.', action: 'Mapear AH/SD e Dupla Excepcionalidade', body: 'Instrumentos para mapear precocidade, hiperfoco e possíveis assincronias do desenvolvimento.' },
-    { id: 22, color: 'bg-green-500', targetPage: 'lesson-plan', title: 'Educação inclusiva em 2026', desc: 'Adequações curriculares, PEI e legislação vigente.', action: 'Criar Minuta PEI', body: 'Gerador de Plano de Ensino Individualizado (PEI) integrado aos achados da avaliação psicopedagógica.' },
-    { id: 23, color: 'bg-amber-500', targetPage: 'report', title: 'Quando encaminhar?', desc: 'Critérios para encaminhamento multidisciplinar (Neuro, Fono, Psiquiatria).', action: 'Gerar Guia de Encaminhamento', body: 'Modelos de cartas e relatórios de encaminhamento com linguagem técnica padronizada.' },
-    { id: 24, color: 'bg-pink-500', targetPage: 'library', title: 'Instrumentos, ética e SATEPSI', desc: 'Uso de testes restritos e regulamentação da prática psicopedagógica.', action: 'Consultar Lista Etiqueta SATEPSI', body: 'Orientações éticas sobre quais instrumentos são de uso exclusivo e quais são liberados para psicopedagogos.' },
-    { id: 25, color: 'bg-purple-500', targetPage: 'evaluation', title: 'Como cruzar todos os resultados', desc: 'Síntese diagnóstica e triangulação de evidências.', action: 'Gerar Matriz de Triangulação', body: 'Cruze dados da anamnese, observações e testes formais para fundamentar a devolutiva.' },
-    { id: 26, color: 'bg-sky-500', targetPage: 'report', title: 'Da avaliação à devolutiva', desc: 'Como planejar a sessão de entrega para a família e para a escola.', action: 'Roteiro de Devolutiva', body: 'Guia passo a passo para conduzir devolutivas acolhedoras e propositivas com entrega de documentos.' },
-    { id: 27, color: 'bg-emerald-500', targetPage: 'report', title: 'Como estruturar um relatório que realmente ajuda', desc: 'Modelo e redação técnica do Laudo/Relatório Psicopedagógico.', action: 'Gerar Relatório Automático', body: 'Utilize o motor de Inteligência Artificial do Práxis para consolidar os dados do prontuário em um relatório claro.' },
-    { id: 28, color: 'bg-amber-500', targetPage: 'intervention', title: 'Plano de intervenção de 90 dias', desc: 'Estruturação do plano terapêutico pós-avaliação.', action: 'Criar Plano de 90 Dias', body: 'Defina metas SMART, estratégias e cronograma de sessões para o acompanhamento psicopedagógico.' },
-    { id: 29, color: 'bg-rose-500', targetPage: 'privacy', title: 'Avaliação em 2026: registros digitais, dados e IA', desc: 'Segurança de dados (LGPD), suporte por IA e prontuário em nuvem.', action: 'Configurar Prontuário Digital', body: 'Como manter registros seguros, organizados e em conformidade com as exigências legais e tecnológicas.' },
-    { id: 30, color: 'bg-purple-500', targetPage: 'records', title: 'Mapa mental mestre + checklist final', desc: 'Checklist de encerramento do processo de avaliação psicopedagógica.', action: 'Abrir Checklist de Encerramento', body: 'Valide se todas as etapas foram concluídas antes de assinar o relatório e arquivar o caso.' }
+    { 
+      id: 1, color: 'bg-blue-500', targetPage: 'home', 
+      title: '01. Capa e Apresentação do Guia Prático 2026', 
+      desc: 'Visão geral da avaliação psicopedagógica contemporânea e integração com a Plataforma Práxis.', 
+      action: 'Acessar Painel Inicial', 
+      body: `<h3>Bem-vindo ao Guia Prático da Avaliação Psicopedagógica 2026</h3>
+      <p>A avaliação psicopedagógica contemporânea transcende a simples aplicação de testes. Em 2026, ela se consolida como uma investigação dinâmica, integrando a neurociência cognitiva, as metodologias ativas e as tecnologias digitais inclusivas.</p>
+      <p>Este guia foi elaborado pela <strong>Profª Bárbara Vitória</strong> para servir como bússola no seu dia a dia profissional, articulando perfeitamente a teoria clínica e institucional com as ferramentas automatizadas do Práxis.</p>` 
+    },
+    { 
+      id: 2, color: 'bg-green-500', targetPage: 'records', 
+      title: '02. Sumário Executivo do Processo Avaliativo', 
+      desc: 'Estrutura completa e navegação pelos 30 módulos de avaliação.', 
+      action: 'Ver Documentos Salvos', 
+      body: `<h3>Estrutura Didática dos 30 Tópicos</h3>
+      <p>O processo de avaliação psicopedagógica organiza-se em 4 grandes eixos:</p>
+      <ul style="list-style-type:disc; padding-left:20px; line-height:1.8;">
+        <li><strong>Eixo I: Fundamentação e Acolhida (Tópicos 01 a 07):</strong> Queixa, anamnese inteligente e triangulação.</li>
+        <li><strong>Eixo II: Instrumentos e Provas Operatórias (Tópicos 08 a 16):</strong> EOCA, linguagem, raciocínio lógico e cognição.</li>
+        <li><strong>Eixo III: Neurodiversidade e Transtornos (Tópicos 17 a 22):</strong> TDAH, Dislexia, TEA, Altas Habilidades e PEI.</li>
+        <li><strong>Eixo IV: Síntese, Relatório e Devolutiva (Tópicos 23 a 30):</strong> Triangulação, elaboração de parecer e intervenção.</li>
+      </ul>` 
+    },
+    { 
+      id: 3, color: 'bg-amber-500', targetPage: 'evaluation', 
+      title: '03. Mapa da Avaliação Psicopedagógica', 
+      desc: 'Fluxograma passo a passo do primeiro atendimento à devolutiva.', 
+      action: 'Iniciar Nova Avaliação', 
+      body: `<h3>Fluxograma de Atendimento Clínico/Institucional</h3>
+      <ol style="list-style-type:decimal; padding-left:20px; line-height:1.8;">
+        <li><strong>Sessão 01:</strong> Entrevista de Anamnese com os responsáveis.</li>
+        <li><strong>Sessão 02:</strong> Aplicação da EOCA (Entrevista Operativa Centrada na Aprendizagem).</li>
+        <li><strong>Sessões 03 a 06:</strong> Aplicação de provas formais e informais (Leitura, Escrita, Matemática, Funções Executivas).</li>
+        <li><strong>Sessão 07:</strong> Escuta e observação do contexto escolar.</li>
+        <li><strong>Sessão 08:</strong> Devolutiva com entrega de relatório descritivo e encaminhamentos.</li>
+      </ol>` 
+    },
+    { 
+      id: 4, color: 'bg-pink-500', targetPage: 'evaluation', 
+      title: '04. O que é avaliar psicopedagogicamente em 2026?', 
+      desc: 'Paradigmas atuais, neurociência aplicada e uso ético da tecnologia.', 
+      action: 'Registrar Hipóteses', 
+      body: `<h3>Paradigmas Atuais do Diagnóstico Psicopedagógico</h3>
+      <p>Avaliar em 2026 exige superar a rotulagem e o foco exclusivo no déficit. A avaliação moderna foca na <strong>epistemologia do aprender</strong>: como o sujeito aprende, quais são suas barreiras de acesso e quais são suas potencialidades cognitivas e emocionais.</p>
+      <p>O uso de Inteligência Artificial e ferramentas digitais amplia a precisão do psicopedagogo, liberando tempo para a escuta empática e para a observação qualitativa do comportamento.</p>` 
+    },
+    { 
+      id: 5, color: 'bg-purple-500', targetPage: 'evaluation', 
+      title: '05. Da queixa à pergunta de investigação', 
+      desc: 'Como transformar reclamações familiares e escolares em hipóteses investigáveis.', 
+      action: 'Formular Demanda', 
+      body: `<h3>Transformando Queixas em Perguntas Clínicas</h3>
+      <p>A família frequentemente traz queixas vagas como "ele não quer estudar" ou "ele é preguiçoso". O papel do psicopedagogo é traduzir esses relatos em perguntas operacionais:</p>
+      <p><em>Exemplo:</em> De "não presta atenção nas aulas" para "o aprendente apresenta déficit na manutenção da atenção sustentada ou a dificuldade decorre da sobrecarga de processamento auditivo?"</p>` 
+    },
+    { 
+      id: 6, color: 'bg-sky-500', targetPage: 'people', 
+      title: '06. O Triângulo da Avaliação: Criança + Família + Escola', 
+      desc: 'A articulação necessária entre os três pilares do desenvolvimento.', 
+      action: 'Cadastrar Aprendente', 
+      body: `<h3>A Triangulação Sistêmica</h3>
+      <p>Nenhuma dificuldade de aprendizagem existe no vácuo. O triângulo psicopedagógico avalia:</p>
+      <ul style="list-style-type:disc; padding-left:20px; line-height:1.8;">
+        <li><strong>O Aprendente:</strong> Vínculo com o saber, estilo cognitivo e maturidade emocional.</li>
+        <li><strong>A Família:</strong> Expectativas, história de vida, estilo parental e rotina de estudos.</li>
+        <li><strong>A Escola:</strong> Metodologia de ensino, ambiente socioemocional e postura inclusiva.</li>
+      </ul>` 
+    },
+    { 
+      id: 7, color: 'bg-emerald-500', targetPage: 'evaluation', 
+      title: '07. Anamnese Inteligente — O que realmente observar', 
+      desc: 'Roteiro essencial de dados do desenvolvimento global.', 
+      action: 'Preencher Anamnese', 
+      body: `<h3>Roteiro de Anamnese Psicopedagógica</h3>
+      <p>Pontos prioritários na entrevista com os pais:</p>
+      <p>1. Gestação e marcos do desenvolvimento motor e de linguagem.<br>
+      2. Qualidade do sono, alimentação e autonomia nas atividades diárias.<br>
+      3. Histórico de escolarização e adaptação às trocas de professores/escolas.<br>
+      4. Comportamento socioemocional e vínculos familiares.</p>` 
+    },
+    { 
+      id: 8, color: 'bg-amber-500', targetPage: 'evaluation', 
+      title: '08. EOCA na Prática (Entrevista Operativa Centrada na Aprendizagem)', 
+      desc: 'Aplicação da caixa de trabalho e observação do modelo de aprendizagem.', 
+      action: 'Registrar Observação EOCA', 
+      body: `<h3>Protocolo de Aplicação da EOCA</h3>
+      <p><strong>Consigna Inicial:</strong> "Gostaria que você me mostrasse o que sabe fazer, o que lhe ensinaram e o que aprendeu, utilizando os materiais desta caixa."</p>
+      <p><strong>Aspectos a Observar:</strong> Escolha do material, postura frente à tarefa, criatividade, nível de tolerância à frustração e ritmo de trabalho.</p>` 
+    },
+    { 
+      id: 9, color: 'bg-rose-500', targetPage: 'evaluation', 
+      title: '09. Matriz de Hipóteses Psicopedagógicas', 
+      desc: 'Sistemática de cruzamento de evidências clínicas.', 
+      action: 'Mapear Hipóteses', 
+      body: `<h3>Construindo a Matriz de Investigação</h3>
+      <p>Organize os achados em 3 colunas:</p>
+      <p>• <strong>Hipótese Inicial:</strong> Dificuldade no processamento fonológico.<br>
+      • <strong>Instrumento de Testagem:</strong> Prova de consciência fonológica e leitura de pseudopalavras.<br>
+      • <strong>Evidência Confirmatória/Refutatória:</strong> Erros de troca de grafemas por ponto de articulação.</p>` 
+    },
+    { 
+      id: 10, color: 'bg-indigo-500', targetPage: 'library', 
+      title: '10. Seleção de Instrumentos e Testes Psicopedagógicos', 
+      desc: 'Como escolher os melhores recursos para cada faixa etária.', 
+      action: 'Ver Biblioteca de Ferramentas', 
+      body: `<h3>Critérios de Escolha de Instrumentos</h3>
+      <p>Combine sempre <strong>testes padronizados/normatizados</strong> com <strong>provas qualitativas e informais</strong>. Garanta que os instrumentos selecionados avaliem a área de suspeita sem provocar ansiedade excessiva no paciente.</p>` 
+    },
+    { 
+      id: 11, color: 'bg-blue-500', targetPage: 'evaluation', 
+      title: '11. Avaliação das Funções Cognitivas e Executivas', 
+      desc: 'Atenção, memória de trabalho, controle inibitório e flexibilidade.', 
+      action: 'Registrar Perfil Cognitivo', 
+      body: `<h3>Avaliação do Sistema Executivo</h3>
+      <p>As funções executivas são o "maestro" do cérebro. Na avaliação psicopedagógica, investigamos:</p>
+      <ul style="list-style-type:disc; padding-left:20px; line-height:1.8;">
+        <li><strong>Memória de Trabalho:</strong> Capacidade de reter e manipular informações mentalmente.</li>
+        <li><strong>Controle Inibitório:</strong> Habilidade de resistir a distrações e impulsos.</li>
+        <li><strong>Flexibilidade Cognitiva:</strong> Capacidade de mudar de estratégia quando o plano falha.</li>
+      </ul>` 
+    },
+    { 
+      id: 12, color: 'bg-green-500', targetPage: 'adaptation', 
+      title: '12. Mapa de Avaliação da Leitura', 
+      desc: 'Decodificação, fluência, velocidade e compreensão leitora.', 
+      action: 'Gerar Adaptação de Leitura', 
+      body: `<h3>Avaliação Multidimensional da Leitura</h3>
+      <p>Investigue as rotas de leitura:</p>
+      <p>• <strong>Rota Fonológica:</strong> Leitura por conversão grafema-fonema (palavras novas e pseudopalavras).<br>
+      • <strong>Rota Lexical:</strong> Reconhecimento visual direto (palavras frequentes e irregulares).<br>
+      • <strong>Compreensão Textual:</strong> Capacidade de realizar inferências diretas e globais.</p>` 
+    },
+    { 
+      id: 13, color: 'bg-amber-500', targetPage: 'adaptation', 
+      title: '13. Mapa de Avaliação da Escrita', 
+      desc: 'Grafomotricidade, ortografia natural e arbitrária, e produção textual.', 
+      action: 'Gerar Adaptação de Escrita', 
+      body: `<h3>Análise Qualitativa da Escrita</h3>
+      <p>Diferencie os tipos de erros na produção escrita:</p>
+      <p>1. <strong>Erros Naturais:</strong> Omissão, adição ou inversão de letras (foco no processamento auditivo/visual).<br>
+      2. <strong>Erros Arbitrários:</strong> Regras ortográficas (S/Z, CH/X, M antes de P/B) — foco na memória ortográfica visual.</p>` 
+    },
+    { 
+      id: 14, color: 'bg-pink-500', targetPage: 'adaptation', 
+      title: '14. Mapa de Avaliação do Raciocínio Lógico-Matemático', 
+      desc: 'Senso numérico, provas operatórias piagetianas e resolução de problemas.', 
+      action: 'Gerar Adaptação de Matemática', 
+      body: `<h3>Investigação das Habilidades Numéricas</h3>
+      <p>Avalie desde o senso numérico básico (subitizing e contagem) até a transcodificação numérica, execução de algoritmos e interpretação de enunciados matemáticos.</p>` 
+    },
+    { 
+      id: 15, color: 'bg-purple-500', targetPage: 'neuro', 
+      title: '15. Linguagem Oral, Processamento Auditivo e Comunicação', 
+      desc: 'Habilidades pragmáticas, vocabulário e percepção da fala.', 
+      action: 'Ver Módulo Neurodiversidade', 
+      body: `<h3>Integração entre Linguagem e Aprendizagem</h3>
+      <p>A linguagem oral é a base da alfabetização. Observe a estruturação sintática, a riqueza vocabular e a capacidade do aprendente de organizar uma narrativa com começo, meio e fim.</p>` 
+    },
+    { 
+      id: 16, color: 'bg-sky-500', targetPage: 'neuro', 
+      title: '16. Desenvolvimento Motor, Visoespacial e Esquema Corporal', 
+      desc: 'Praxia fina, global, lateralidade e orientação temporal.', 
+      action: 'Ver Estratégias Motoras', 
+      body: `<h3>Praxia e Organização Espacial</h3>
+      <p>Dificuldades na preensão do lápis, tônus muscular fraco ou desorientação no espaço da folha de papel demandam investigação da praxia fina e do processamento visoespacial.</p>` 
+    },
+    { 
+      id: 17, color: 'bg-emerald-500', targetPage: 'adaptation', 
+      title: '17. TDAH e Funções Executivas — Rastreio e Suporte', 
+      desc: 'Escalas comportamentais, sinais de alerta e estratégias de sala de aula.', 
+      action: 'Criar Adaptação para TDAH', 
+      body: `<h3>Rastreio do TDAH na Prática</h3>
+      <p>O TDAH caracteriza-se pelo padrão persistente de desatenção, hiperatividade e/ou impulsividade. No ambiente psicopedagógico, avaliamos o impacto direto desse perfil na organização do material e na gestão do tempo de estudo.</p>` 
+    },
+    { 
+      id: 18, color: 'bg-amber-500', targetPage: 'adaptation', 
+      title: '18. Dislexia e Transtornos Específicos da Aprendizagem', 
+      desc: 'Sinais de alerta, marcadores neurobiológicos e intervenção.', 
+      action: 'Criar Adaptação para Dislexia', 
+      body: `<h3>Marcadores Específicos da Dislexia</h3>
+      <p>Dificuldade persistente na precisão e fluência da leitura de palavras, falha na automação do reconhecimento de grafemas e deficits na consciência fonológica, independentemente do nível intelectual.</p>` 
+    },
+    { 
+      id: 19, color: 'bg-rose-500', targetPage: 'adaptation', 
+      title: '19. Discalculia × Disgrafia × Disortografia', 
+      desc: 'Diagnóstico diferencial e quadro comparativo prático.', 
+      action: 'Criar Adaptação Específica', 
+      body: `<h3>Quadro Comparativo de Transtornos</h3>
+      <p>• <strong>Discalculia:</strong> Deficit no senso numérico e no processamento quantitativo.<br>
+      • <strong>Disgrafia:</strong> Transtorno da expressão escrita focado no componente motor/caligráfico.<br>
+      • <strong>Disortografia:</strong> Dificuldade na estruturação ortográfica e codificação textual.</p>` 
+    },
+    { 
+      id: 20, color: 'bg-purple-500', targetPage: 'neuro', 
+      title: '20. TEA e Aprendizagem — Perfil no Espectro Autista', 
+      desc: 'Flexibilidade cognitiva, hiperfoco e acessibilidade pedagógica em 2026.', 
+      action: 'Ver Estratégias TEA', 
+      body: `<h3>Acolhimento e Acessibilidade no TEA</h3>
+      <p>Trabalhe com suportes visuais, previsibilidade de rotina e utilização pedagógica dos hiperfocos do estudante como ponte para o aprendizado de novas habilidades.</p>` 
+    },
+    { 
+      id: 21, color: 'bg-blue-500', targetPage: 'student-manual', 
+      title: '21. Altas Habilidades / Superdotação e Dupla Excepcionalidade', 
+      desc: 'Mapeamento de precocidade, assincronia e enriquecimento curricular.', 
+      action: 'Criar Manual para AH/SD', 
+      body: `<h3>Dupla Excepcionalidade</h3>
+      <p>Ocorre quando o estudante apresenta Altas Habilidades associadas a um transtorno (como TDAH, TEA ou Dislexia). Exige olhar atento para não ocultar nem o potencial nem as necessidades de apoio.</p>` 
+    },
+    { 
+      id: 22, color: 'bg-green-500', targetPage: 'lesson-plan', 
+      title: '22. Plano de Ensino Individualizado (PEI) em 2026', 
+      desc: 'Construção de metas SMART e adequação curricular inclusiva.', 
+      action: 'Gerar Plano com Metodologia Ativa', 
+      body: `<h3>Estrutura do PEI Inclusivo</h3>
+      <p>Defina objetivos instrucionais claros, cronograma de avaliação contínua e recursos de acessibilidade que garantam a participação efetiva do aprendente no currículo.</p>` 
+    },
+    { 
+      id: 23, color: 'bg-amber-500', targetPage: 'report', 
+      title: '23. Quando e Como Encaminhar para Outras Especialidades', 
+      desc: 'Critérios técnicos para pareceres dirigidos a Neurologistas, Fonoaudiólogos e Psicólogos.', 
+      action: 'Gerar Documento de Encaminhamento', 
+      body: `<h3>Encaminhamento Multidisciplinar Ético</h3>
+      <p>Aponte evidências objetivas observadas no atendimento sem emitir diagnósticos médicos ou psicológicos restritos. Descreva comportamentos, dados de testes e reações registradas.</p>` 
+    },
+    { 
+      id: 24, color: 'bg-pink-500', targetPage: 'library', 
+      title: '24. Ética Profissional e Uso de Instrumentos Restritos', 
+      desc: 'Limites de atuação psicopedagógica e normas do SATEPSI.', 
+      action: 'Consultar Biblioteca Ética', 
+      body: `<h3>Boas Práticas e Regulamentação</h3>
+      <p>Garanta que todos os testes utilizados estejam em conformidade com o escopo de atuação da Psicopedagogia, respeitando os direitos do paciente e a LGPD na gestão de dados sensíveis.</p>` 
+    },
+    { 
+      id: 25, color: 'bg-purple-500', targetPage: 'evaluation', 
+      title: '25. Triangulação e Cruzamento Final de Resultados', 
+      desc: 'Como integrar anamnese, testes, parecer escolar e observações clínicas.', 
+      action: 'Ver Síntese Diagnóstica', 
+      body: `<h3>Matriz de Triangulação de Dados</h3>
+      <p>Sintetize os achados em uma narrativa coerente que explique a origem da dificuldade, identificando o que é causa, o que é consequência e o que é fator de proteção.</p>` 
+    },
+    { 
+      id: 26, color: 'bg-sky-500', targetPage: 'report', 
+      title: '26. Planejamento da Sessão de Devolutiva', 
+      desc: 'Roteiro acolhedor e propositivo para a entrega de resultados à família e escola.', 
+      action: 'Criar Devolutiva Família', 
+      body: `<h3>Estratégia de Devolutiva Positiva</h3>
+      <p>Comece sempre apresentando os pontos fortes e as conquistas do aprendente. Apresente as dificuldades de forma clara, acolhedora e acompanhada de um plano de ação prático.</p>` 
+    },
+    { 
+      id: 27, color: 'bg-emerald-500', targetPage: 'report', 
+      title: '27. Redação Técnica do Relatório Psicopedagógico', 
+      desc: 'Estrutura padrão de laudos e relatórios descritivos claros.', 
+      action: 'Gerar Relatório Descritivo', 
+      body: `<h3>Estrutura do Relatório Psicopedagógico</h3>
+      <p>1. Dados de Identificação.<br>
+      2. Motivo da Avaliação e Demanda Inicial.<br>
+      3. Instrumentos e Procedimentos Utilizados.<br>
+      4. Análise dos Resultados (Por área cognitiva/pedagógica).<br>
+      5. Conclusão e Recomendações para Família e Escola.</p>` 
+    },
+    { 
+      id: 28, color: 'bg-amber-500', targetPage: 'intervention', 
+      title: '28. Plano de Intervenção de 90 Dias', 
+      desc: 'Metas prioritárias, acompanhamento e revisão de estratégias.', 
+      action: 'Montar Plano de Intervenção', 
+      body: `<h3>Plano Terapêutico de 90 Dias</h3>
+      <p>Selecione de 2 a 3 metas prioritárias para o primeiro trimestre de intervenção. Estabeleça indicadores visíveis de progresso e datas de reavaliação periódica.</p>` 
+    },
+    { 
+      id: 29, color: 'bg-rose-500', targetPage: 'privacy', 
+      title: '29. Gestão Digital, Prontuários e Segurança em 2026', 
+      desc: 'LGPD, backups e praticidade no armazenamento de dados de pacientes.', 
+      action: 'Configurar Segurança e Dados', 
+      body: `<h3>Prontuário Digital Seguro</h3>
+      <p>Garanta que todos os documentos, relatórios e dados de anamnese estejam protegidos por códigos de acesso exclusivos e criptografia local no seu dispositivo.</p>` 
+    },
+    { 
+      id: 30, color: 'bg-purple-500', targetPage: 'records', 
+      title: '30. Checklist de Encerramento do Caso Avaliativo', 
+      desc: 'Validação final antes do arquivamento do processo de avaliação.', 
+      action: 'Abrir Registros e Documentos', 
+      body: `<h3>Checklist Final de Arquivamento</h3>
+      <p>✓ Anamnese concluída e assinada.<br>
+      ✓ Provas aplicadas e corrigidas.<br>
+      ✓ Relatório entregue e protocolado com a família.<br>
+      ✓ Escola orientada e documento recebido.<br>
+      ✓ Plano de intervenção inicial elaborado.</p>` 
+    }
 ];
 
 let currentTopic = 1;
@@ -1041,7 +1306,7 @@ function preencherManualAprendente() {
   }
 }
 
-// LÓGICA DO GUIA PRÁTICO 2026
+// LÓGICA DE NAVEGAÇÃO E INTERAÇÃO DA APOSTILA DIGITAL (GUIA 2026)
 function renderTopicList(filter = '') {
     const listContainer = document.getElementById('topicList');
     if (!listContainer) return;
@@ -1056,12 +1321,12 @@ function renderTopicList(filter = '') {
         const isDone = completedTopics.has(t.id);
 
         const item = document.createElement('div');
-        item.className = `p-3 rounded-xl cursor-pointer transition flex items-center justify-between border ${isActive ? 'bg-blue-50/80 border-blue-300 shadow-sm' : 'bg-white hover:bg-slate-50 border-slate-100'}`;
+        item.className = `p-2.5 rounded-xl cursor-pointer transition flex items-center justify-between border ${isActive ? 'bg-blue-50/90 border-blue-300 shadow-sm' : 'bg-white hover:bg-slate-50 border-slate-100'}`;
         item.onclick = () => loadTopic(t.id);
 
         item.innerHTML = `
-            <div class="flex items-center gap-3 overflow-hidden">
-                <span class="w-7 h-7 rounded-lg ${t.color} text-white font-bold text-xs flex items-center justify-center shrink-0">
+            <div class="flex items-center gap-2.5 overflow-hidden">
+                <span class="w-6 h-6 rounded-lg ${t.color} text-white font-bold text-[11px] flex items-center justify-center shrink-0">
                     ${t.id < 10 ? '0' + t.id : t.id}
                 </span>
                 <div class="truncate">
@@ -1069,7 +1334,7 @@ function renderTopicList(filter = '') {
                     <p class="text-[10px] text-slate-500 truncate">${t.desc}</p>
                 </div>
             </div>
-            ${isDone ? '<i class="fa-solid fa-circle-check text-green-500 text-xs ml-2"></i>' : ''}
+            ${isDone ? '<i class="fa-solid fa-circle-check text-green-500 text-xs ml-1.5 shrink-0"></i>' : ''}
         `;
         listContainer.appendChild(item);
     });
@@ -1084,18 +1349,25 @@ function loadTopic(id) {
     document.getElementById('chapTitle').innerText = topic.title;
     document.getElementById('chapSubtitle').innerText = topic.desc;
     document.getElementById('actionBtn').innerText = topic.action;
-    document.getElementById('actionDesc').innerText = `Execute: ${topic.desc}`;
+    document.getElementById('actionDesc').innerText = `Ação rápida: ${topic.desc}`;
     
     document.getElementById('chapBody').innerHTML = `
-        <p class="font-medium text-slate-800">${topic.body}</p>
-        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600 space-y-2">
+        <div>${topic.body}</div>
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-600 space-y-2 mt-4">
             <p class="font-bold text-slate-700"><i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i> Dica de Aplicação no Práxis:</p>
-            <p>Ao concluir a leitura deste tópico, você pode clicar no botão <strong>"${topic.action}"</strong> acima para aplicar as orientações diretamente no módulo correspondente.</p>
+            <p>Ao concluir a leitura, clique no botão <strong>"${topic.action}"</strong> acima para abrir diretamente a ferramenta de trabalho associada.</p>
         </div>
     `;
 
     updateCompleteButton();
     renderTopicList(document.getElementById('searchInput').value);
+}
+
+function navigateTopic(direction) {
+  let newId = currentTopic + direction;
+  if (newId >= 1 && newId <= topics.length) {
+    loadTopic(newId);
+  }
 }
 
 function toggleCompleted() {
@@ -1136,7 +1408,7 @@ function executeSystemAction() {
     const topic = topics.find(t => t.id === currentTopic);
     if (topic && topic.targetPage) {
         go(topic.targetPage);
-        showToast(`Redirecionado para o módulo: ${pageTitles[topic.targetPage]}`);
+        showToast(`Redirecionado para: ${pageTitles[topic.targetPage]}`);
     } else {
         alert(`[Ação do Sistema Práxis]\nExecutando: "${topic.action}"`);
     }
