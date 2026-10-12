@@ -19,6 +19,7 @@
       .no-print { display: none !important; }
       .print-only { display: block !important; }
       body { background: white; color: black; }
+      #appLayout { display: block !important; }
     }
   </style>
 </head>
@@ -84,7 +85,7 @@
         </button>
       </form>
 
-      <!-- Form 2: Master Key Access (First Time) -->
+      <!-- Form 2: Master Key Access -->
       <form id="masterForm" onsubmit="handleMasterKey(event)" class="space-y-4 hidden">
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 flex gap-2">
           <i class="fa-solid fa-triangle-exclamation text-amber-600 text-base flex-shrink-0 mt-0.5"></i>
@@ -116,16 +117,16 @@
 
   <!-- MODAL: RECUPERAÇÃO DE SENHA -->
   <div id="recoveryModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl p-6 border border-slate-200 animate-fade-in">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl p-6 border border-slate-200">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
         <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-          <i class="fa-solid fa-unlock-keyhole text-indigo-600"></i> Recuperar Senha de Acesso
+          <i class="fa-solid fa-unlock-keyhole text-indigo-600"></i> Recuperar Senha
         </h3>
         <button onclick="closeRecoveryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
       
       <p class="text-xs text-slate-500 mb-4 leading-relaxed">
-        Informe seu <strong>Código de Acesso</strong> e o <strong>E-mail</strong> cadastrado para verificar suas credenciais.
+        Informe seu <strong>Código de Acesso</strong> e o <strong>E-mail</strong> cadastrado.
       </p>
 
       <form onsubmit="handlePasswordRecovery(event)" class="space-y-4">
@@ -150,7 +151,7 @@
 
   <!-- REGISTRATION MODAL FOR MASTER KEY USERS -->
   <div id="registerModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-slate-200 animate-fade-in">
+    <div class="bg-white max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-slate-200">
       <div class="flex items-center justify-between border-b pb-3 mb-4">
         <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
           <i class="fa-solid fa-id-card text-indigo-600"></i> Criar Seu Acesso Individual
@@ -159,7 +160,7 @@
       </div>
       
       <p class="text-xs text-slate-500 mb-4">
-        Você validou a Chave Mestre! Agora cadastre suas credenciais pessoais de acesso. A Chave Mestre permanecerá intacta no sistema.
+        Você validou a Chave Mestre! Cadastre suas credenciais pessoais de acesso.
       </p>
 
       <form onsubmit="handleRegisterUser(event)" class="space-y-4">
@@ -192,564 +193,564 @@
     </div>
   </div>
 
-  <!-- MAIN APP CONTAINER -->
-  <div id="appContainer" class="hidden flex-1 flex flex-col">
+  <!-- MAIN APP CONTAINER (WITH LATERAL SIDEBAR LAYOUT) -->
+  <div id="appContainer" class="hidden min-h-screen flex flex-col md:flex-row">
     
-    <!-- Top Navigation Bar -->
-    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-30 no-print">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        
-        <!-- Brand -->
+    <!-- SIDEBAR NAVIGATION MENU -->
+    <aside id="sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col no-print border-r border-slate-800">
+      
+      <!-- Sidebar Brand Header -->
+      <div class="p-4 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-lg text-white shadow">
+          <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow">
             <i class="fa-solid fa-brain"></i>
           </div>
           <div>
-            <span class="font-bold text-lg tracking-tight">Plataforma Práxis</span>
-            <span class="hidden sm:inline-block text-xs bg-indigo-800 text-indigo-200 px-2 py-0.5 rounded-full ml-2">2026</span>
+            <span class="font-bold text-white text-base tracking-tight block">Práxis</span>
+            <span class="text-[10px] text-indigo-400 font-semibold uppercase tracking-widest">Psicopedagogia</span>
           </div>
-        </div>
-
-        <!-- Student Context Banner Selector -->
-        <div class="hidden md:flex items-center gap-2 bg-indigo-950/60 px-3 py-1.5 rounded-xl border border-indigo-700/50">
-          <i class="fa-solid fa-user-graduate text-amber-400 text-sm"></i>
-          <span class="text-xs font-medium text-indigo-200">Aprendente Ativo:</span>
-          <select id="globalStudentSelect" onchange="syncStudentSelection(this.value)" class="bg-indigo-900 text-white text-xs font-semibold rounded-lg px-2 py-1 outline-none border border-indigo-600 focus:ring-2 focus:ring-amber-400">
-            <option value="">-- Selecione um Aprendente --</option>
-          </select>
-        </div>
-
-        <!-- User Controls / Admin Panel Button -->
-        <div class="flex items-center space-x-3">
-          <div class="text-right hidden sm:block">
-            <div id="navUserName" class="text-xs font-bold text-indigo-100">---</div>
-            <div id="navUserRole" class="text-[10px] text-indigo-300">---</div>
-          </div>
-
-          <button id="adminPanelNavBtn" onclick="switchTab('adminPanel')" class="hidden px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-indigo-950 rounded-xl text-xs font-bold shadow flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-user-shield"></i>
-            <span class="hidden lg:inline">Painel Profª Bárbara</span>
-          </button>
-
-          <button onclick="openProfileModal()" title="Editar Meu Perfil" class="p-2 hover:bg-indigo-800 rounded-xl text-indigo-200 hover:text-white transition">
-            <i class="fa-solid fa-circle-user text-lg"></i>
-          </button>
-
-          <button onclick="logout()" title="Sair da Conta" class="p-2 hover:bg-red-600/80 bg-red-950/40 text-red-300 hover:text-white rounded-xl transition text-xs font-medium flex items-center gap-1">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span class="hidden sm:inline">Sair</span>
-          </button>
         </div>
       </div>
-    </header>
 
-    <!-- Navigation Tabs Bar -->
-    <nav class="bg-white border-b border-slate-200 shadow-sm sticky top-16 z-20 overflow-x-auto no-print">
-      <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 py-2 text-xs font-semibold whitespace-nowrap">
+      <!-- Active Student Selector Widget in Sidebar -->
+      <div class="p-3 bg-slate-950/60 border-b border-slate-800/80">
+        <label class="block text-[10px] font-bold text-amber-400 uppercase mb-1.5 flex items-center gap-1">
+          <i class="fa-solid fa-user-graduate"></i> Aprendente Ativo:
+        </label>
+        <select id="globalStudentSelect" onchange="syncStudentSelection(this.value)" class="w-full bg-slate-900 text-white text-xs font-semibold rounded-lg p-2 outline-none border border-slate-700 focus:border-amber-400">
+          <option value="">-- Selecione um Aprendente --</option>
+        </select>
+      </div>
+
+      <!-- Vertical Navigation Menu -->
+      <nav class="flex-1 p-3 space-y-1 overflow-y-auto text-xs font-medium">
         
-        <button onclick="switchTab('guia')" id="tab-guia" class="tab-btn active-tab px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-book-open text-indigo-600"></i> Guia Prático (30 Tópicos)
+        <button onclick="switchTab('guia')" id="tab-guia" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-book-open text-indigo-400 text-sm w-5 text-center"></i> Guia Prático (30 Tópicos)
         </button>
 
-        <button onclick="switchTab('aprendentes')" id="tab-aprendentes" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-users text-purple-600"></i> Aprendentes Cadastrados
+        <button onclick="switchTab('aprendentes')" id="tab-aprendentes" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-users text-purple-400 text-sm w-5 text-center"></i> Aprendentes Cadastrados
         </button>
 
-        <button onclick="switchTab('avaliacao')" id="tab-avaliacao" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-clipboard-check text-blue-600"></i> Avaliação Psicopedagógica
+        <button onclick="switchTab('avaliacao')" id="tab-avaliacao" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-clipboard-check text-blue-400 text-sm w-5 text-center"></i> Avaliação Psicopedagógica
         </button>
 
-        <button onclick="switchTab('plano')" id="tab-plano" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-bullseye text-emerald-600"></i> Plano de Intervenção
+        <button onclick="switchTab('plano')" id="tab-plano" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-bullseye text-emerald-400 text-sm w-5 text-center"></i> Plano de Intervenção (PEI)
         </button>
 
-        <button onclick="switchTab('adaptacao')" id="tab-adaptacao" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-robot text-teal-600"></i> Adaptação Pedagógica IA
+        <button onclick="switchTab('adaptacao')" id="tab-adaptacao" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-robot text-teal-400 text-sm w-5 text-center"></i> Adaptação Pedagógica IA
         </button>
 
-        <button onclick="switchTab('metodologias')" id="tab-metodologias" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-lightbulb text-amber-600"></i> Metodologias Ativas
+        <button onclick="switchTab('metodologias')" id="tab-metodologias" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-lightbulb text-amber-400 text-sm w-5 text-center"></i> Metodologias Ativas
         </button>
 
-        <button onclick="switchTab('neurodiversidade')" id="tab-neurodiversidade" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-head-side-virus text-rose-600"></i> Neurodiversidade em Foco
+        <button onclick="switchTab('neurodiversidade')" id="tab-neurodiversidade" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-head-side-virus text-rose-400 text-sm w-5 text-center"></i> Neurodiversidade em Foco
         </button>
 
-        <button onclick="switchTab('relatorios')" id="tab-relatorios" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-file-contract text-cyan-600"></i> Relatórios & Documentos
+        <button onclick="switchTab('relatorios')" id="tab-relatorios" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-file-contract text-cyan-400 text-sm w-5 text-center"></i> Relatórios & Documentos
         </button>
 
-        <button onclick="switchTab('autora')" id="tab-autora" class="tab-btn px-3 py-2 rounded-xl flex items-center gap-2 text-slate-600 hover:bg-slate-100 transition">
-          <i class="fa-solid fa-user-graduate text-slate-600"></i> Sobre a Autora
+        <button onclick="switchTab('autora')" id="tab-autora" class="tab-btn w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
+          <i class="fa-solid fa-user-graduate text-slate-400 text-sm w-5 text-center"></i> Sobre a Autora
         </button>
+
+        <!-- Exclusive Admin Panel Button in Sidebar -->
+        <button id="adminPanelNavBtn" onclick="switchTab('adminPanel')" class="hidden w-full mt-4 px-3 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold rounded-xl text-xs shadow flex items-center gap-2 transition">
+          <i class="fa-solid fa-user-shield text-sm"></i>
+          <span>Painel Profª Bárbara</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar User Profile Footer -->
+      <div class="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
+        <div class="flex items-center space-x-2 overflow-hidden">
+          <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="truncate">
+            <div id="navUserName" class="text-xs font-bold text-slate-200 truncate">---</div>
+            <div id="navUserRole" class="text-[10px] text-slate-400 truncate">---</div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-1">
+          <button onclick="openProfileModal()" title="Editar Perfil" class="p-1.5 hover:bg-slate-800 text-slate-400 hover:text-white rounded-lg transition">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+          <button onclick="logout()" title="Sair" class="p-1.5 hover:bg-red-900/50 text-red-400 hover:text-red-200 rounded-lg transition">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
       </div>
-    </nav>
+    </aside>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6">
+    <!-- RIGHT MAIN CONTENT LAYOUT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 bg-slate-100">
+      
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
 
-      <!-- MASTER ADMIN PANEL (EXCLUSIVE TO prof.barbaravitoria) -->
-      <section id="sec-adminPanel" class="tab-content hidden space-y-6">
-        <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-6 rounded-2xl text-white shadow-xl flex justify-between items-center">
-          <div>
-            <h2 class="text-2xl font-bold flex items-center gap-2">
-              <i class="fa-solid fa-user-shield"></i> Painel de Gestão Suprema - Profª Bárbara Vitória
+        <!-- MASTER ADMIN PANEL (EXCLUSIVE TO prof.barbaravitoria) -->
+        <section id="sec-adminPanel" class="tab-content hidden space-y-6">
+          <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-6 rounded-2xl text-white shadow-xl flex justify-between items-center">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-2">
+                <i class="fa-solid fa-user-shield"></i> Painel de Gestão Suprema - Profª Bárbara Vitória
+              </h2>
+              <p class="text-xs text-amber-100 mt-1">Gerenciamento completo de todos os usuários cadastrados na plataforma.</p>
+            </div>
+            <span class="bg-white/20 px-3 py-1.5 rounded-xl font-mono text-xs backdrop-blur-md">Chave Mestre: psi-praxis-2026</span>
+          </div>
+
+          <!-- User Accounts Table -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+              <h3 class="font-bold text-slate-700 text-sm">Usuários Cadastrados (<span id="userCount">0</span>)</h3>
+              <div class="text-xs text-slate-500">
+                <i class="fa-solid fa-lock text-emerald-600"></i> A Chave Mestre não pode ser alterada nem excluída.
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-slate-600">
+                <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
+                  <tr>
+                    <th class="p-3">Nome</th>
+                    <th class="p-3">Código de Acesso</th>
+                    <th class="p-3">E-mail</th>
+                    <th class="p-3">Perfil / Cargo</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 text-center">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="adminUserTableBody" class="divide-y divide-slate-100">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 1. GUIA PRÁTICO 2026 (30 TOPICS) -->
+        <section id="sec-guia" class="tab-content space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-book-open text-indigo-600"></i> Guia Prático Psicopedagógico 2026
+                </h2>
+                <p class="text-xs text-slate-500 mt-1">30 diretrizes fundamentais com marcadores de leitura e orientações técnicas.</p>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="text-xs font-semibold text-slate-600">
+                  Progresso: <span id="readingProgressText" class="text-indigo-600 font-bold">0/30</span>
+                </div>
+                <div class="w-32 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                  <div id="readingProgressBar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Topics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="guideTopicsGrid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. APRENDENTES CADASTRADOS -->
+        <section id="sec-aprendentes" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-users text-purple-600"></i> Aprendentes Cadastrados
+                </h2>
+                <p class="text-xs text-slate-500">Gestão dos perfis de alunos para vincular às intervenções e relatórios.</p>
+              </div>
+              <button onclick="openStudentModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl shadow-md transition flex items-center gap-2">
+                <i class="fa-solid fa-user-plus"></i> Novo Aprendente
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="studentsListGrid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. AVALIAÇÃO PSICOPEDAGÓGICA -->
+        <section id="sec-avaliacao" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-blue-600"></i> Avaliação Psicopedagógica
             </h2>
-            <p class="text-xs text-amber-100 mt-1">Gerenciamento completo de todos os usuários cadastrados na plataforma e status de acesso.</p>
-          </div>
-          <span class="bg-white/20 px-3 py-1.5 rounded-xl font-mono text-xs backdrop-blur-md">Chave Mestre: psi-praxis-2026</span>
-        </div>
+            <p class="text-xs text-slate-500 mb-6">Preencha o diagnóstico técnico e de desenvolvimento do aprendente selecionado.</p>
 
-        <!-- User Accounts Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
-            <h3 class="font-bold text-slate-700 text-sm">Usuários Cadastrados (<span id="userCount">0</span>)</h3>
-            <div class="text-xs text-slate-500">
-              <i class="fa-solid fa-lock text-emerald-600"></i> A Chave Mestre não pode ser alterada nem excluída.
-            </div>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs text-slate-600">
-              <thead class="bg-slate-100 text-slate-700 uppercase font-semibold">
-                <tr>
-                  <th class="p-3">Nome</th>
-                  <th class="p-3">Código de Acesso</th>
-                  <th class="p-3">E-mail</th>
-                  <th class="p-3">Perfil / Cargo</th>
-                  <th class="p-3">Status</th>
-                  <th class="p-3 text-center">Ações</th>
-                </tr>
-              </thead>
-              <tbody id="adminUserTableBody" class="divide-y divide-slate-100">
-                <!-- Populated via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 1. GUIA PRÁTICO 2026 (30 TOPICS) -->
-      <section id="sec-guia" class="tab-content space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            <div>
-              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-book-open text-indigo-600"></i> Guia Prático Psicopedagógico 2026
-              </h2>
-              <p class="text-xs text-slate-500 mt-1">30 diretrizes fundamentais com marcadores de leitura e orientações técnicas.</p>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="text-xs font-semibold text-slate-600">
-                Progresso: <span id="readingProgressText" class="text-indigo-600 font-bold">0/30</span>
-              </div>
-              <div class="w-32 bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                <div id="readingProgressBar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Topics Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="guideTopicsGrid">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-      </section>
-
-      <!-- 2. APRENDENTES CADASTRADOS -->
-      <section id="sec-aprendentes" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex justify-between items-center mb-6">
-            <div>
-              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-users text-purple-600"></i> Aprendentes Cadastrados
-              </h2>
-              <p class="text-xs text-slate-500">Gestão dos perfis de alunos para vincular às intervenções e relatórios.</p>
-            </div>
-            <button onclick="openStudentModal()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl shadow-md transition flex items-center gap-2">
-              <i class="fa-solid fa-user-plus"></i> Novo Aprendente
-            </button>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="studentsListGrid">
-            <!-- Rendered via JS -->
-          </div>
-        </div>
-      </section>
-
-      <!-- 3. AVALIAÇÃO PSICOPEDAGÓGICA (REQUIRES STUDENT) -->
-      <section id="sec-avaliacao" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-clipboard-check text-blue-600"></i> Avaliação Psicopedagógica
-          </h2>
-          <p class="text-xs text-slate-500 mb-6">Preencha o diagnóstico técnico e de desenvolvimento do aprendente selecionado.</p>
-
-          <!-- REQUIRED STUDENT SELECTOR -->
-          <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
-            <label class="text-xs font-bold text-blue-900 uppercase whitespace-nowrap">
-              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
-            </label>
-            <select id="evalStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-blue-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-              <!-- Rendered via JS -->
-            </select>
-          </div>
-
-          <form onsubmit="saveEvaluation(event)" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Anamnese / Queixa Principal</label>
-                <textarea id="evalAnamnese" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Descrição do histórico do aluno e demanda..."></textarea>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Funções Cognitivas / Atencionais</label>
-                <textarea id="evalCognitive" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Memória, foco, linguagem, raciocínio lógico..."></textarea>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Aspectos Psicomotores & Socioemocionais</label>
-                <textarea id="evalEmotional" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Comportamento, vínculo escolar, coordenação..."></textarea>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Hipótese Diagnóstica / Síntese</label>
-                <textarea id="evalHypothesis" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Conclusão preliminar ou diagnósticos já laudados..."></textarea>
-              </div>
-            </div>
-
-            <div class="flex justify-end gap-3 pt-2">
-              <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-                <i class="fa-solid fa-floppy-disk"></i> Salvar Avaliação
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- 4. PLANO DE INTERVENÇÃO (REQUIRES STUDENT) -->
-      <section id="sec-plano" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-bullseye text-emerald-600"></i> Plano de Intervenção Estruturado (PEI)
-          </h2>
-          <p class="text-xs text-slate-500 mb-6">Trace metas SMART e ações psicopedagógicas individualizadas.</p>
-
-          <!-- REQUIRED STUDENT SELECTOR -->
-          <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
-            <label class="text-xs font-bold text-emerald-900 uppercase whitespace-nowrap">
-              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
-            </label>
-            <select id="planStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-emerald-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
-              <!-- Rendered via JS -->
-            </select>
-          </div>
-
-          <form onsubmit="savePlan(event)" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Objetivo Geral</label>
-                <input type="text" id="planGoal" required class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Desenvolver fluência leitora">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Frequência das Sessões</label>
-                <input type="text" id="planFreq" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 2x por semana (45 min)">
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Duração Prevista</label>
-                <input type="text" id="planDuration" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 3 Meses / 1º Semestre">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Metodologias e Recursos Didáticos</label>
-              <textarea id="planMethods" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Jogos pedagógicos, estímulos multissensoriais, mapas mentais..."></textarea>
-            </div>
-
-            <div class="flex justify-end pt-2">
-              <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-                <i class="fa-solid fa-floppy-disk"></i> Salvar Plano de Intervenção
-              </button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <!-- 5. ADAPTAÇÃO PEDAGÓGICA IA (REQUIRES STUDENT) -->
-      <section id="sec-adaptacao" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-robot text-teal-600"></i> Adaptação Pedagógica com Inteligência Artificial
-          </h2>
-          <p class="text-xs text-slate-500 mb-6">Gere estratégias adaptativas instantâneas com base nas particularidades do aluno.</p>
-
-          <!-- REQUIRED STUDENT SELECTOR -->
-          <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
-            <label class="text-xs font-bold text-teal-900 uppercase whitespace-nowrap">
-              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
-            </label>
-            <select id="aiStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-teal-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-teal-500 outline-none">
-              <!-- Rendered via JS -->
-            </select>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Conteúdo/Atividade Escolar sem Adaptação</label>
-              <textarea id="aiInputContent" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500" placeholder="Cole aqui o texto da prova, exercício ou tema da aula (Ex: Leitura do texto X e interpretação com 5 questões escritas)"></textarea>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-600 mb-1">Foco de Adaptação Específico</label>
-              <select id="aiFocusArea" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500">
-                <option value="tdah">TDAH (Simplificação de enunciados, tópicos curtos, temporização)</option>
-                <option value="tea">TEA (Suporte visual, rotina previsível, linguagem literal)</option>
-                <option value="dislexia">Dislexia (Fonte legível, apoio em áudio/imagens, menos texto)</option>
-                <option value="ahsd">AH/SD (Enriquecimento curricular, desafios de maior profundidade)</option>
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+              <label class="text-xs font-bold text-blue-900 uppercase whitespace-nowrap">
+                <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+              </label>
+              <select id="evalStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-blue-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                <!-- Rendered via JS -->
               </select>
             </div>
 
-            <button onclick="generateAiAdaptation()" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Sugestão de Adaptação IA
-            </button>
-
-            <!-- AI Output Box -->
-            <div id="aiResultBox" class="hidden mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-5">
-              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 mb-3">
-                <i class="fa-solid fa-lightbulb text-amber-500"></i> Proposta de Adaptação Gerada:
-              </h3>
-              <div id="aiOutputText" class="text-xs text-slate-700 space-y-2 leading-relaxed font-sans">
-                <!-- AI Generated Text -->
+            <form onsubmit="saveEvaluation(event)" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Anamnese / Queixa Principal</label>
+                  <textarea id="evalAnamnese" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Descrição do histórico do aluno e demanda..."></textarea>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Funções Cognitivas / Atencionais</label>
+                  <textarea id="evalCognitive" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Memória, foco, linguagem, raciocínio lógico..."></textarea>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <!-- 6. METODOLOGIAS ATIVAS (REQUIRES STUDENT) -->
-      <section id="sec-metodologias" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-lightbulb text-amber-600"></i> Metodologias Ativas Aplicadas
-          </h2>
-          <p class="text-xs text-slate-500 mb-6">Planeje intervenções baseadas em metodologias ativas para o aprendente.</p>
-
-          <!-- REQUIRED STUDENT SELECTOR -->
-          <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
-            <label class="text-xs font-bold text-amber-900 uppercase whitespace-nowrap">
-              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
-            </label>
-            <select id="methodStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-amber-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-amber-500 outline-none">
-              <!-- Rendered via JS -->
-            </select>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
-              <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
-                <i class="fa-solid fa-gamepad text-amber-600"></i> Gamificação Psicopedagógica
-              </h3>
-              <p class="text-xs text-slate-600 mb-3">Uso de mecânicas de jogos para engajamento atencional e regulação emotiva.</p>
-              <textarea id="methodGamification" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Estratégias de jogos para este aprendente..."></textarea>
-            </div>
-
-            <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
-              <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
-                <i class="fa-solid fa-puzzle-piece text-amber-600"></i> Aprendizagem Baseada em Problemas (PBL)
-              </h3>
-              <p class="text-xs text-slate-600 mb-3">Resolução de situações do cotidiano para promover autonomia raciocinada.</p>
-              <textarea id="methodPbl" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Desafios práticos direcionados..."></textarea>
-            </div>
-          </div>
-
-          <div class="flex justify-end pt-4">
-            <button onclick="saveMethodologies()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-              <i class="fa-solid fa-floppy-disk"></i> Salvar Estratégia de Metodologia Ativa
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 7. NEURODIVERSIDADE EM FOCO (COMPLETE) -->
-      <section id="sec-neurodiversidade" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
-            <i class="fa-solid fa-head-side-virus text-rose-600"></i> Neurodiversidade em Foco
-          </h2>
-          <p class="text-xs text-slate-500 mb-6">Guia completo de caracterização e condutas psicopedagógicas.</p>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- TDAH -->
-            <div class="p-5 border border-rose-200 bg-rose-50/30 rounded-2xl">
-              <div class="flex items-center gap-2 font-bold text-rose-900 text-base mb-2">
-                <span class="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold">TDAH</span>
-                Transtorno do Deficit de Atenção e Hiperatividade
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Aspectos Psicomotores & Socioemocionais</label>
+                  <textarea id="evalEmotional" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Comportamento, vínculo escolar, coordenação..."></textarea>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Hipótese Diagnóstica / Síntese</label>
+                  <textarea id="evalHypothesis" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-blue-500" placeholder="Conclusão preliminar ou diagnósticos já laudados..."></textarea>
+                </div>
               </div>
-              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
-                <li><strong>Sinais:</strong> Desatenção a detalhes, impulsividade verbal/motora, esquecimentos frequentes.</li>
-                <li><strong>Manejo:</strong> Instruções fracionadas em etapas curtas, temporizadores visuais, assento próximo ao professor.</li>
-                <li><strong>Avaliação:</strong> Provas menores ou divididas em blocos para reduzir fadiga cognitiva.</li>
-              </ul>
-            </div>
 
-            <!-- TEA -->
-            <div class="p-5 border border-blue-200 bg-blue-50/30 rounded-2xl">
-              <div class="flex items-center gap-2 font-bold text-blue-900 text-base mb-2">
-                <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold">TEA</span>
-                Transtorno do Espectro Autista
+              <div class="flex justify-end gap-3 pt-2">
+                <button type="submit" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                  <i class="fa-solid fa-floppy-disk"></i> Salvar Avaliação
+                </button>
               </div>
-              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
-                <li><strong>Sinais:</strong> Rigidez na rotina, hiperfoco, sensibilidade sensorial, comunicação atípica.</li>
-                <li><strong>Manejo:</strong> Antecipação de mudanças na rotina via quadros visuais, espaço de autorregulação.</li>
-                <li><strong>Avaliação:</strong> Interpretação literal dos enunciados, sem metáforas de ambiguidade.</li>
-              </ul>
-            </div>
-
-            <!-- DISLEXIA -->
-            <div class="p-5 border border-purple-200 bg-purple-50/30 rounded-2xl">
-              <div class="flex items-center gap-2 font-bold text-purple-900 text-base mb-2">
-                <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-bold">DIS</span>
-                Dislexia
-              </div>
-              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
-                <li><strong>Sinais:</strong> Dificuldade na decodificação fonológica, lentidão na leitura, troca de letras espelhadas.</li>
-                <li><strong>Manejo:</strong> Uso de fontes adaptadas (OpenDyslexic), leitor de tela, mapas conceituais.</li>
-                <li><strong>Avaliação:</strong> Avaliação oral complementar, tempo estendido para resolução.</li>
-              </ul>
-            </div>
-
-            <!-- AH/SD -->
-            <div class="p-5 border border-amber-200 bg-amber-50/30 rounded-2xl">
-              <div class="flex items-center gap-2 font-bold text-amber-900 text-base mb-2">
-                <span class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-bold">AH</span>
-                Altas Habilidades / Superdotação
-              </div>
-              <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
-                <li><strong>Sinais:</strong> Aprendizagem rápida, vocabulário avançado, questionamento crítico, desmotivação com repetições.</li>
-                <li><strong>Manejo:</strong> Enriquecimento curricular Tipo I e II, projetos de pesquisa autodirigidos.</li>
-                <li><strong>Avaliação:</strong> Propostas de aprofundamento e complexidade analítica.</li>
-              </ul>
-            </div>
+            </form>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- 8. RELATÓRIOS & DOCUMENTOS (REQUIRES STUDENT - PRINT/PDF) -->
-      <section id="sec-relatorios" class="tab-content hidden space-y-6">
-        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-              <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-                <i class="fa-solid fa-file-contract text-cyan-600"></i> Relatórios & Documentos Psicopedagógicos
-              </h2>
-              <p class="text-xs text-slate-500">Visualização consolidada, impressão direta ou exportação em PDF.</p>
+        <!-- 4. PLANO DE INTERVENÇÃO (PEI) -->
+        <section id="sec-plano" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-bullseye text-emerald-600"></i> Plano de Intervenção Estruturado (PEI)
+            </h2>
+            <p class="text-xs text-slate-500 mb-6">Trace metas SMART e ações psicopedagógicas individualizadas.</p>
+
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+              <label class="text-xs font-bold text-emerald-900 uppercase whitespace-nowrap">
+                <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+              </label>
+              <select id="planStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-emerald-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                <!-- Rendered via JS -->
+              </select>
             </div>
 
-            <div class="flex items-center gap-2 no-print">
-              <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-                <i class="fa-solid fa-print"></i> Imprimir
+            <form onsubmit="savePlan(event)" class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Objetivo Geral</label>
+                  <input type="text" id="planGoal" required class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Desenvolver fluência leitora">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Frequência das Sessões</label>
+                  <input type="text" id="planFreq" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 2x por semana (45 min)">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-600 mb-1">Duração Prevista</label>
+                  <input type="text" id="planDuration" class="w-full p-2 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ex: 3 Meses / 1º Semestre">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Metodologias e Recursos Didáticos</label>
+                <textarea id="planMethods" rows="3" required class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Jogos pedagógicos, estímulos multissensoriais, mapas mentais..."></textarea>
+              </div>
+
+              <div class="flex justify-end pt-2">
+                <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                  <i class="fa-solid fa-floppy-disk"></i> Salvar Plano de Intervenção
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- 5. ADAPTAÇÃO PEDAGÓGICA IA -->
+        <section id="sec-adaptacao" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-robot text-teal-600"></i> Adaptação Pedagógica com Inteligência Artificial
+            </h2>
+            <p class="text-xs text-slate-500 mb-6">Gere estratégias adaptativas instantâneas com base nas particularidades do aluno.</p>
+
+            <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+              <label class="text-xs font-bold text-teal-900 uppercase whitespace-nowrap">
+                <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+              </label>
+              <select id="aiStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-teal-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-teal-500 outline-none">
+                <!-- Rendered via JS -->
+              </select>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Conteúdo/Atividade Escolar sem Adaptação</label>
+                <textarea id="aiInputContent" rows="3" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500" placeholder="Cole aqui o texto da prova ou exercício..."></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Foco de Adaptação Específico</label>
+                <select id="aiFocusArea" class="w-full p-2.5 border rounded-xl text-xs outline-none focus:ring-2 focus:ring-teal-500">
+                  <option value="tdah">TDAH (Simplificação de enunciados, tópicos curtos, temporização)</option>
+                  <option value="tea">TEA (Suporte visual, rotina previsível, linguagem literal)</option>
+                  <option value="dislexia">Dislexia (Fonte legível, apoio em áudio/imagens, menos texto)</option>
+                  <option value="ahsd">AH/SD (Enriquecimento curricular, desafios de maior profundidade)</option>
+                </select>
+              </div>
+
+              <button onclick="generateAiAdaptation()" class="px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Sugestão de Adaptação IA
               </button>
-              <button onclick="exportPdfDocument()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
-                <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+
+              <div id="aiResultBox" class="hidden mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 mb-3">
+                  <i class="fa-solid fa-lightbulb text-amber-500"></i> Proposta de Adaptação Gerada:
+                </h3>
+                <div id="aiOutputText" class="text-xs text-slate-700 space-y-2 leading-relaxed font-sans"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. METODOLOGIAS ATIVAS -->
+        <section id="sec-metodologias" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-lightbulb text-amber-600"></i> Metodologias Ativas Aplicadas
+            </h2>
+            <p class="text-xs text-slate-500 mb-6">Planeje intervenções baseadas em metodologias ativas para o aprendente.</p>
+
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3">
+              <label class="text-xs font-bold text-amber-900 uppercase whitespace-nowrap">
+                <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+              </label>
+              <select id="methodStudentSelect" class="w-full sm:w-auto flex-1 px-3 py-2 border border-amber-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-amber-500 outline-none">
+                <!-- Rendered via JS -->
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
+                  <i class="fa-solid fa-gamepad text-amber-600"></i> Gamificação Psicopedagógica
+                </h3>
+                <p class="text-xs text-slate-600 mb-3">Uso de mecânicas de jogos para engajamento atencional.</p>
+                <textarea id="methodGamification" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Estratégias de jogos para este aprendente..."></textarea>
+              </div>
+
+              <div class="p-4 border rounded-xl hover:border-amber-400 transition bg-slate-50/50">
+                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 mb-1">
+                  <i class="fa-solid fa-puzzle-piece text-amber-600"></i> Aprendizagem Baseada em Problemas (PBL)
+                </h3>
+                <p class="text-xs text-slate-600 mb-3">Resolução de situações do cotidiano.</p>
+                <textarea id="methodPbl" rows="2" class="w-full p-2 border rounded-lg text-xs" placeholder="Desafios práticos direcionados..."></textarea>
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+              <button onclick="saveMethodologies()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Estratégia
               </button>
             </div>
           </div>
+        </section>
 
-          <!-- REQUIRED STUDENT SELECTOR -->
-          <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3 no-print">
-            <label class="text-xs font-bold text-cyan-900 uppercase whitespace-nowrap">
-              <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
-            </label>
-            <select id="reportStudentSelect" onchange="renderReportView(this.value)" class="w-full sm:w-auto flex-1 px-3 py-2 border border-cyan-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-cyan-500 outline-none">
-              <!-- Rendered via JS -->
-            </select>
-          </div>
+        <!-- 7. NEURODIVERSIDADE EM FOCO -->
+        <section id="sec-neurodiversidade" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-head-side-virus text-rose-600"></i> Neurodiversidade em Foco
+            </h2>
+            <p class="text-xs text-slate-500 mb-6">Guia completo de caracterização e condutas psicopedagógicas.</p>
 
-          <!-- Printable Report Container -->
-          <div id="printableReportContent" class="p-8 border border-slate-200 rounded-2xl bg-white space-y-6">
-            <div class="text-center border-b pb-4">
-              <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Relatório Psicopedagógico Síntese</h1>
-              <p class="text-xs text-slate-500">Plataforma Práxis &bull; Documento Gerado em <span id="reportDate">--/--/----</span></p>
-            </div>
-
-            <div id="reportStudentDetails" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div><span class="text-slate-500 block">Nome:</span> <strong id="repName" class="text-slate-800">--</strong></div>
-              <div><span class="text-slate-500 block">Idade / Série:</span> <strong id="repGrade" class="text-slate-800">--</strong></div>
-              <div><span class="text-slate-500 block">Responsável:</span> <strong id="repParent" class="text-slate-800">--</strong></div>
-              <div><span class="text-slate-500 block">Especialista:</span> <strong id="repSpecialist" class="text-slate-800">--</strong></div>
-            </div>
-
-            <div class="space-y-4 text-xs text-slate-700">
-              <div>
-                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">1. Avaliação e Diagnóstico</h3>
-                <p id="repEvalText" class="whitespace-pre-line text-slate-600">Nenhuma avaliação salva para este aprendente.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- TDAH -->
+              <div class="p-5 border border-rose-200 bg-rose-50/30 rounded-2xl">
+                <div class="flex items-center gap-2 font-bold text-rose-900 text-base mb-2">
+                  <span class="w-8 h-8 rounded-lg bg-rose-600 text-white flex items-center justify-center text-xs font-bold">TDAH</span>
+                  Transtorno do Deficit de Atenção e Hiperatividade
+                </div>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                  <li><strong>Sinais:</strong> Desatenção a detalhes, impulsividade verbal/motora, esquecimentos.</li>
+                  <li><strong>Manejo:</strong> Instruções fracionadas em etapas curtas, temporizadores visuais.</li>
+                  <li><strong>Avaliação:</strong> Provas menores ou divididas em blocos.</li>
+                </ul>
               </div>
 
-              <div>
-                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">2. Plano de Intervenção (PEI)</h3>
-                <p id="repPlanText" class="whitespace-pre-line text-slate-600">Nenhum plano cadastrado para este aprendente.</p>
+              <!-- TEA -->
+              <div class="p-5 border border-blue-200 bg-blue-50/30 rounded-2xl">
+                <div class="flex items-center gap-2 font-bold text-blue-900 text-base mb-2">
+                  <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold">TEA</span>
+                  Transtorno do Espectro Autista
+                </div>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                  <li><strong>Sinais:</strong> Rigidez na rotina, hiperfoco, sensibilidade sensorial.</li>
+                  <li><strong>Manejo:</strong> Antecipação de mudanças via quadros visuais.</li>
+                  <li><strong>Avaliação:</strong> Interpretação literal dos enunciados.</li>
+                </ul>
               </div>
 
-              <div>
-                <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">3. Adaptações e Metodologias Ativas</h3>
-                <p id="repMethodsText" class="whitespace-pre-line text-slate-600">Nenhuma estratégia registrada para este aprendente.</p>
+              <!-- DISLEXIA -->
+              <div class="p-5 border border-purple-200 bg-purple-50/30 rounded-2xl">
+                <div class="flex items-center gap-2 font-bold text-purple-900 text-base mb-2">
+                  <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-bold">DIS</span>
+                  Dislexia
+                </div>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                  <li><strong>Sinais:</strong> Dificuldade na decodificação fonológica, troca de letras.</li>
+                  <li><strong>Manejo:</strong> Uso de fontes adaptadas (OpenDyslexic), leitor de tela.</li>
+                  <li><strong>Avaliação:</strong> Avaliação oral complementar, tempo estendido.</li>
+                </ul>
               </div>
-            </div>
 
-            <div class="mt-12 pt-8 border-t border-slate-300 text-center flex justify-around">
-              <div>
-                <div class="w-48 border-b border-slate-400 mx-auto mb-1"></div>
-                <p class="text-[10px] text-slate-500 uppercase font-semibold">Assinatura do Profissional Responsável</p>
+              <!-- AH/SD -->
+              <div class="p-5 border border-amber-200 bg-amber-50/30 rounded-2xl">
+                <div class="flex items-center gap-2 font-bold text-amber-900 text-base mb-2">
+                  <span class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-bold">AH</span>
+                  Altas Habilidades / Superdotação
+                </div>
+                <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+                  <li><strong>Sinais:</strong> Aprendizagem rápida, vocabulário avançado, questionamento crítico.</li>
+                  <li><strong>Manejo:</strong> Enriquecimento curricular, projetos de pesquisa.</li>
+                  <li><strong>Avaliação:</strong> Propostas de aprofundamento e complexidade.</li>
+                </ul>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- 9. SOBRE A AUTORA (NO INTERNAL CONTACTS) -->
-      <section id="sec-autora" class="tab-content hidden space-y-6">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
-            <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-4xl font-bold shadow-lg flex-shrink-0">
-              BV
+        <!-- 8. RELATÓRIOS & DOCUMENTOS (PRINT/PDF) -->
+        <section id="sec-relatorios" class="tab-content hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <div>
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-file-contract text-cyan-600"></i> Relatórios & Documentos Psicopedagógicos
+                </h2>
+                <p class="text-xs text-slate-500">Visualização consolidada, impressão direta ou exportação em PDF.</p>
+              </div>
+
+              <div class="flex items-center gap-2 no-print">
+                <button onclick="window.print()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                  <i class="fa-solid fa-print"></i> Imprimir
+                </button>
+                <button onclick="exportPdfDocument()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-semibold shadow flex items-center gap-2">
+                  <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                </button>
+              </div>
             </div>
-            <div>
-              <h2 class="text-2xl font-bold text-slate-800">Profª Bárbara Vitória</h2>
-              <p class="text-sm font-semibold text-indigo-600">Especialista em Psicopedagogia & Gestão Inclusiva</p>
-              <p class="text-xs text-slate-500 mt-2 leading-relaxed">
-                Idealizadora da Plataforma Práxis. Dedicada à estruturação de métodos psicopedagógicos inovadores, focada na neurodiversidade e na inclusão efetiva de alunos neurodivergentes nas instituições de ensino.
-              </p>
+
+            <div class="bg-cyan-50 border border-cyan-200 p-4 rounded-xl mb-6 flex flex-col sm:flex-row items-center gap-3 no-print">
+              <label class="text-xs font-bold text-cyan-900 uppercase whitespace-nowrap">
+                <i class="fa-solid fa-asterisk text-red-500 mr-1"></i>Selecione o Aprendente:
+              </label>
+              <select id="reportStudentSelect" onchange="renderReportView(this.value)" class="w-full sm:w-auto flex-1 px-3 py-2 border border-cyan-300 rounded-xl text-sm font-semibold text-slate-700 bg-white focus:ring-2 focus:ring-cyan-500 outline-none">
+                <!-- Rendered via JS -->
+              </select>
+            </div>
+
+            <!-- Printable Report Container -->
+            <div id="printableReportContent" class="p-8 border border-slate-200 rounded-2xl bg-white space-y-6">
+              <div class="text-center border-b pb-4">
+                <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Relatório Psicopedagógico Síntese</h1>
+                <p class="text-xs text-slate-500">Plataforma Práxis &bull; Documento Gerado em <span id="reportDate">--/--/----</span></p>
+              </div>
+
+              <div id="reportStudentDetails" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div><span class="text-slate-500 block">Nome:</span> <strong id="repName" class="text-slate-800">--</strong></div>
+                <div><span class="text-slate-500 block">Idade / Série:</span> <strong id="repGrade" class="text-slate-800">--</strong></div>
+                <div><span class="text-slate-500 block">Responsável:</span> <strong id="repParent" class="text-slate-800">--</strong></div>
+                <div><span class="text-slate-500 block">Especialista:</span> <strong id="repSpecialist" class="text-slate-800">--</strong></div>
+              </div>
+
+              <div class="space-y-4 text-xs text-slate-700">
+                <div>
+                  <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">1. Avaliação e Diagnóstico</h3>
+                  <p id="repEvalText" class="whitespace-pre-line text-slate-600">Nenhuma avaliação salva para este aprendente.</p>
+                </div>
+
+                <div>
+                  <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">2. Plano de Intervenção (PEI)</h3>
+                  <p id="repPlanText" class="whitespace-pre-line text-slate-600">Nenhum plano cadastrado para este aprendente.</p>
+                </div>
+
+                <div>
+                  <h3 class="font-bold text-sm text-indigo-900 border-b pb-1 mb-2">3. Adaptações e Metodologias Ativas</h3>
+                  <p id="repMethodsText" class="whitespace-pre-line text-slate-600">Nenhuma estratégia registrada para este aprendente.</p>
+                </div>
+              </div>
+
+              <div class="mt-12 pt-8 border-t border-slate-300 text-center flex justify-around">
+                <div>
+                  <div class="w-48 border-b border-slate-400 mx-auto mb-1"></div>
+                  <p class="text-[10px] text-slate-500 uppercase font-semibold">Assinatura do Profissional Responsável</p>
+                </div>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div class="mt-6 text-xs text-slate-600 space-y-3">
-            <h3 class="font-bold text-slate-800 text-sm">Diretrizes da Plataforma Práxis:</h3>
-            <p>&bull; Transformar avaliações psicopedagógicas em planos de ação práticos, individualizados e aplicáveis no cotidiano escolar.</p>
-            <p>&bull; Unificar ferramentas de apoio à neurodiversidade, capacitando profissionais da educação e psicopedagogos.</p>
+        <!-- 9. SOBRE A AUTORA -->
+        <section id="sec-autora" class="tab-content hidden space-y-6">
+          <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
+              <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center text-4xl font-bold shadow-lg flex-shrink-0">
+                BV
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-slate-800">Profª Bárbara Vitória</h2>
+                <p class="text-sm font-semibold text-indigo-600">Especialista em Psicopedagogia & Gestão Inclusiva</p>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                  Idealizadora da Plataforma Práxis. Dedicada à estruturação de métodos psicopedagógicos inovadores, focada na neurodiversidade e na inclusão efetiva de alunos neurodivergentes nas instituições de ensino.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-6 text-xs text-slate-600 space-y-3">
+              <h3 class="font-bold text-slate-800 text-sm">Diretrizes da Plataforma Práxis:</h3>
+              <p>&bull; Transformar avaliações psicopedagógicas em planos de ação práticos, individualizados e aplicáveis no cotidiano escolar.</p>
+              <p>&bull; Unificar ferramentas de apoio à neurodiversidade, capacitando profissionais da educação e psicopedagogos.</p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- FOOTER WITH MANDATORY CONTACTS -->
+      <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-auto border-t border-slate-800 no-print">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          <div>
+            <p class="font-bold text-slate-200">Plataforma Práxis 2026</p>
+            <p class="text-[11px] text-slate-500">Desenvolvimento Psicopedagógico e Inclusão</p>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-6 text-slate-300">
+            <a href="mailto:prof.barbaravitoria@gmail.com" class="hover:text-amber-400 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-envelope text-indigo-400"></i> prof.barbaravitoria@gmail.com
+            </a>
+            <span class="hover:text-amber-400 transition flex items-center gap-1.5">
+              <i class="fa-brands fa-instagram text-rose-400"></i> @prof.barbaravitoria
+            </span>
           </div>
         </div>
-      </section>
+      </footer>
 
-    </main>
-
-    <!-- FOOTER WITH MANDATORY CONTACTS -->
-    <footer class="bg-slate-900 text-slate-400 text-xs py-6 mt-auto border-t border-slate-800 no-print">
-      <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-        <div>
-          <p class="font-bold text-slate-200">Plataforma Práxis 2026</p>
-          <p class="text-[11px] text-slate-500">Desenvolvimento Psicopedagógico e Inclusão</p>
-        </div>
-
-        <!-- Mandatory Contacts -->
-        <div class="flex flex-wrap items-center justify-center gap-6 text-slate-300">
-          <a href="mailto:prof.barbaravitoria@gmail.com" class="hover:text-amber-400 transition flex items-center gap-1.5">
-            <i class="fa-solid fa-envelope text-indigo-400"></i> prof.barbaravitoria@gmail.com
-          </a>
-          <span class="hover:text-amber-400 transition flex items-center gap-1.5">
-            <i class="fa-brands fa-instagram text-rose-400"></i> @prof.barbaravitoria
-          </span>
-        </div>
-      </div>
-    </footer>
+    </div>
   </div>
 
   <!-- MODAL: NEW / EDIT STUDENT -->
@@ -839,7 +840,6 @@
     const MASTER_KEY = 'psi-praxis-2026';
     const ADMIN_CODE = 'prof.barbaravitoria';
 
-    // Initial Users List
     const defaultUsers = [
       {
         id: 'usr-admin',
@@ -863,13 +863,11 @@
       }
     ];
 
-    // Initial Students
     const defaultStudents = [
       { id: 'std-1', name: 'Gabriel Souza', age: 9, grade: '4º Ano EF', parent: 'Juliana Souza' },
       { id: 'std-2', name: 'Sofia Oliveira', age: 7, grade: '2º Ano EF', parent: 'Carlos Oliveira' }
     ];
 
-    // 30 Practical Guide Topics
     const guideTopicsData = [
       "Acolhimento e Escuta Escolar Sensível", "Anamnese Familiar e Histórico de Desenvolvimento",
       "Triagem de Funções Atencionais e Executivas", "Avaliação do Raciocínio Lógico-Matemático",
@@ -888,7 +886,6 @@
       "Transição de Etapas de Ensino (Fundamental ao Médio)", "Encerramento e Devolutiva Diagnóstica com Acolhimento"
     ];
 
-    // Application State
     let currentUser = null;
     let users = JSON.parse(localStorage.getItem('praxis_users')) || defaultUsers;
     let students = JSON.parse(localStorage.getItem('praxis_students')) || defaultStudents;
@@ -897,7 +894,6 @@
     let studentPlans = JSON.parse(localStorage.getItem('praxis_plans')) || {};
     let studentMethods = JSON.parse(localStorage.getItem('praxis_methods')) || {};
 
-    // Save Data Helpers
     function saveData() {
       localStorage.setItem('praxis_users', JSON.stringify(users));
       localStorage.setItem('praxis_students', JSON.stringify(students));
@@ -907,7 +903,6 @@
       localStorage.setItem('praxis_methods', JSON.stringify(studentMethods));
     }
 
-    // Toast Notification System
     function showToast(msg, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
@@ -929,7 +924,6 @@
       }, 3500);
     }
 
-    // Auth Tab Switch
     function switchAuthTab(tab) {
       const loginForm = document.getElementById('loginForm');
       const masterForm = document.getElementById('masterForm');
@@ -950,25 +944,21 @@
     }
 
     /* ==========================================================================
-       2. AUTHENTICATION & ACCESS CONTROL & RECOVERY
+       2. AUTHENTICATION & RECOVERY
        ========================================================================== */
     function handleLogin(e) {
       e.preventDefault();
       const code = document.getElementById('loginCode').value.trim();
       const pass = document.getElementById('loginPassword').value.trim();
 
-      // Check Master Code directly in login
       if (code === MASTER_KEY || code === ADMIN_CODE) {
         const adminUser = users.find(u => u.code === ADMIN_CODE);
-        if (adminUser) {
-          if (pass === adminUser.password || pass === 'admin') {
-            loginUser(adminUser);
-            return;
-          }
+        if (adminUser && (pass === adminUser.password || pass === 'admin')) {
+          loginUser(adminUser);
+          return;
         }
       }
 
-      // Check Standard Users
       const user = users.find(u => u.code.toLowerCase() === code.toLowerCase() && u.password === pass);
 
       if (!user) {
@@ -1009,7 +999,7 @@
         resultBox.innerHTML = `<strong>Conta Encontrada!</strong><br>Sua senha atual é: <span class="font-mono font-bold text-sm text-emerald-700">${user.password}</span>`;
       } else {
         resultBox.className = "p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 font-medium";
-        resultBox.innerHTML = `<strong>Dados não conferem.</strong> Verifique se o código e o e-mail informados estão corretos.`;
+        resultBox.innerHTML = `<strong>Dados não conferem.</strong> Verifique o código e o e-mail informados.`;
       }
     }
 
@@ -1041,7 +1031,7 @@
       }
 
       if (users.some(u => u.code.toLowerCase() === code.toLowerCase())) {
-        showToast('Este código de acesso já está em uso por outro usuário!', 'error');
+        showToast('Este código de acesso já está em uso!', 'error');
         return;
       }
 
@@ -1059,8 +1049,7 @@
       users.push(newUser);
       saveData();
       closeRegisterModal();
-      showToast('Perfil criado com sucesso! Faça login com seu novo código.', 'success');
-      
+      showToast('Perfil criado com sucesso!', 'success');
       loginUser(newUser);
     }
 
@@ -1080,6 +1069,7 @@
       }
 
       initDashboard();
+      switchTab('guia');
       showToast(`Bem-vindo(a), ${user.name}!`, 'success');
     }
 
@@ -1093,7 +1083,7 @@
     }
 
     /* ==========================================================================
-       3. NAVIGATION & DASHBOARD INITIALIZATION
+       3. NAVIGATION & DASHBOARD
        ========================================================================== */
     function initDashboard() {
       renderAdminUsersTable();
@@ -1105,7 +1095,8 @@
     function switchTab(tabName) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.tab-btn').forEach(el => {
-        el.classList.remove('border-indigo-600', 'text-indigo-600', 'bg-indigo-50', 'font-bold');
+        el.classList.remove('bg-indigo-600', 'text-white', 'font-bold');
+        el.classList.add('text-slate-300');
       });
 
       const targetSec = document.getElementById(`sec-${tabName}`);
@@ -1113,7 +1104,8 @@
 
       const targetTabBtn = document.getElementById(`tab-${tabName}`);
       if (targetTabBtn) {
-        targetTabBtn.classList.add('bg-indigo-50', 'text-indigo-600', 'font-bold');
+        targetTabBtn.classList.remove('text-slate-300');
+        targetTabBtn.classList.add('bg-indigo-600', 'text-white', 'font-bold');
       }
 
       if (tabName === 'relatorios') {
@@ -1123,7 +1115,7 @@
     }
 
     /* ==========================================================================
-       4. ADMIN PANEL MANAGEMENT (EXCLUSIVELY PROF.BARBARAVITORIA)
+       4. ADMIN PANEL MANAGEMENT
        ========================================================================== */
     function renderAdminUsersTable() {
       const tbody = document.getElementById('adminUserTableBody');
@@ -1170,7 +1162,7 @@
 
     function toggleUserStatus(userId) {
       if (currentUser.code !== ADMIN_CODE) {
-        showToast('Somente prof.barbaravitoria pode alterar o status de usuários!', 'error');
+        showToast('Somente prof.barbaravitoria pode alterar o status!', 'error');
         return;
       }
       const u = users.find(x => x.id === userId);
@@ -1178,7 +1170,7 @@
         u.status = (u.status === 'active') ? 'inactive' : 'active';
         saveData();
         renderAdminUsersTable();
-        showToast(`Status do usuário ${u.name} atualizado!`, 'info');
+        showToast(`Status de ${u.name} atualizado!`, 'info');
       }
     }
 
@@ -1250,7 +1242,7 @@
       saveData();
       closeUserModal();
       renderAdminUsersTable();
-      showToast('Dados do usuário salvos com sucesso!', 'success');
+      showToast('Dados salvos com sucesso!', 'success');
     }
 
     /* ==========================================================================
@@ -1306,14 +1298,14 @@
     }
 
     /* ==========================================================================
-       6. STUDENTS MANAGEMENT & MANDATORY SELECTION
+       6. STUDENTS MANAGEMENT
        ========================================================================== */
     function renderStudentsList() {
       const grid = document.getElementById('studentsListGrid');
       grid.innerHTML = '';
 
       if (students.length === 0) {
-        grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed">Nenhum aprendente cadastrado ainda.</div>`;
+        grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-slate-400 bg-slate-50 rounded-xl border border-dashed">Nenhum aprendente cadastrado.</div>`;
         return;
       }
 
@@ -1377,7 +1369,7 @@
 
     function selectGlobalStudent(studentId) {
       syncStudentSelection(studentId);
-      showToast('Aprendente ativo selecionado com sucesso!', 'info');
+      showToast('Aprendente selecionado!', 'info');
     }
 
     function openStudentModal() {
@@ -1429,11 +1421,11 @@
       closeStudentModal();
       renderStudentsList();
       populateStudentSelectors();
-      showToast('Aprendente salvo com sucesso!', 'success');
+      showToast('Aprendente salvo!', 'success');
     }
 
     /* ==========================================================================
-       7. PEDAGOGICAL MODULE OPERATIONS
+       7. MODULE OPERATIONS
        ========================================================================== */
     function loadStudentData(studentId) {
       const ev = studentEvaluations[studentId] || {};
@@ -1459,7 +1451,7 @@
       e.preventDefault();
       const studentId = document.getElementById('evalStudentSelect').value;
       if (!studentId) {
-        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        showToast('Selecione um aprendente!', 'warning');
         return;
       }
 
@@ -1471,14 +1463,14 @@
       };
 
       saveData();
-      showToast('Avaliação Psicopedagógica salva com sucesso!', 'success');
+      showToast('Avaliação salva com sucesso!', 'success');
     }
 
     function savePlan(e) {
       e.preventDefault();
       const studentId = document.getElementById('planStudentSelect').value;
       if (!studentId) {
-        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        showToast('Selecione um aprendente!', 'warning');
         return;
       }
 
@@ -1490,13 +1482,13 @@
       };
 
       saveData();
-      showToast('Plano de Intervenção salvo com sucesso!', 'success');
+      showToast('Plano salvo com sucesso!', 'success');
     }
 
     function saveMethodologies() {
       const studentId = document.getElementById('methodStudentSelect').value;
       if (!studentId) {
-        showToast('Selecione obrigatoriamente um aprendente antes de salvar!', 'warning');
+        showToast('Selecione um aprendente!', 'warning');
         return;
       }
 
@@ -1506,13 +1498,13 @@
       };
 
       saveData();
-      showToast('Estratégias de Metodologias Ativas salvas!', 'success');
+      showToast('Estratégias salvas!', 'success');
     }
 
     function generateAiAdaptation() {
       const studentId = document.getElementById('aiStudentSelect').value;
       if (!studentId) {
-        showToast('Selecione um aprendente para direcionar a adaptação IA!', 'warning');
+        showToast('Selecione um aprendente!', 'warning');
         return;
       }
 
@@ -1520,7 +1512,7 @@
       const focus = document.getElementById('aiFocusArea').value;
 
       if (!inputContent) {
-        showToast('Insira o texto ou conteúdo escolar para adaptar.', 'warning');
+        showToast('Insira o texto para adaptar.', 'warning');
         return;
       }
 
@@ -1529,29 +1521,29 @@
       let text = `<strong>Ajustes Adaptativos para o Aprendente:</strong> ${student.name}<br>`;
       
       if (focus === 'tdah') {
-        text += `• <strong>Fracionamento:</strong> Dividir o conteúdo principal em 3 blocos curtos com pausas de 2 minutos.<br>
-                 • <strong>Destaque Visual:</strong> Sublinhar palavras-chave do texto e transformar enunciados longos em listas de marcadores.<br>
-                 • <strong>Temporização:</strong> Conceder lembretes visuais suaves de tempo.`;
+        text += `• <strong>Fracionamento:</strong> Dividir o conteúdo em 3 blocos curtos com pausas.<br>
+                 • <strong>Destaque Visual:</strong> Sublinhar palavras-chave e usar tópicos.<br>
+                 • <strong>Temporização:</strong> Lembretes visuais de tempo.`;
       } else if (focus === 'tea') {
-        text += `• <strong>Linguagem Direta:</strong> Eliminar metáforas, ironias ou figuras de linguagem dos enunciados.<br>
-                 • <strong>Apoio de Imagem:</strong> Inserir suporte pictográfico ao lado das palavras primárias.<br>
-                 • <strong>Previsibilidade:</strong> Explicar a estrutura da tarefa antes da execução.`;
+        text += `• <strong>Linguagem Direta:</strong> Eliminar metáforas ou ambiguidades.<br>
+                 • <strong>Apoio de Imagem:</strong> Inserir suporte pictográfico.<br>
+                 • <strong>Previsibilidade:</strong> Explicar a estrutura antecipadamente.`;
       } else if (focus === 'dislexia') {
-        text += `• <strong>Tipografia Legível:</strong> Aplicar fonte espaçada e tamanho 14pt.<br>
-                 • <strong>Leitura Assistida:</strong> Permitir o uso de leitor de voz digital ou leitura mediada pelo docente.<br>
-                 • <strong>Simplificação Sintática:</strong> Substituir estruturas frasais complexas por orações na ordem direta.`;
+        text += `• <strong>Tipografia Legível:</strong> Fonte espaçada tamanho 14pt.<br>
+                 • <strong>Leitura Assistida:</strong> Leitor de voz ou áudio.<br>
+                 • <strong>Ordem Direta:</strong> Frases curtas e diretas.`;
       } else {
-        text += `• <strong>Enriquecimento de Desafio:</strong> Conectar o tema com um problema de investigação profunda.<br>
-                 • <strong>Autonomia:</strong> Oferecer escolha de formato de entrega (podcast, apresentação, artigo).`;
+        text += `• <strong>Enriquecimento:</strong> Conectar a temas de investigação profunda.<br>
+                 • <strong>Autonomia:</strong> Escolha de formato de entrega.`;
       }
 
       document.getElementById('aiOutputText').innerHTML = text;
       document.getElementById('aiResultBox').classList.remove('hidden');
-      showToast('Adaptação IA gerada com sucesso!', 'success');
+      showToast('Adaptação IA gerada!', 'success');
     }
 
     /* ==========================================================================
-       8. REPORTS & PRINT / PDF EXPORT
+       8. REPORTS & PDF EXPORT
        ========================================================================== */
     function renderReportView(studentId) {
       const today = new Date().toLocaleDateString('pt-BR');
@@ -1577,7 +1569,7 @@
 
       const ev = studentEvaluations[studentId];
       if (ev) {
-        document.getElementById('repEvalText').innerText = `• Anamnese: ${ev.anamnese || 'N/A'}\n• Cognitivo: ${ev.cognitive || 'N/A'}\n• Hipótese Diagnóstica: ${ev.hypothesis || 'N/A'}`;
+        document.getElementById('repEvalText').innerText = `• Anamnese: ${ev.anamnese || 'N/A'}\n• Cognitivo: ${ev.cognitive || 'N/A'}\n• Hipótese: ${ev.hypothesis || 'N/A'}`;
       } else {
         document.getElementById('repEvalText').innerText = 'Sem avaliação registrada.';
       }
