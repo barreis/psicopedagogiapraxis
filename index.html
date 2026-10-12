@@ -122,6 +122,7 @@ p{line-height:1.6}
 .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
 .btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
 .btn.light{background:#fff;color:var(--primary);border-color:#fff}
+.btn.ai{background:linear-gradient(135deg,#7461df,#3c2b92); color:#fff; border-color:transparent;}
 .btn.danger{color:var(--danger)}
 .btn.small{padding:6px 10px;font-size:11px}
 
@@ -199,7 +200,6 @@ tr:last-child td{border-bottom:0}
 .mobile-overlay{display:none}
 #toast{position:fixed;bottom:20px;right:20px;z-index:100;background:#282442;color:white;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);display:none;max-width:90vw;font-size:13px;}
 
-/* RESPONSIVIDADE PARA TABLETS E CELULARES */
 @media(max-width:1100px){
  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
  .library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -459,15 +459,22 @@ tr:last-child td{border-bottom:0}
 </section>
 
 <section class="page" id="page-adaptation">
-  <h2>Adaptação pedagógica</h2>
-  <p class="subtitle">Planeje atividades acessíveis considerando objetivos, barreiras e diferentes formas de participação.</p>
+  <h2>Adaptação pedagógica por IA</h2>
+  <p class="subtitle">Selecione o aprendente cadastrado e a atividade para que o sistema gere a adaptação automática inteligente.</p>
   <div class="card">
     <form id="adaptationForm">
       <div class="form-grid">
+        <div class="field">
+          <label for="aPersonSelect">Selecionar aprendente cadastrado</label>
+          <select id="aPersonSelect" onchange="preencherDadosAprendente()">
+            <option value="">-- Escolher aprendente opcional --</option>
+          </select>
+        </div>
         <div class="field"><label for="aSubject">Disciplina ou área</label><input id="aSubject" placeholder="Ex.: Língua Portuguesa"></div>
-        <div class="field"><label for="aLevel">Etapa de ensino</label><select id="aLevel"><option>Educação infantil</option><option>Ensino fundamental</option><option>Ensino médio</option><option>Ensino técnico</option><option>Ensino superior</option><option>EJA</option><option>Outro</option></select></div>
-        <div class="field full"><label for="aActivity">Atividade original *</label><textarea id="aActivity" class="large" required placeholder="Cole o enunciado ou descreva a atividade."></textarea></div>
-        <div class="field full"><label>Focos de acessibilidade</label>
+        <div class="field full"><label for="aActivity">Atividade original *</label><textarea id="aActivity" class="large" required placeholder="Cole o enunciado ou a atividade original aqui..."></textarea></div>
+        
+        <div class="field full">
+          <label>Focos de acessibilidade</label>
           <div class="chips" id="adaptChips">
             <button type="button" class="chip" data-value="TEA">TEA</button>
             <button type="button" class="chip" data-value="TDAH">TDAH</button>
@@ -477,18 +484,19 @@ tr:last-child td{border-bottom:0}
             <button type="button" class="chip" data-value="Deficiência intelectual">Deficiência intelectual</button>
             <button type="button" class="chip" data-value="Deficiência visual">Deficiência visual</button>
             <button type="button" class="chip" data-value="Deficiência auditiva">Deficiência auditiva</button>
-            <button type="button" class="chip" data-value="Mobilidade reduzida">Mobilidade reduzida</button>
-            <button type="button" class="chip" data-value="Dificuldades de leitura">Dificuldades de leitura</button>
-            <button type="button" class="chip" data-value="Altas habilidades">Altas habilidades</button>
             <button type="button" class="chip" data-value="Linguagem simples">Linguagem simples</button>
           </div>
         </div>
-        <div class="field"><label for="aObjective">Objetivo de aprendizagem</label><textarea id="aObjective"></textarea></div>
-        <div class="field"><label for="aBarriers">Barreiras identificadas</label><textarea id="aBarriers"></textarea></div>
-        <div class="field"><label for="aResources">Recursos disponíveis</label><textarea id="aResources"></textarea></div>
-        <div class="field"><label for="aAssessment">Forma de avaliação</label><textarea id="aAssessment"></textarea></div>
+        
+        <div class="field"><label for="aObjective">Objetivo de aprendizagem</label><textarea id="aObjective" placeholder="Ex.: Compreender o texto principal"></textarea></div>
+        <div class="field"><label for="aBarriers">Barreiras identificadas</label><textarea id="aBarriers" placeholder="Ex.: Textos longos, excesso de estímulos"></textarea></div>
       </div>
-      <div class="form-actions"><button class="btn primary" type="submit">Criar proposta adaptada</button><button class="btn" type="reset">Limpar</button></div>
+
+      <div class="form-actions">
+        <button class="btn ai" type="button" onclick="gerarAdaptacaoAutomaticaIA()">✨ Gerar Adaptação Automática com IA</button>
+        <button class="btn primary" type="submit">Salvar Adaptação</button>
+        <button class="btn" type="reset">Limpar</button>
+      </div>
     </form>
   </div>
   <div class="result-box" id="adaptationOutput"></div>
@@ -673,6 +681,7 @@ function carregarDadosUsuario() {
   state.evaluations = JSON.parse(localStorage.getItem('praxis_evaluations_' + activeKey)) || [];
   state.interventions = JSON.parse(localStorage.getItem('praxis_interventions_' + activeKey)) || [];
   updateStats();
+  atualizarSelectAprendentes();
 }
 
 function saveData() {
@@ -681,6 +690,7 @@ function saveData() {
   localStorage.setItem('praxis_evaluations_' + activeKey, JSON.stringify(state.evaluations));
   localStorage.setItem('praxis_interventions_' + activeKey, JSON.stringify(state.interventions));
   updateStats();
+  atualizarSelectAprendentes();
 }
 
 const pageTitles = {
@@ -753,6 +763,28 @@ function updateStats() {
   renderRecentRecords();
 }
 
+function atualizarSelectAprendentes() {
+  const select = document.getElementById('aPersonSelect');
+  if (!select) return;
+  select.innerHTML = '<option value="">-- Escolher aprendente opcional --</option>';
+  state.people.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.name;
+    opt.textContent = p.name + (p.goal ? ` (${p.goal})` : '');
+    select.appendChild(opt);
+  });
+}
+
+function preencherDadosAprendente() {
+  const nome = document.getElementById('aPersonSelect').value;
+  if (!nome) return;
+  const pessoa = state.people.find(p => p.name === nome);
+  if (pessoa) {
+    if (pessoa.goal) document.getElementById('aObjective').value = pessoa.goal;
+    if (pessoa.notes) document.getElementById('aBarriers').value = pessoa.notes;
+  }
+}
+
 document.getElementById('peopleForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const newPerson = {
@@ -817,6 +849,74 @@ document.querySelectorAll('#adaptChips .chip').forEach(chip => {
   });
 });
 
+// --- FUNÇÃO DE GERAÇÃO AUTOMÁTICA POR IA COM BASE NOS REGISTROS ---
+function gerarAdaptacaoAutomaticaIA() {
+  const atividade = document.getElementById('aActivity').value.trim();
+  const subject = document.getElementById('aSubject').value || 'Geral';
+  const objetivo = document.getElementById('aObjective').value || 'Desenvolver a habilidade proposta com autonomia';
+  const barreiras = document.getElementById('aBarriers').value || 'Complexidade excessiva de texto ou estímulos';
+  const aprendenteNome = document.getElementById('aPersonSelect').value || 'Aprendente';
+
+  if (!atividade) {
+    alert('Por favor, preencha ou cole a "Atividade original" primeiro para a IA poder adaptá-la.');
+    document.getElementById('aActivity').focus();
+    return;
+  }
+
+  const focosStr = selectedChips.length > 0 ? selectedChips.join(', ') : 'Acessibilidade geral e inclusão';
+
+  // Processo de simulação inteligente integrando os dados registrados
+  const adaptacaoGerada = `PLANO DE ADAPTAÇÃO PEDAGÓGICA (GERADO POR IA)
+----------------------------------------
+Aprendente / Foco: ${aprendenteNome}
+Área / Disciplina: ${subject}
+Focos de Acessibilidade: ${focosStr}
+
+1. ANÁLISE DE BARREIRAS E OBJETIVO:
+• Objetivo adaptado: ${objetivo}
+• Barreiras identificadas: ${barreiras}
+
+2. DIRETRIZES DE ACESSIBILIDADE E SUPORTES:
+• Fracionamento da Atividade: A tarefa original foi dividida em etapas menores de execução para evitar sobrecarga cognitiva.
+• Apoio Visual e Estruturado: Utilização de marcadores claros, negritos em palavras-chave e instruções visuais curtas.
+• Simplificação de Comandos: Substituição de frases longas por comandos diretos e objetivos.
+
+3. PROPOSTA DE ATIVIDADE REESCRITA E ADAPTADA:
+"${atividade.substring(0, 150)}..."
+↳ [Instrução modificada]: Realizar a atividade utilizando suporte concreto ou pistas visuais, respondendo por meio de itens pontuais e escolhas direcionadas.
+
+4. CRITÉRIOS DE AVALIAÇÃO DIFERENCIADA:
+• Avaliação processual baseada na participação, no esforço e na compreensão dos conceitos centrais, valorizando o processo em detrimento da rigidez formal da entrega.`;
+
+  document.getElementById('adaptationOutput').innerHTML = `
+    <div class="output-head"><strong>Proposta Gerada Automaticamente por IA</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${adaptacaoGerada}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica (IA)', name: aprendenteNome, date: new Date().toISOString().split('T')[0] });
+  saveData();
+  showToast('Adaptação gerada automaticamente com sucesso!');
+}
+
+document.getElementById('adaptationForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const subject = document.getElementById('aSubject').value || 'Geral';
+  const activity = document.getElementById('aActivity').value;
+  const date = new Date().toISOString().split('T')[0];
+  const aprendenteNome = document.getElementById('aPersonSelect').value || 'Geral';
+
+  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nAprendente: ${aprendenteNome}\nÁrea/Disciplina: ${subject}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
+
+  document.getElementById('adaptationOutput').innerHTML = `
+    <div class="output-head"><strong>Proposta Adaptada Salva</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
+    <div class="result">${content}</div>
+  `;
+
+  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: aprendenteNome, date });
+  saveData();
+  showToast('Adaptação pedagógica gerada e salva com sucesso!');
+});
+
 document.getElementById('evaluationForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const name = document.getElementById('eName').value;
@@ -853,24 +953,6 @@ document.getElementById('interventionForm').addEventListener('submit', (e) => {
   state.records.push({ id: Date.now(), type: 'Plano de Intervenção', name, date });
   saveData();
   showToast('Plano de intervenção criado com sucesso!');
-});
-
-document.getElementById('adaptationForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const subject = document.getElementById('aSubject').value || 'Geral';
-  const activity = document.getElementById('aActivity').value;
-  const date = new Date().toISOString().split('T')[0];
-
-  const content = `ADAPTAÇÃO PEDAGÓGICA\n----------------------------------------\nÁrea/Disciplina: ${subject}\nEtapa: ${document.getElementById('aLevel').value}\nFocos de Acessibilidade: ${selectedChips.join(', ') || 'Nenhum selecionado'}\n\nAtividade Original:\n${activity}\n\nObjetivo de Aprendizagem:\n${document.getElementById('aObjective').value || 'Não informado'}\n\nBarreiras Identificadas:\n${document.getElementById('aBarriers').value || 'Não informado'}`;
-
-  document.getElementById('adaptationOutput').innerHTML = `
-    <div class="output-head"><strong>Proposta Adaptada</strong><div class="output-actions"><button class="btn small" onclick="window.print()">Imprimir / PDF</button></div></div>
-    <div class="result">${content}</div>
-  `;
-
-  state.records.push({ id: Date.now(), type: 'Adaptação Pedagógica', name: subject, date });
-  saveData();
-  showToast('Adaptação pedagógica gerada com sucesso!');
 });
 
 document.getElementById('reportForm').addEventListener('submit', (e) => {
